@@ -14,8 +14,8 @@ func _ready():
 func _physics_process(delta):
 	if (velocity.y < MAX_VELOCITY):
 		velocity.y += GRAVITY * delta
-
-	move_and_slide()
+	if (Global.is_game_active):
+		move_and_slide()
 
 
 # ジャンプする
