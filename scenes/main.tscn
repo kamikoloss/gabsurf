@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=8 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="1_vc8gg"]
@@ -8,6 +8,9 @@
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
 size = Vector2(256, 256)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_oj05t"]
+radius = 64.0
 
 [node name="Main" type="Node"]
 
@@ -89,14 +92,6 @@ theme_override_font_sizes/font_size = 36
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_sqtl6")
 
-[node name="Hero" type="Node2D" parent="Game"]
-position = Vector2(80, 320)
-scale = Vector2(0.4, 0.4)
-script = ExtResource("3_ksiqv")
-
-[node name="Gab" type="Sprite2D" parent="Game/Hero"]
-texture = ExtResource("3_5ihkc")
-
 [node name="Sky" type="Node2D" parent="Game"]
 position = Vector2(180, 86.4)
 scale = Vector2(2, 0.05)
@@ -120,6 +115,19 @@ texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Ground/Area2D"]
 shape = SubResource("RectangleShape2D_4c1x3")
+
+[node name="Hero" type="CharacterBody2D" parent="Game"]
+position = Vector2(80, 320)
+scale = Vector2(0.25, 0.25)
+motion_mode = 1
+script = ExtResource("3_ksiqv")
+
+[node name="Gab" type="Sprite2D" parent="Game/Hero"]
+scale = Vector2(1, 1)
+texture = ExtResource("3_5ihkc")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero"]
+shape = SubResource("CircleShape2D_oj05t")
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="Game" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="Game" method="_on_jump_button_down"]

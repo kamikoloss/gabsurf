@@ -1,15 +1,13 @@
 extends Node2D
 
 
-var _is_game_active = false # ゲームが進行中か
+var _is_game_active = false # ゲームが進行中かどうか
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
+	pass
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
 	pass
 
@@ -28,10 +26,6 @@ func _input(event):
 		else:
 			pass
 
-# ジャンプする
-func _jump():
-	pass
-
 
 # ゲームを開始する (リセット処理も含む)
 func _start_game():
@@ -44,25 +38,28 @@ func _start_game():
 func _end_game():
 	_is_game_active = false
 	set_process(false)
+	set_physics_process(false)
 
 
 # ゲームを一時停止する
 func _pause_game():
 	_is_game_active = false
 	set_process(false)
+	set_physics_process(false)
 
 
 # ゲームを再開する
 func _resume_game():
 	_is_game_active = true
 	set_process(true)
+	set_physics_process(true)
 
 
-# ポーズボタンが押されたときの処理
+# ポーズボタンが押されたとき
 func _on_pause_button_down():
-	pass # Replace with function body.
+	_pause_game()
 
 
-# ジャンプボタンが押されたときの処理
+# ジャンプボタンが押されたとき
 func _on_jump_button_down():
-	pass # Replace with function body.
+	Global.jumped.emit()

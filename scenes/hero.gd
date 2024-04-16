@@ -1,12 +1,23 @@
-extends Node2D
+extends CharacterBody2D
 
 
+const GRAVITY = 2400.0 # 落ちる速度 (px/s)
+const JUMP_VELOCITY = -600.0 # ジャンプの速度 (px/s)
+const MAX_VELOCITY = 300.0 # 終端速度 (px/s)
 
-# Called when the node enters the scene tree for the first time.
+
 func _ready():
-	pass # Replace with function body.
+	# Signal 接続
+	Global.jumped.connect(_jump)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+func _physics_process(delta):
+	if (velocity.y < MAX_VELOCITY):
+		velocity.y += GRAVITY * delta
+
+	move_and_slide()
+
+
+# ジャンプする
+func _jump():
+	velocity.y = JUMP_VELOCITY
