@@ -1,0 +1,32 @@
+[gd_scene load_steps=3 format=3 uid="uid://cxqj3ync58bdc"]
+
+[ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="1_qsvs6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
+size = Vector2(256, 256)
+
+[node name="Gate" type="Node2D"]
+
+[node name="GateTop" type="Node2D" parent="."]
+position = Vector2(180, 0)
+scale = Vector2(0.05, 2)
+
+[node name="Area2D" type="Area2D" parent="GateTop"]
+
+[node name="Square" type="Sprite2D" parent="GateTop/Area2D"]
+texture = ExtResource("1_qsvs6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateTop/Area2D"]
+shape = SubResource("RectangleShape2D_4c1x3")
+
+[node name="GateBottom" type="Node2D" parent="."]
+position = Vector2(180, 640)
+scale = Vector2(0.05, 2)
+
+[node name="Area2D" type="Area2D" parent="GateBottom"]
+
+[node name="Square" type="Sprite2D" parent="GateBottom/Area2D"]
+texture = ExtResource("1_qsvs6")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GateBottom/Area2D"]
+shape = SubResource("RectangleShape2D_4c1x3")
