@@ -8,7 +8,7 @@ const MAX_VELOCITY = 300.0 # 終端速度 (px/s)
 
 func _ready():
 	# Signal 接続
-	Global.jumped.connect(_jump)
+	Global.hero_jumped.connect(_jump)
 
 
 func _physics_process(delta):

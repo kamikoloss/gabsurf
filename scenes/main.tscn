@@ -92,28 +92,28 @@ theme_override_font_sizes/font_size = 36
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_sqtl6")
 
-[node name="Sky" type="Node2D" parent="Game"]
+[node name="WallTop" type="Node2D" parent="Game"]
 position = Vector2(180, 86.4)
 scale = Vector2(2, 0.05)
 
-[node name="Area2D" type="Area2D" parent="Game/Sky"]
+[node name="Area2D" type="Area2D" parent="Game/WallTop"]
 
-[node name="Square" type="Sprite2D" parent="Game/Sky/Area2D"]
+[node name="Square" type="Sprite2D" parent="Game/WallTop/Area2D"]
 texture = ExtResource("3_fq3iy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Sky/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallTop/Area2D"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="Ground" type="Node2D" parent="Game"]
+[node name="WallBottom" type="Node2D" parent="Game"]
 position = Vector2(180, 553.6)
 scale = Vector2(2, 0.05)
 
-[node name="Area2D" type="Area2D" parent="Game/Ground"]
+[node name="Area2D" type="Area2D" parent="Game/WallBottom"]
 
-[node name="Square" type="Sprite2D" parent="Game/Ground/Area2D"]
+[node name="Square" type="Sprite2D" parent="Game/WallBottom/Area2D"]
 texture = ExtResource("3_fq3iy")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Ground/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallBottom/Area2D"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="Hero" type="CharacterBody2D" parent="Game"]
