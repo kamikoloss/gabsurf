@@ -10,8 +10,4 @@ signal hero_dead
 
 
 # ゲームが進行中かどうか
-var is_game_active = false:
-	get:
-		return is_game_active
-	set(value):
-		is_game_active = value
+var is_game_active = false
