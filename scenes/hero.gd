@@ -4,7 +4,7 @@ extends CharacterBody2D
 # Constants
 const GRAVITY = 2400.0 # 落ちる速度 (px/s)
 const JUMP_VELOCITY = -600.0 # ジャンプの速度 (px/s)
-const MAX_VELOCITY = 400.0 # 終端速度 (px/s)
+const MAX_VELOCITY = 300.0 # 終端速度 (px/s)
 const DEAD_ROTATION_SPEED = -20.0 # 死んだときに回転するスピード
 
 # Nodes
@@ -41,7 +41,9 @@ func _jump():
 
 func _dead():
 	# 吹っ飛ぶ
-	velocity = Vector2(-200, -800)
+	velocity = Vector2(-300, -800)
+	_hero_sprite.stop()
+	_hero_sprite.play("dead")
 
 
 func _on_area_2d_area_entered(area):

@@ -31,7 +31,7 @@ animations = [{
 "duration": 1.0,
 "texture": ExtResource("8_pycbr")
 }, {
-"duration": 100.0,
+"duration": 1000.0,
 "texture": ExtResource("7_hqmna")
 }],
 "loop": true,
@@ -126,13 +126,12 @@ theme_override_font_sizes/font_size = 36
 script = ExtResource("1_sqtl6")
 
 [node name="Hero" type="CharacterBody2D" parent="Game"]
-position = Vector2(80, 320)
+position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("3_ksiqv")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Game/Hero"]
 sprite_frames = SubResource("SpriteFrames_5tnh0")
-animation = &"jump"
 autoplay = "default"
 
 [node name="CollisionCircle" type="Sprite2D" parent="Game/Hero"]

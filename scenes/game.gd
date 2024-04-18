@@ -20,7 +20,10 @@ func _ready():
 
 
 func _process(delta):
-	pass
+	if (Global.is_hero_dead):
+		# 徐々にスローになる
+		if (0.25 < Engine.time_scale):
+			Engine.time_scale *= 0.95
 
 
 # 入力制御
