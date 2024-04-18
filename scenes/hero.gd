@@ -1,8 +1,5 @@
 extends CharacterBody2D
 
-# Variables
-var life_count = 1 # 残機
-var is_dead = false # 死んでいるかどうか
 
 # Constants
 const GRAVITY = 2400.0 # 落ちる速度 (px/s)
@@ -34,7 +31,7 @@ func _physics_process(delta):
 	if (Global.is_game_active):
 		move_and_slide()
 
-	if (is_dead):
+	if (Global.is_hero_dead):
 		move_and_slide()
 		_hero_sprite.rotation += DEAD_ROTATION_SPEED * delta
 
@@ -44,7 +41,6 @@ func _jump():
 
 
 func _dead():
-	is_dead = true
 	# 吹っ飛ぶ
 	velocity = Vector2(-200, -900)
 
@@ -52,5 +48,4 @@ func _dead():
 func _on_area_2d_area_entered(area):
 	# 壁にぶつかった場合
 	if (area.is_in_group("Wall")):
-		life_count -= 1
-		Global.hero_damged.emit(life_count)
+		Global.hero_damged.emit()

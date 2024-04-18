@@ -43,39 +43,39 @@ func _input(event):
 
 # ゲームを開始する (リセット処理も含む)
 func _start_game():
+	print("Game is started!")
 	Global.is_game_active = true
 	set_process(true)
-	print("Game is started!")
 
 
 # ゲームを終了する
 func _end_game():
-	Global.is_game_active = false
 	print("Game is end!")
+	Global.is_game_active = false
 
 
 # ゲームの開始を待つ (ゲーム開始時のみの一時停止状態)
 func _wait_start_game():
+	print("Waiting start...")
 	Global.is_game_active = false
 	set_process(false)
 	set_physics_process(false)
-	print("Waiting start...")
 
 
 # ゲームを一時停止する
 func _pause_game():
+	print("Game is paused.")
 	Global.is_game_active = false
 	set_process(false)
 	set_physics_process(false)
-	print("Game is paused.")
 
 
 # ゲームを再開する
 func _resume_game():
+	print("Game is resumed.")
 	Global.is_game_active = true
 	set_process(true)
 	set_physics_process(true)
-	print("Game is resumed.")
 
 
 # ポーズボタンが押されたとき
@@ -93,14 +93,16 @@ func _on_jump_button_down():
 
 
 # Hero がダメージを受けたとき
-func _on_hero_damged(remaining_life_count):
-	print("Hero damged! remaining: {0}".format([remaining_life_count]))
+func _on_hero_damged():
+	print("Hero damged!")
+	Global.life_count -= 1
 	# 残りライフが0になった場合: 死ぬ
-	if (remaining_life_count == 0):
+	if (Global.life_count == 0):
 		Global.hero_dead.emit()
 
 
 # Hero が死んだとき
 func _on_hero_dead():
 	print("Hero dead!")
+	Global.is_hero_dead = true
 	_end_game()
