@@ -1,15 +1,12 @@
 extends Node2D
 
 
-# Node
-var _wall_top = null
-var _wall_bottom = null
+# Nodes
+@onready var _wall_top = $WallTop
+@onready var _wall_bottom = $WallBottom
 
 
 func _ready():
-	# Node 取得
-	_wall_top = $WallTop
-	_wall_bottom = $WallBottom
 	# Group 設定
 	_wall_top.add_to_group("Wall")
 	_wall_bottom.add_to_group("Wall")
@@ -64,6 +61,8 @@ func _wait_start_game():
 
 # ゲームを一時停止する
 func _pause_game():
+	if (!Global.is_game_active):
+		return
 	print("Game is paused.")
 	Global.is_game_active = false
 	set_process(false)
@@ -72,6 +71,8 @@ func _pause_game():
 
 # ゲームを再開する
 func _resume_game():
+	if (Global.is_game_active):
+		return
 	print("Game is resumed.")
 	Global.is_game_active = true
 	set_process(true)
