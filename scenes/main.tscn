@@ -68,14 +68,67 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
+[node name="VBoxContainer" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+[node name="Level" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "LEVEL
+9999"
+horizontal_alignment = 1
+
+[node name="X1" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "×"
+horizontal_alignment = 1
+
+[node name="Money" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "MONEY
+9999"
+horizontal_alignment = 1
+
+[node name="X2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "×"
+horizontal_alignment = 1
+
+[node name="Extra" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "EXTRA
+9999"
+horizontal_alignment = 1
+
+[node name="X3" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+custom_minimum_size = Vector2(20, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "="
+horizontal_alignment = 1
+
+[node name="Score" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
-text = "SCORE 99999"
+text = "SCORE
+99999"
 horizontal_alignment = 1
 
 [node name="Body" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
@@ -115,12 +168,13 @@ theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "▲"
 
-[node name="_" type="Button" parent="UI/CanvasLayer/Layout/Footer/Buttons"]
+[node name="Extra" type="Button" parent="UI/CanvasLayer/Layout/Footer/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
+text = "★"
 
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_sqtl6")
@@ -165,6 +219,8 @@ texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
+
+[node name="Gates" type="Node2D" parent="Game"]
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="Game" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="Game" method="_on_jump_button_down"]

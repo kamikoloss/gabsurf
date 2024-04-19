@@ -47,6 +47,6 @@ func _dead():
 
 
 func _on_area_2d_area_entered(area):
-	# 壁にぶつかった場合: ダメージを受ける
+	# 壁にぶつかったとき: ダメージを受ける
 	if (area.is_in_group("Wall")):
 		Global.hero_damged.emit()
