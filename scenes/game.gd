@@ -6,14 +6,22 @@ const GATE_SCENE = preload("res://scenes/gate.tscn")
 # Resources
 # TODO
 
+# Constants
+const GATE_HEIGHT_MIN = -80 # (px)
+const GATE_HEIGHT_MAX = 80 # (px) 
+const GATE_INITIAL_X = 400 # (px)
+
 # Variables
-var gate_spawn_cooltime = 3.0 # 何秒ごとに壁が出現するか
-var gate_gap_ratio = 1 # ゲートの開き具合のデフォルト値
-var gate_speed = 200 # ゲートが迫ってくる速さのデフォルト値
+var gate_spawn_cooltime = 2.0 # 何秒ごとに壁が出現するか
+var gate_gap = 1 # ゲートの開き具合の (デフォルト値)
+var gate_speed = 200 # ゲートが迫ってくる速さ (デフォルト値)
+
+var _rng = RandomNumberGenerator.new() # 乱数生成
 
 # Nodes
 @onready var _wall_top = $WallTop
 @onready var _wall_bottom = $WallBottom
+@onready var _gates = $Gates
 
 
 func _ready():
@@ -120,7 +128,9 @@ func _on_hero_dead():
 func _spawn_gate_loop():
 	# Hero が死んだらループを中止する
 	if (Global.is_hero_dead):
+		print("Stop spawn gate loop.")
 		return
+
 	if (Global.is_game_active):
 		_spawn_gate()
 	await get_tree().create_timer(gate_spawn_cooltime).timeout
@@ -130,6 +140,10 @@ func _spawn_gate_loop():
 # ゲートを出現させる
 # TODO: 画面外出たら削除する
 func _spawn_gate():
-	var _gate = GATE_SCENE.instantiate()
-	get_tree().root.get_node("Main/Game/Gates").add_child(_gate)
-	return _gate
+	var _new_gate = GATE_SCENE.instantiate()
+	var _height = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
+	_new_gate.scale *= Vector2.ONE / _gates.scale
+	_new_gate.position.x += GATE_INITIAL_X
+	_new_gate.position.y += _height
+	_gates.add_child(_new_gate)
+	return _new_gate

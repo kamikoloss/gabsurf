@@ -10,6 +10,7 @@ size = Vector2(256, 256)
 script = ExtResource("1_ukssn")
 
 [node name="GateTop" type="Area2D" parent="."]
+position = Vector2(0, -320)
 scale = Vector2(0.05, 2)
 
 [node name="Square" type="Sprite2D" parent="GateTop"]
@@ -19,7 +20,7 @@ texture = ExtResource("1_qsvs6")
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="GateBottom" type="Area2D" parent="."]
-position = Vector2(0, 640)
+position = Vector2(0, 320)
 scale = Vector2(0.05, 2)
 
 [node name="Square" type="Sprite2D" parent="GateBottom"]
