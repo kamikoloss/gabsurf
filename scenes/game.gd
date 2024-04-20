@@ -11,6 +11,8 @@ const GATE_SCENE = preload("res://scenes/gate.tscn")
 @onready var _walls = $Walls
 
 # Constants
+const SLOW_SPEED = 0.25 # スロー状態で何倍速になるか
+const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
 const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px) 
 
@@ -84,6 +86,7 @@ func _on_hero_damged():
 	# Hero の残機が 0 になった場合: ゲームオーバー
 	if (Global.life == 0):
 		Global.game_state = Global.GameState.GAMEOVER
+		_enter_slow()
 		print("Game is ended.")
 		Global.game_ended.emit()
 
@@ -101,6 +104,22 @@ func _on_hero_got_money():
 # Score を計算する
 func _calc_score():
 	return Global.level * Global.money * Global.extra
+
+
+# 通常速度からスローになっていく
+func _enter_slow():
+	var _tween = get_tree().create_tween()
+	_tween.set_trans(Tween.TRANS_CIRC)
+	_tween.set_ease(Tween.EASE_OUT)
+	_tween.tween_property(Engine, "time_scale", SLOW_SPEED, SLOW_DURATION)
+
+
+# スローから通常速度になっていく
+func _leave_slow():
+	var _tween = get_tree().create_tween()
+	_tween.set_trans(Tween.TRANS_CIRC)
+	_tween.set_ease(Tween.EASE_OUT)
+	_tween.tween_property(Engine, "time_scale", 1.0, SLOW_DURATION)
 
 
 # ゲートを生成する
