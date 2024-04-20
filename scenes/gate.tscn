@@ -94,7 +94,7 @@ texture = ExtResource("1_qsvs6")
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="Money" type="Area2D" parent="Gates" groups=["Level", "Money"]]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.4, 0.4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Gates/Money"]
 sprite_frames = SubResource("SpriteFrames_xplrb")

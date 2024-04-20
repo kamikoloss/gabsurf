@@ -1,0 +1,37 @@
+[gd_scene load_steps=6 format=3 uid="uid://gcdoe2l0jlmr"]
+
+[ext_resource type="Texture2D" uid="uid://dihvqfmg1whbt" path="res://images/enemy1.png" id="1_dp5p4"]
+[ext_resource type="Texture2D" uid="uid://js8md7ddgw43" path="res://images/enemy2.png" id="2_i21dx"]
+[ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="3_tfefr"]
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_ltb2c"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("1_dp5p4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("2_i21dx")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_h7ter"]
+radius = 64.0
+
+[node name="Enemy" type="Area2D"]
+scale = Vector2(0.2, 0.2)
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_ltb2c")
+autoplay = "default"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_h7ter")
+
+[node name="CollisionCircle" type="Sprite2D" parent="."]
+self_modulate = Color(1, 0, 0, 0.25098)
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("3_tfefr")
