@@ -9,15 +9,10 @@ const GATE_SCENE = preload("res://scenes/gate.tscn")
 # Nodes
 @onready var _hero = $Hero
 @onready var _walls = $Walls
-@onready var _labels = $"../UI/CanvasLayer/Layout/Body/Labels"
-@onready var _label_title = $"../UI/CanvasLayer/Layout/Body/Labels/Title"
-@onready var _label_desc = $"../UI/CanvasLayer/Layout/Body/Labels/Description"
-@onready var _label_money = $"../UI/CanvasLayer/Layout/Header/VBoxContainer2/Money"
 
 # Constants
 const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px) 
-
 
 # Variables
 var _gate_spawn_cooltime = 2 # 何秒ごとに壁が出現するか
@@ -30,7 +25,7 @@ func _ready():
 	Global.hero_dead.connect(_on_hero_dead)
 	Global.hero_got_money.connect(_on_hero_got_money)
 
-	# ゲーム初期化
+	# 初期化
 	_init_game()
 
 
@@ -58,6 +53,20 @@ func _input(event):
 					_on_pause_button_down()
 
 
+# ジャンプボタンが押されたとき
+func _on_jump_button_down():
+	_resume_game()
+	Global.hero_jumped.emit()
+
+	if (Global.is_hero_dead):
+		get_tree().reload_current_scene()
+
+
+# ポーズボタンが押されたとき
+func _on_pause_button_down():
+	_pause_game()
+
+
 # ゲームを初期化 + 一時停止する
 # _resume_game() で開始する
 func _init_game():
@@ -66,10 +75,10 @@ func _init_game():
 	set_process(false)
 	set_physics_process(false)
 	Global.init()
-	# UI
-	_labels.visible = true
-	_resfresh_ui()
+	Global.game_initialized.emit()
+
 	# ゲート生成開始
+	# Global.init() のあとに呼ぶこと
 	_loop_spawn_gate()
 
 
@@ -77,10 +86,8 @@ func _init_game():
 func _end_game():
 	print("Game is end!")
 	Global.is_game_active = false
-	# UI
-	_labels.visible = true
-	_label_title.text = "GAMEOVER"
-	_label_desc.text = "Press ▲/Space to surf again."
+	Global.game_ended.emit()
+
 
 # ゲームを一時停止する
 func _pause_game():
@@ -91,13 +98,11 @@ func _pause_game():
 	set_process(false)
 	set_physics_process(false)
 	Global.is_game_active = false
-	# UI
-	_labels.visible = true
-	_label_title.text = "PAUSED"
-	_label_desc.text = "Press ▲/Space to resume."
+	Global.game_paused.emit()
 
 
 # ゲームを再開する
+# ゲーム開始時と一時停止のあとに呼ばれる
 func _resume_game():
 	if (Global.is_game_active):
 		return
@@ -107,30 +112,16 @@ func _resume_game():
 	set_process(true)
 	set_physics_process(true)
 	Global.is_game_active = true
-	# UI
-	_labels.visible = false
-
-
-# ポーズボタンが押されたとき
-func _on_pause_button_down():
-	_pause_game()
-
-
-# ジャンプボタンが押されたとき
-func _on_jump_button_down():
-	_resume_game()
-	Global.hero_jumped.emit()
-
-	if (Global.is_hero_dead):
-		get_tree().reload_current_scene()
+	Global.game_resumed.emit()
 
 
 # Hero がダメージを受けたとき
 func _on_hero_damged():
 	print("Hero is damged!")
-	Global.life_count -= 1
-	# 残りライフが0になった場合: 死ぬ
-	if (Global.life_count == 0):
+	Global.life -= 1
+
+	# Hero の残機が 0 になった場合: 死ぬ
+	if (Global.life == 0):
 		Global.hero_dead.emit()
 
 
@@ -143,13 +134,8 @@ func _on_hero_dead():
 
 # Hero が Money を取ったとき
 func _on_hero_got_money():
+	print("Hero Got money!")
 	Global.money += 1
-	_resfresh_ui()
-	print("Get money! ({0})".format([Global.money]))
-
-
-func _resfresh_ui():
-	_label_money.text = "MONEY\n{0}".format([Global.money])
 
 
 # ゲートを生成する
@@ -164,14 +150,17 @@ func _spawn_gate():
 
 
 # ゲートを生成しつづける
+# TODO: pause 対応 (await じゃなくてループ内でやる？)
 func _loop_spawn_gate():
-	# Hero が死んだらループを中止する
+	# Hero が死んでいる場合: ループを中止する
 	if (Global.is_hero_dead):
 		print("Stop spawn gate loop.")
 		return
 
+	# ゲームが進行中の場合: ゲートを生成する
 	if (Global.is_game_active):
 		_spawn_gate()
 
+	# 一定時間待ったあと次のループに移行する
 	await get_tree().create_timer(_gate_spawn_cooltime).timeout
-	_loop_spawn_gate() # 次のループへ
+	_loop_spawn_gate()

@@ -25,13 +25,16 @@ func _physics_process(delta):
 	if (velocity.y < FALL_VELOCITY_MAX):
 		velocity.y += FALL_VELOCITY * delta
 
+	# ゲームが進行中の場合: 横に動き続ける + 落下する
 	if (Global.is_game_active):
 		velocity.x = MOVE_VELOCITY
 		move_and_slide()
 
+	# Hero が死んでいる場合: 回転する + 落下する
+	# 吹き飛ぶ処理は一度きりの設定なので _dead() 内でやる
 	if (Global.is_hero_dead):
-		move_and_slide()
 		_hero_sprite.rotation += DEAD_ROTATION_SPEED * delta
+		move_and_slide()
 
 
 func _jump():
@@ -55,7 +58,7 @@ func _on_area_2d_area_entered(area):
 	if (area.is_in_group("Wall")):
 		Global.hero_damged.emit()
 
-	# お金にぶつかったとき: 取得する
+	# Money にぶつかったとき: Money を取得する
 	if (area.is_in_group("Money")):
 		Global.hero_got_money.emit()
 		area.queue_free()

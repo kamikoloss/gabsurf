@@ -1,6 +1,7 @@
-[gd_scene load_steps=17 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=18 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
+[ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="1_vc8gg"]
 [ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="3_fq3iy"]
 [ext_resource type="Script" path="res://scenes/hero.gd" id="3_ksiqv"]
@@ -58,6 +59,7 @@ layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
 offset_bottom = 40.0
+script = ExtResource("1_twex4")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
 
@@ -222,7 +224,8 @@ text = "-"
 script = ExtResource("1_sqtl6")
 
 [node name="Hero" type="CharacterBody2D" parent="Game"]
-z_index = 20
+z_index = 30
+z_as_relative = false
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("3_ksiqv")
@@ -253,6 +256,7 @@ shape = SubResource("CircleShape2D_oj05t")
 shape = SubResource("CircleShape2D_oj05t")
 
 [node name="Walls" type="Node2D" parent="Game"]
+z_index = 20
 
 [node name="WallTop" type="Area2D" parent="Game/Walls" groups=["Wall"]]
 z_index = 10
@@ -289,7 +293,7 @@ texture = ExtResource("3_fq3iy")
 [node name="ParallaxBackground" type="ParallaxBackground" parent="Game"]
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-motion_scale = Vector2(0.4, 0.4)
+motion_scale = Vector2(0.2, 0.2)
 motion_mirroring = Vector2(1540, 0)
 
 [node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer4"]
@@ -297,7 +301,7 @@ texture = ExtResource("9_jgobs")
 centered = false
 
 [node name="ParallaxLayer3" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-motion_scale = Vector2(0.8, 0.8)
+motion_scale = Vector2(0.4, 0.4)
 motion_mirroring = Vector2(1540, 0)
 
 [node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer3"]
@@ -305,7 +309,7 @@ texture = ExtResource("10_ewvld")
 centered = false
 
 [node name="ParallaxLayer2" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-motion_scale = Vector2(1.2, 1.2)
+motion_scale = Vector2(0.8, 0.8)
 motion_mirroring = Vector2(1540, 0)
 
 [node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer2"]
@@ -313,6 +317,7 @@ texture = ExtResource("11_tgw8p")
 centered = false
 
 [node name="ParallaxLayer" type="ParallaxLayer" parent="Game/ParallaxBackground"]
+z_index = 15
 motion_scale = Vector2(1.6, 1.6)
 motion_mirroring = Vector2(1540, 0)
 
