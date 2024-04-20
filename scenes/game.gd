@@ -23,6 +23,7 @@ func _ready():
 	# Signal 接続
 	Global.hero_damged.connect(_on_hero_damged)
 	Global.hero_dead.connect(_on_hero_dead)
+	Global.hero_got_level.connect(_on_hero_got_level)
 	Global.hero_got_money.connect(_on_hero_got_money)
 
 	# 初期化
@@ -131,11 +132,23 @@ func _on_hero_dead():
 	Global.is_hero_dead = true
 	_end_game()
 
+# Hero が Money を取ったとき
+func _on_hero_got_level():
+	print("Hero Got level!")
+	Global.level += 10
+	Global.score = _calc_score()
+
 
 # Hero が Money を取ったとき
 func _on_hero_got_money():
 	print("Hero Got money!")
 	Global.money += 1
+	Global.score = _calc_score()
+
+
+# Score を計算する
+func _calc_score():
+	return Global.level * Global.money * Global.extra
 
 
 # ゲートを生成する

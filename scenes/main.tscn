@@ -77,7 +77,6 @@ theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
-visible = false
 layout_mode = 2
 
 [node name="Level" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
@@ -138,18 +137,6 @@ theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
 text = "SCORE
 99999"
-horizontal_alignment = 1
-
-[node name="VBoxContainer2" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
-layout_mode = 2
-
-[node name="Money" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer2"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "MONEY
-9999"
 horizontal_alignment = 1
 
 [node name="Body" type="MarginContainer" parent="UI/CanvasLayer/Layout"]

@@ -1,10 +1,13 @@
 extends Control
 
 
-@onready var _labels = $CanvasLayer/Layout/Body/Labels
+@onready var _body_labels = $CanvasLayer/Layout/Body/Labels
 @onready var _label_title = $CanvasLayer/Layout/Body/Labels/Title
 @onready var _label_desc = $CanvasLayer/Layout/Body/Labels/Description
-@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer2/Money
+@onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level
+@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money
+@onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra
+@onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score
 
 
 func _ready():
@@ -12,29 +15,50 @@ func _ready():
 	Global.game_initialized.connect(_on_game_initialized)
 	Global.game_ended.connect(_on_game_ended)
 	Global.game_paused.connect(_on_game_paused)
-	Global.game_resumed.connect(_on_game_resumed)	
+	Global.game_resumed.connect(_on_game_resumed)
+	
+	Global.level_changed.connect(_on_level_changed)
 	Global.money_changed.connect(_on_money_changed)
+	Global.extra_changed.connect(_on_extra_changed)
+	Global.score_changed.connect(_on_score_changed)
+	Global.life_changed.connect(_on_life_changed)
 
 
 func _on_game_initialized():
-	_labels.visible = true
+	_body_labels.visible = true
 
 
 func _on_game_ended():
-	_labels.visible = true
+	_body_labels.visible = true
 	_label_title.text = "GAMEOVER"
 	_label_desc.text = "Press ▲/Space to surf again."
 
 
 func _on_game_paused():
-	_labels.visible = true
+	_body_labels.visible = true
 	_label_title.text = "PAUSED"
 	_label_desc.text = "Press ▲/Space to resume."
 
 
 func _on_game_resumed():
-	_labels.visible = false
+	_body_labels.visible = false
+
+
+func _on_level_changed(value):
+	_label_level.text = "LEVEL\n{0}".format([value])
 
 
 func _on_money_changed(value):
 	_label_money.text = "MONEY\n{0}".format([value])
+
+
+func _on_extra_changed(value):
+	_label_extra.text = "EXTRA\n{0}".format([value])
+
+
+func _on_score_changed(value):
+	_label_score.text = "SCORE\n{0}".format([value])
+
+
+func _on_life_changed(value):
+	pass # TODO

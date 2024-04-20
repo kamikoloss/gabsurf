@@ -58,7 +58,12 @@ func _on_area_2d_area_entered(area):
 	if (area.is_in_group("Wall")):
 		Global.hero_damged.emit()
 
-	# Money にぶつかったとき: Money を取得する
+	# Level にぶつかったとき: Level を取得する
+	if (area.is_in_group("Money")):
+		Global.hero_got_level.emit()
+
+
+	# Money にぶつかったとき: Money を取得する + 対象を消す
 	if (area.is_in_group("Money")):
 		Global.hero_got_money.emit()
 		area.queue_free()
