@@ -31,7 +31,7 @@ func _ready():
 	Global.hero_got_money.connect(_on_hero_got_money)
 
 	# ゲーム初期化
-	_reset_game()
+	_init_game()
 
 
 func _process(delta):
@@ -60,16 +60,15 @@ func _input(event):
 
 # ゲームを初期化 + 一時停止する
 # _resume_game() で開始する
-func _reset_game():
+func _init_game():
 	print("Waiting start...")
 	Engine.time_scale = 1.0
 	set_process(false)
 	set_physics_process(false)
-	Global.is_game_active = false
-	Global.is_hero_dead = false
-	Global.life_count = 1
+	Global.init()
 	# UI
 	_labels.visible = true
+	_resfresh_ui()
 	# ゲート生成開始
 	_loop_spawn_gate()
 
@@ -150,7 +149,7 @@ func _on_hero_got_money():
 
 
 func _resfresh_ui():
-	_label_money.text = "MONEY\r\n{0}".format([Global.money])
+	_label_money.text = "MONEY\n{0}".format([Global.money])
 
 
 # ゲートを生成する

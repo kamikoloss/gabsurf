@@ -14,3 +14,14 @@ var level = 0
 var money = 0
 var extra = 1
 var life_count = 1 # Hero の残機
+
+
+# 初期化
+# シーン再読み込み後に必ず呼ぶこと
+func init():
+	is_game_active = false
+	is_hero_dead = false
+	level = 0
+	money = 0
+	extra = 1
+	life_count = 1
