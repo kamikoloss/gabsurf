@@ -16,54 +16,59 @@ const DEAD_ROTATION_SPEED = -20 # 死んだときに回転するスピード
 
 func _ready():
 	# Signal 接続
-	Global.hero_jumped.connect(_jump)
-	Global.hero_dead.connect(_dead)
+	Global.game_ended.connect(_on_game_ended)
+	Global.ui_jumped.connect(_on_ui_jumped)
 
 
 func _physics_process(delta):
-	# 終端速度に達していない場合: 落下する
-	if (velocity.y < FALL_VELOCITY_MAX):
-		velocity.y += FALL_VELOCITY * delta
+	# ゲーム中 or ゲームオーバー:
+	# 終端速度に達するまで加速する
+	var states = [Global.GameState.ACTIVE, Global.GameState.GAMEOVER]
+	if (states.has(Global.game_state)):
+		if (velocity.y < FALL_VELOCITY_MAX):
+			velocity.y += FALL_VELOCITY * delta
 
-	# ゲームが進行中の場合: 横に動き続ける + 落下する
-	if (Global.is_game_active):
+	# ゲーム中: 横に動き続ける + 落下する
+	if (Global.game_state == Global.GameState.ACTIVE):
 		velocity.x = MOVE_VELOCITY
 		move_and_slide()
 
-	# Hero が死んでいる場合: 回転する + 落下する
+	# ゲームオーバー: 回転する + 落下する
 	# 吹き飛ぶ処理は一度きりの設定なので _dead() 内でやる
-	if (Global.is_hero_dead):
+	if (Global.game_state == Global.GameState.GAMEOVER):
 		_hero_sprite.rotation += DEAD_ROTATION_SPEED * delta
 		move_and_slide()
 
 
-func _jump():
-	if (Global.is_hero_dead):
-		return
+func _on_ui_jumped():
+	# ゲームオーバー以外: ジャンプする
+	# タイトル or ポーズ中: 再開と同時にジャンプする
+	if (Global.game_state != Global.GameState.GAMEOVER):
+		velocity.y = JUMP_VELOCITY
+		_hero_sprite.stop()
+		_hero_sprite.play("jump")
 
-	velocity.y = JUMP_VELOCITY
-	_hero_sprite.stop()
-	_hero_sprite.play("jump")
 
-
-func _dead():
+func _on_game_ended():
 	# 吹き飛ぶ
 	velocity = DEAD_VELOCITY
 	_hero_sprite.stop()
-	_hero_sprite.play("dead")
+	_hero_sprite.play("die")
 
 
 func _on_area_2d_area_entered(area):
 	# 壁にぶつかったとき: ダメージを受ける
 	if (area.is_in_group("Wall")):
+		print("Hero is damged.")
 		Global.hero_damged.emit()
 
 	# Level にぶつかったとき: Level を取得する
-	if (area.is_in_group("Money")):
+	if (area.is_in_group("Level")):
+		print("Hero got level.")
 		Global.hero_got_level.emit()
-
 
 	# Money にぶつかったとき: Money を取得する + 対象を消す
 	if (area.is_in_group("Money")):
+		print("Hero got money.")
 		Global.hero_got_money.emit()
 		area.queue_free()

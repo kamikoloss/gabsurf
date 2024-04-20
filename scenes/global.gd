@@ -2,18 +2,21 @@ extends Node
 
 
 # Signals
-# 基本的に game の中で emit する
-# 衝突系のみ hero の中で emit する
-signal game_initialized # ゲームが初期化 + 一時停止されたとき
+# Game: 初期化およびロジックの結果
+signal game_initialized # ゲームが初期化されたとき
 signal game_ended # ゲームが終了したとき
-signal game_paused # ゲームが一時停止したとき
-signal game_resumed # ゲームが再開されたとき
-signal hero_jumped # Hero がジャンプしたとき
-signal hero_got_level # Hero が Level を取ったとき (hero マター)
-signal hero_got_money # Hero が Money を取ったとき (hero マター)
-signal hero_damged # Hero がダメージを受けたとき (hero マター)
-signal hero_dead # Hero が死んだとき
 
+# UI: 入力系
+signal ui_jumped # ジャンプボタンを押したとき
+signal ui_paused # ポーズボタンを押したとき
+signal ui_retried # リトライボタンを押したとき
+
+# Hero: Hero の衝突
+signal hero_got_level # Level を取ったとき
+signal hero_got_money # Money を取ったとき
+signal hero_damged # ダメージを受けたとき
+
+# Global: 値の変更
 signal level_changed
 signal money_changed
 signal extra_changed
@@ -21,9 +24,17 @@ signal score_changed
 signal life_changed
 
 
+# ゲームの状態
+enum GameState {
+	TITLE, # タイトル
+	PAUSED, # ポーズ中
+	ACTIVE, # ゲーム中
+	GAMEOVER, # ゲームオーバー
+}
+
+
 # Variables
-var is_game_active = false # ゲームが進行中かどうか
-var is_hero_dead = false # Hero が死んでいるかどうか
+var game_state = GameState.TITLE
 
 var level = 0:
 	get:
@@ -49,7 +60,7 @@ var score = 0:
 	set(value):
 		score_changed.emit(value)
 		score = value
-var life = 1: # Hero の残機
+var life = 1:
 	get:
 		return life
 	set(value):
@@ -59,9 +70,8 @@ var life = 1: # Hero の残機
 
 # グローバル変数の初期化を行う
 # シーン読み込み後に必ず呼ぶこと
-func init():
-	is_game_active = false
-	is_hero_dead = false
+func initialize():
+	game_state = GameState.TITLE
 	level = 0
 	money = 0
 	extra = 1
