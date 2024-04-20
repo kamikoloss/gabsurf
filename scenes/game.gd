@@ -138,7 +138,7 @@ func _spawn_gate():
 	var _gate = GATE_SCENE.instantiate()
 	var _height_diff = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
 	_gate.position.x += (_hero.position.x + 360)
-	_gate.position.y += _height_diff
+	_gate.position.y += (_height_diff + 320)
 	get_tree().root.get_node("Main").add_child(_gate)
 
 

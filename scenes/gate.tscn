@@ -71,10 +71,9 @@ scale = Vector2(2, 1.875)
 texture = ExtResource("1_qsvs6")
 
 [node name="Gates" type="Node2D" parent="."]
-position = Vector2(180, 320)
 
 [node name="GateTop" type="Area2D" parent="Gates" groups=["Wall"]]
-position = Vector2(0, -320)
+position = Vector2(0, -384)
 scale = Vector2(0.05, 2)
 
 [node name="Square" type="Sprite2D" parent="Gates/GateTop"]
@@ -84,7 +83,7 @@ texture = ExtResource("1_qsvs6")
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="GateBottom" type="Area2D" parent="Gates" groups=["Wall"]]
-position = Vector2(0, 320)
+position = Vector2(0, 384)
 scale = Vector2(0.05, 2)
 
 [node name="Square" type="Sprite2D" parent="Gates/GateBottom"]
