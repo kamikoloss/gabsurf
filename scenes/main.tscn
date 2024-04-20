@@ -192,6 +192,13 @@ position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("3_ksiqv")
 
+[node name="Camera2D" type="Camera2D" parent="Game/Hero"]
+position = Vector2(-300, -800)
+scale = Vector2(2.5, 2.5)
+anchor_mode = 0
+limit_top = 0
+limit_bottom = 0
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Game/Hero"]
 sprite_frames = SubResource("SpriteFrames_5tnh0")
 autoplay = "default"
@@ -209,54 +216,73 @@ shape = SubResource("CircleShape2D_oj05t")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Area2D"]
 shape = SubResource("CircleShape2D_oj05t")
 
+[node name="Walls" type="Node2D" parent="Game"]
+
+[node name="WallTop" type="Area2D" parent="Game/Walls" groups=["Wall"]]
+z_index = 10
+position = Vector2(180, 86)
+scale = Vector2(4, 0.05)
+
+[node name="Square" type="Sprite2D" parent="Game/Walls/WallTop"]
+self_modulate = Color(1, 0, 0, 0.25098)
+texture = ExtResource("3_fq3iy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallTop"]
+shape = SubResource("RectangleShape2D_4c1x3")
+
+[node name="WallBottom" type="Area2D" parent="Game/Walls" groups=["Wall"]]
+z_index = 10
+position = Vector2(180, 554)
+scale = Vector2(4, 0.05)
+
+[node name="Square" type="Sprite2D" parent="Game/Walls/WallBottom"]
+self_modulate = Color(1, 0, 0, 0.25098)
+texture = ExtResource("3_fq3iy")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallBottom"]
+shape = SubResource("RectangleShape2D_4c1x3")
+
 [node name="Gates" type="Sprite2D" parent="Game"]
+visible = false
 clip_children = 1
 z_index = 9
 position = Vector2(180, 320)
 scale = Vector2(2, 1.875)
 texture = ExtResource("3_fq3iy")
 
-[node name="WallTop" type="Area2D" parent="Game"]
-z_index = 10
-position = Vector2(180, 86.4)
-scale = Vector2(2, 0.05)
+[node name="ParallaxBackground" type="ParallaxBackground" parent="Game"]
 
-[node name="Square" type="Sprite2D" parent="Game/WallTop"]
-self_modulate = Color(1, 0, 0, 0.25098)
-texture = ExtResource("3_fq3iy")
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="Game/ParallaxBackground"]
+motion_scale = Vector2(0.4, 0.4)
+motion_mirroring = Vector2(1540, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallTop"]
-shape = SubResource("RectangleShape2D_4c1x3")
-
-[node name="WallBottom" type="Area2D" parent="Game"]
-z_index = 10
-position = Vector2(180, 553.6)
-scale = Vector2(2, 0.05)
-
-[node name="Square" type="Sprite2D" parent="Game/WallBottom"]
-self_modulate = Color(1, 0, 0, 0.25098)
-texture = ExtResource("3_fq3iy")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallBottom"]
-shape = SubResource("RectangleShape2D_4c1x3")
-
-[node name="BG" type="Node2D" parent="Game"]
-
-[node name="Bg4" type="Sprite2D" parent="Game/BG"]
-position = Vector2(770, 320)
+[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer4"]
 texture = ExtResource("9_jgobs")
+centered = false
 
-[node name="Bg3" type="Sprite2D" parent="Game/BG"]
-position = Vector2(770, 320)
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="Game/ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.8)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer3"]
 texture = ExtResource("10_ewvld")
+centered = false
 
-[node name="Bg2" type="Sprite2D" parent="Game/BG"]
-position = Vector2(770, 320)
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="Game/ParallaxBackground"]
+motion_scale = Vector2(1.2, 1.2)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer2"]
 texture = ExtResource("11_tgw8p")
+centered = false
 
-[node name="Bg1" type="Sprite2D" parent="Game/BG"]
-position = Vector2(770, 320)
+[node name="ParallaxLayer" type="ParallaxLayer" parent="Game/ParallaxBackground"]
+motion_scale = Vector2(1.6, 1.6)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer"]
 texture = ExtResource("12_tgrh1")
+centered = false
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="Game" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="Game" method="_on_jump_button_down"]

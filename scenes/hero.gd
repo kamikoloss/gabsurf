@@ -1,15 +1,17 @@
 extends CharacterBody2D
 
 
-# Constants
-const GRAVITY = 2400.0 # 落ちる速度 (px/s)
-const JUMP_VELOCITY = -600.0 # ジャンプの速度 (px/s)
-const MAX_VELOCITY = 300.0 # 終端速度 (px/s)
-const DEAD_ROTATION_SPEED = -20.0 # 死んだときに回転するスピード
-
 # Nodes
 @onready var _hero_sprite = $AnimatedSprite2D
 @onready var _collision_circle = $CollisionCircle
+
+# Constants
+const MOVE_VELOCITY = 200 # 横移動の速度 (px/s)
+const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
+const FALL_VELOCITY = 2400 # 落下速度 (px/s)
+const FALL_VELOCITY_MAX = 300 # 終端速度 (px/s)
+const DEAD_VELOCITY = Vector2(200, -800) # 死んだときに吹き飛ぶベクトル
+const DEAD_ROTATION_SPEED = -20 # 死んだときに回転するスピード
 
 
 func _ready():
@@ -19,11 +21,12 @@ func _ready():
 
 
 func _physics_process(delta):
-	# 終端速度に達していない場合: 重力を受ける
-	if (velocity.y < MAX_VELOCITY):
-		velocity.y += GRAVITY * delta
+	# 終端速度に達していない場合: 落下する
+	if (velocity.y < FALL_VELOCITY_MAX):
+		velocity.y += FALL_VELOCITY * delta
 
 	if (Global.is_game_active):
+		velocity.x = MOVE_VELOCITY
 		move_and_slide()
 
 	if (Global.is_hero_dead):
@@ -32,14 +35,17 @@ func _physics_process(delta):
 
 
 func _jump():
+	if (Global.is_hero_dead):
+		return
+
 	velocity.y = JUMP_VELOCITY
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
 
 
 func _dead():
-	# 吹っ飛ぶ
-	velocity = Vector2(-300, -800)
+	# 吹き飛ぶ
+	velocity = DEAD_VELOCITY
 	_hero_sprite.stop()
 	_hero_sprite.play("dead")
 
