@@ -16,8 +16,6 @@ func _ready():
 	# Signal 接続
 	Global.hero_jumped.connect(_jump)
 	Global.hero_dead.connect(_dead)
-	# 当たり判定に色をつける
-	_collision_circle.modulate = Color(255.0, 0.0, 0.0, 0.25)
 
 
 func _physics_process(delta):

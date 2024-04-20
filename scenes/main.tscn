@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=17 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="1_vc8gg"]
@@ -8,6 +8,12 @@
 [ext_resource type="Texture2D" uid="uid://l64wd2ekf1f5" path="res://images/gab3.png" id="6_ef2be"]
 [ext_resource type="Texture2D" uid="uid://drbkcow3gp5xb" path="res://images/gab1.png" id="7_hqmna"]
 [ext_resource type="Texture2D" uid="uid://b4ank16j8h4ho" path="res://images/gab2.png" id="8_pycbr"]
+[ext_resource type="Texture2D" uid="uid://cnkcnpm4no186" path="res://images/bg4.png" id="9_jgobs"]
+[ext_resource type="Texture2D" uid="uid://cr6qhnwts24w6" path="res://images/bg3.png" id="10_ewvld"]
+[ext_resource type="Texture2D" uid="uid://d05bnbjcevyb" path="res://images/bg2.png" id="11_tgw8p"]
+[ext_resource type="Texture2D" uid="uid://dgc5bj44x21n2" path="res://images/bg1.png" id="12_tgrh1"]
+
+[sub_resource type="Theme" id="Theme_qpr15"]
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5tnh0"]
 animations = [{
@@ -155,6 +161,7 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
+theme = SubResource("Theme_qpr15")
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "■"
@@ -180,7 +187,7 @@ text = "★"
 script = ExtResource("1_sqtl6")
 
 [node name="Hero" type="CharacterBody2D" parent="Game"]
-z_index = 1
+z_index = 20
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("3_ksiqv")
@@ -190,6 +197,7 @@ sprite_frames = SubResource("SpriteFrames_5tnh0")
 autoplay = "default"
 
 [node name="CollisionCircle" type="Sprite2D" parent="Game/Hero"]
+self_modulate = Color(0, 1, 0, 0.25098)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_h180i")
 
@@ -201,31 +209,54 @@ shape = SubResource("CircleShape2D_oj05t")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Area2D"]
 shape = SubResource("CircleShape2D_oj05t")
 
+[node name="Gates" type="Sprite2D" parent="Game"]
+clip_children = 1
+z_index = 9
+position = Vector2(180, 320)
+scale = Vector2(2, 1.875)
+texture = ExtResource("3_fq3iy")
+
 [node name="WallTop" type="Area2D" parent="Game"]
+z_index = 10
 position = Vector2(180, 86.4)
 scale = Vector2(2, 0.05)
 
 [node name="Square" type="Sprite2D" parent="Game/WallTop"]
+self_modulate = Color(1, 0, 0, 0.25098)
 texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallTop"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="WallBottom" type="Area2D" parent="Game"]
+z_index = 10
 position = Vector2(180, 553.6)
 scale = Vector2(2, 0.05)
 
 [node name="Square" type="Sprite2D" parent="Game/WallBottom"]
+self_modulate = Color(1, 0, 0, 0.25098)
 texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="Gates" type="Sprite2D" parent="Game"]
-clip_children = 1
-position = Vector2(180, 320)
-scale = Vector2(2, 1.875)
-texture = ExtResource("3_fq3iy")
+[node name="BG" type="Node2D" parent="Game"]
+
+[node name="Bg4" type="Sprite2D" parent="Game/BG"]
+position = Vector2(770, 320)
+texture = ExtResource("9_jgobs")
+
+[node name="Bg3" type="Sprite2D" parent="Game/BG"]
+position = Vector2(770, 320)
+texture = ExtResource("10_ewvld")
+
+[node name="Bg2" type="Sprite2D" parent="Game/BG"]
+position = Vector2(770, 320)
+texture = ExtResource("11_tgw8p")
+
+[node name="Bg1" type="Sprite2D" parent="Game/BG"]
+position = Vector2(770, 320)
+texture = ExtResource("12_tgrh1")
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="Game" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="Game" method="_on_jump_button_down"]
