@@ -24,6 +24,7 @@ func _ready():
 	# Signal 接続
 	Global.hero_damged.connect(_on_hero_damged)
 	Global.hero_dead.connect(_on_hero_dead)
+	Global.hero_got_money.connect(_on_hero_got_money)
 
 	# ゲーム初期化
 	_reset_game()
@@ -118,6 +119,12 @@ func _on_hero_dead():
 	print("Hero is dead!")
 	Global.is_hero_dead = true
 	_end_game()
+
+
+# Hero が Money を取ったとき
+func _on_hero_got_money():
+	Global.money += 1
+	print("Get money! ({0})".format([Global.money]))
 
 
 # ゲートを出現させる

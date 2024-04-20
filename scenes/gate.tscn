@@ -93,12 +93,12 @@ texture = ExtResource("1_qsvs6")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Gates/GateBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="Coin" type="Area2D" parent="Gates" groups=["Coin"]]
+[node name="Money" type="Area2D" parent="Gates" groups=["Money"]]
 scale = Vector2(0.5, 0.5)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Gates/Coin"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Gates/Money"]
 sprite_frames = SubResource("SpriteFrames_xplrb")
 autoplay = "default"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Gates/Coin"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Gates/Money"]
 shape = SubResource("CircleShape2D_w74on")

@@ -5,6 +5,7 @@ extends Node
 signal hero_jumped # Hero がジャンプしたとき
 signal hero_damged # Hero がダメージを受けたとき
 signal hero_dead # Hero が死んだとき
+signal hero_got_money # Coin を取ったとき
 
 # Variables
 var is_game_active = false # ゲームが進行中かどうか
