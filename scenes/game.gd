@@ -20,17 +20,20 @@ const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px) 
 
 # Variables
-var _is_spawn_gate = false # ゲートを生成するか
-var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
-var _is_spawn_enemy = false # 敵を生成するか
-var _enemy_spawn_cooltime = 3.0 # 何秒ごとに敵を生成するか
-var _slow_tween = null
-var _rng = RandomNumberGenerator.new()
-
 var _level_base = 10 # ゲート通過時に Level に加算される値
 var _money_base = 1 # Money 取得時に加算される値
 var _shop_quota = 50 # Level がいくつ貯まるたびに Shop が出現するか
 var _shop_saved = 0 # Level と同じだけ増加する Shop が出現したら 0 に戻す
+
+var _is_spawn_gate = false # ゲートを生成するか
+var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
+var _gate_spawn_timer = 0.0
+var _is_spawn_enemy = false # 敵を生成するか
+var _enemy_spawn_cooltime = 3.0 # 何秒ごとに敵を生成するか
+var _enemy_spawn_timer = 0.0
+
+var _slow_tween = null
+var _rng = RandomNumberGenerator.new()
 
 
 func _ready():
@@ -54,6 +57,9 @@ func _process(delta):
 	if (_hero != null):
 		_walls.position.x = _hero.position.x
 
+	_process_spawn_gate(delta)
+	_process_spawn_enemy(delta)
+
 
 # ゲームを初期化 + 一時停止する
 func _initialize_game():
@@ -61,14 +67,12 @@ func _initialize_game():
 	Engine.time_scale = 1.0
 	set_process(false)
 	set_physics_process(false)
+
 	Global.initialize()
 	Global.game_initialized.emit()
 
-
-	# ゲートおよび敵の生成開始
-	# Global.init() のあとに呼ぶこと
-	_loop_spawn_gate()
-	_loop_spawn_enemy()
+	_is_spawn_gate = true
+	_is_spawn_enemy = true
 
 
 func _on_ui_jumped():
@@ -125,10 +129,20 @@ func _on_hero_got_money():
 
 
 func _on_hero_entered_shop():
+	if (Global.game_state != Global.GameState.ACTIVE):
+		return
+
+	_is_spawn_gate = false
+	_is_spawn_enemy = false
 	_enter_slow(SLOW_SPEED_SHOP)
 
 
 func _on_hero_exited_shop():
+	if (Global.game_state != Global.GameState.ACTIVE):
+		return
+
+	_is_spawn_gate = true
+	_is_spawn_enemy = true
 	_exit_slow()
 
 
@@ -172,21 +186,14 @@ func _spawn_gate():
 	get_tree().root.get_node("Main").add_child(_gate)
 
 
-# ゲートを生成しつづける
-# TODO: pause 対応 (await じゃなくてループ内でやる？)
-func _loop_spawn_gate():
-	# ゲームオーバー: ループを中止する
-	if (Global.game_state == Global.GameState.GAMEOVER):
-		print("Stop spawn gate loop.")
-		return
+# ゲートを生成しつづける (_process 内で呼ぶ)
+func _process_spawn_gate(delta):
+	if (_is_spawn_gate):
+		_gate_spawn_timer += delta
 
-	# ゲーム中: ゲートを生成する
-	if (Global.game_state == Global.GameState.ACTIVE):
+	if (_gate_spawn_cooltime < _gate_spawn_timer):
 		_spawn_gate()
-
-	# 一定時間待ったあと次のループに移行する
-	await get_tree().create_timer(_gate_spawn_cooltime).timeout
-	_loop_spawn_gate()
+		_gate_spawn_timer = 0
 
 
 # 敵を生成する
@@ -199,25 +206,17 @@ func _spawn_enemy():
 	get_tree().root.get_node("Main").add_child(_enemy)
 
 
-# 敵を生成しつづける
-# TODO: pause 対応 (await じゃなくてループ内でやる？)
-func _loop_spawn_enemy():
-	# ゲームオーバー: ループを中止する
-	if (Global.game_state == Global.GameState.GAMEOVER):
-		print("Stop spawn enemy loop.")
-		return
+# 敵を生成しつづける (_process 内で呼ぶ)
+func _process_spawn_enemy(delta):
+	if (_is_spawn_enemy):
+		_enemy_spawn_timer += delta
 
-	# ゲーム中: 敵を生成する
-	if (Global.game_state == Global.GameState.ACTIVE):
+	if (_enemy_spawn_cooltime < _enemy_spawn_timer):
 		_spawn_enemy()
-
-	# 一定時間待ったあと次のループに移行する
-	await get_tree().create_timer(_enemy_spawn_cooltime).timeout
-	_loop_spawn_enemy()
+		_enemy_spawn_timer = 0
 
 
 # 店を生成する
-# TODO: 店に入っている間はゲートと敵の生成を止める
 func _spawn_shop():
 	print("Shop is spawned.")
 	var _shop = SHOP_SCENE.instantiate()
