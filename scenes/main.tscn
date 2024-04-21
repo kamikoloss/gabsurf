@@ -95,10 +95,10 @@ offset_bottom = 640.0
 [node name="Header" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="VBoxContainer" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
 layout_mode = 2
@@ -204,7 +204,7 @@ size_flags_stretch_ratio = 1.5
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
 text = "SCORE
-99999"
+999999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -243,14 +243,14 @@ vertical_alignment = 1
 [node name="Footer" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
-theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="Buttons" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Footer"]
 layout_mode = 2
-theme_override_constants/separation = 10
+theme_override_constants/separation = 8
 
 [node name="Pause" type="Button" parent="UI/CanvasLayer/Layout/Footer/Buttons"]
 layout_mode = 2
@@ -300,7 +300,6 @@ animation = &"jump"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero"]
-scale = Vector2(1, 1)
 shape = SubResource("CircleShape2D_oj05t")
 
 [node name="CollisionCircle" type="Sprite2D" parent="Game/Hero"]
@@ -389,3 +388,4 @@ centered = false
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="UI" method="_on_jump_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Retry" to="UI" method="_on_retry_button_down"]
 [connection signal="area_entered" from="Game/Hero/Area2D" to="Game/Hero" method="_on_area_2d_area_entered"]
+[connection signal="area_exited" from="Game/Hero/Area2D" to="Game/Hero" method="_on_area_2d_area_exited"]

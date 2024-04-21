@@ -3,6 +3,7 @@ extends Node2D
 # Scenes
 const GATE_SCENE = preload("res://scenes/gate.tscn")
 const ENEMY_SCENE = preload("res://scenes/enemy.tscn")
+const SHOP_SCENE = preload("res://scenes/shop.tscn")
 
 # Resources
 # TODO
@@ -12,16 +13,24 @@ const ENEMY_SCENE = preload("res://scenes/enemy.tscn")
 @onready var _walls = $Walls
 
 # Constants
-const SLOW_SPEED = 0.25 # スロー状態で何倍速になるか
 const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
+const SLOW_SPEED_GAMEOVER = 0.25
+const SLOW_SPEED_SHOP = 0.5
 const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px) 
 
 # Variables
-var _slow_tween = null
+var _is_spawn_gate = false # ゲートを生成するか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
+var _is_spawn_enemy = false # 敵を生成するか
 var _enemy_spawn_cooltime = 3.0 # 何秒ごとに敵を生成するか
-var _rng = RandomNumberGenerator.new() # 乱数生成
+var _slow_tween = null
+var _rng = RandomNumberGenerator.new()
+
+var _level_base = 10 # ゲート通過時に Level に加算される値
+var _money_base = 1 # Money 取得時に加算される値
+var _shop_quota = 50 # Level がいくつ貯まるたびに Shop が出現するか
+var _shop_saved = 0 # Level と同じだけ増加する Shop が出現したら 0 に戻す
 
 
 func _ready():
@@ -32,6 +41,9 @@ func _ready():
 	Global.hero_damged.connect(_on_hero_damged)
 	Global.hero_got_level.connect(_on_hero_got_level)
 	Global.hero_got_money.connect(_on_hero_got_money)
+	Global.hero_entered_shop.connect(_on_hero_entered_shop)
+	Global.hero_exited_shop.connect(_on_hero_exited_shop)
+	Global.hero_got_gear.connect(_on_hero_got_gear)
 
 	# 初期化
 	_initialize_game()
@@ -91,19 +103,37 @@ func _on_hero_damged():
 	# Hero の残機が 0 になった場合: ゲームオーバー
 	if (Global.life == 0):
 		Global.game_state = Global.GameState.GAMEOVER
-		_enter_slow()
+		_enter_slow(SLOW_SPEED_GAMEOVER)
 		print("Game is ended.")
 		Global.game_ended.emit()
 
 
 func _on_hero_got_level():
-	Global.level += 10
+	Global.level += _level_base
 	Global.score = _calc_score()
+
+	# 一定 Level が貯まった場合: 店を生成する
+	_shop_saved += _level_base
+	if (_shop_quota <= _shop_saved):
+		_spawn_shop()
+		_shop_saved = 0
 
 
 func _on_hero_got_money():
-	Global.money += 1
+	Global.money += _money_base
 	Global.score = _calc_score()
+
+
+func _on_hero_entered_shop():
+	_enter_slow(SLOW_SPEED_SHOP)
+
+
+func _on_hero_exited_shop():
+	_exit_slow()
+
+
+func _on_hero_got_gear(gear_type):
+	pass
 
 
 # Score を計算する
@@ -123,12 +153,12 @@ func _get_slow_tween():
 
 
 # 通常速度からスローになっていく
-func _enter_slow():
-	_get_slow_tween().tween_property(Engine, "time_scale", SLOW_SPEED, SLOW_DURATION)
+func _enter_slow(speed):
+	_get_slow_tween().tween_property(Engine, "time_scale", speed, SLOW_DURATION)
 
 
 # スローから通常速度になっていく
-func _leave_slow():
+func _exit_slow():
 	_get_slow_tween().tween_property(Engine, "time_scale", 1.0, SLOW_DURATION)
 
 
@@ -184,3 +214,13 @@ func _loop_spawn_enemy():
 	# 一定時間待ったあと次のループに移行する
 	await get_tree().create_timer(_enemy_spawn_cooltime).timeout
 	_loop_spawn_enemy()
+
+
+# 店を生成する
+# TODO: 店に入っている間はゲートと敵の生成を止める
+func _spawn_shop():
+	print("Shop is spawned.")
+	var _shop = SHOP_SCENE.instantiate()
+	_shop.position.x += (_hero.position.x + 720)
+	_shop.position.y += 320
+	get_tree().root.get_node("Main").add_child(_shop)

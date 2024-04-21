@@ -12,9 +12,12 @@ signal ui_paused # ポーズボタンを押したとき
 signal ui_retried # リトライボタンを押したとき
 
 # Hero: Hero の衝突
+signal hero_damged # ダメージを受けたとき
 signal hero_got_level # Level を取ったとき
 signal hero_got_money # Money を取ったとき
-signal hero_damged # ダメージを受けたとき
+signal hero_entered_shop # Shop に入ったとき
+signal hero_exited_shop # Shop を出たとき
+signal hero_got_gear # Gear を取ったとき
 
 # Global: 値の変更
 signal level_changed

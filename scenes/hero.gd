@@ -57,18 +57,31 @@ func _on_game_ended():
 
 
 func _on_area_2d_area_entered(area):
-	# 壁にぶつかったとき: ダメージを受ける
 	if (area.is_in_group("Wall")):
 		print("Hero is damged.")
 		Global.hero_damged.emit()
 
-	# Level にぶつかったとき: Level を取得する
 	if (area.is_in_group("Level")):
 		print("Hero got level.")
 		Global.hero_got_level.emit()
 
-	# Money にぶつかったとき: Money を取得する + 対象を消す
 	if (area.is_in_group("Money")):
 		print("Hero got money.")
 		Global.hero_got_money.emit()
 		area.queue_free()
+
+	if (area.is_in_group("Gear")):
+		print("Hero got gear.")
+		var _gear = area.get_node("../")
+		Global.hero_got_gear.emit(_gear.type)
+		area.queue_free()
+
+	if (area.is_in_group("Shop")):
+		print("Hero entered shop.")
+		Global.hero_entered_shop.emit()
+
+
+func _on_area_2d_area_exited(area):
+	if (area.is_in_group("Shop")):
+		print("Hero exited shop.")
+		Global.hero_exited_shop.emit()

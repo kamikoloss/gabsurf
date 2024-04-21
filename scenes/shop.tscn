@@ -1,0 +1,135 @@
+[gd_scene load_steps=6 format=3 uid="uid://cwxachiyntvge"]
+
+[ext_resource type="Script" path="res://scenes/shop.gd" id="1_t1qse"]
+[ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_bu7gq"]
+[ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="3_4ajlw"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_8o4fh"]
+size = Vector2(640, 640)
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_esaij"]
+radius = 32.0
+
+[node name="Shop" type="Node2D"]
+script = ExtResource("1_t1qse")
+
+[node name="Area2D" type="Area2D" parent="." groups=["Shop"]]
+position = Vector2(80, 0)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_8o4fh")
+
+[node name="Sign" type="Panel" parent="."]
+offset_left = -240.0
+offset_top = -60.0
+offset_right = -120.0
+offset_bottom = 60.0
+
+[node name="Label" type="Label" parent="Sign"]
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 32
+text = "→
+SHOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="GearA" type="Node2D" parent="."]
+position = Vector2(0, -200)
+
+[node name="Text" type="Panel" parent="GearA"]
+offset_right = 480.0
+offset_bottom = 120.0
+
+[node name="MarginContainer" type="MarginContainer" parent="GearA/Text"]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 120.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GearA/Text/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GearA/Text/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="GearA/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "あいうえあいうえ (LV.X)"
+
+[node name="Description" type="Label" parent="GearA/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 16
+text = "あいうえあいうえあいうえあいうえ
+あいうえあいうえあいうえあいうえ
+あいうえあいうえあいうえあいうえ"
+
+[node name="Image" type="Sprite2D" parent="GearA"]
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(400, 60)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_4ajlw")
+
+[node name="Area2D" type="Area2D" parent="GearA"]
+position = Vector2(400, 60)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GearA/Area2D"]
+shape = SubResource("CircleShape2D_esaij")
+
+[node name="GearB" type="Node2D" parent="."]
+position = Vector2(0, 80)
+
+[node name="Text" type="Panel" parent="GearB"]
+offset_right = 480.0
+offset_bottom = 120.0
+
+[node name="MarginContainer" type="MarginContainer" parent="GearB/Text"]
+layout_mode = 0
+offset_right = 480.0
+offset_bottom = 120.0
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="HBoxContainer" type="HBoxContainer" parent="GearB/Text/MarginContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="GearB/Text/MarginContainer/HBoxContainer"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Title" type="Label" parent="GearB/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "あいうえあいうえ (LV.X)"
+
+[node name="Description" type="Label" parent="GearB/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 16
+text = "あいうえあいうえあいうえあいうえ
+あいうえあいうえあいうえあいうえ
+あいうえあいうえあいうえあいうえ"
+
+[node name="Image" type="Sprite2D" parent="GearB"]
+modulate = Color(1, 1, 1, 0.501961)
+position = Vector2(400, 60)
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("3_4ajlw")
+
+[node name="Area2D" type="Area2D" parent="GearB"]
+position = Vector2(400, 60)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GearB/Area2D"]
+shape = SubResource("CircleShape2D_esaij")
