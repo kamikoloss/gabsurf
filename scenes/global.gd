@@ -24,7 +24,7 @@ signal score_changed
 signal life_changed
 
 
-# ゲームの状態
+# Enums
 enum GameState {
 	TITLE, # タイトル
 	PAUSED, # ポーズ中
