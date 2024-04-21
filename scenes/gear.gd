@@ -15,6 +15,7 @@ enum GearType {
 
 
 # ギアの情報
+# { "t": <ギア名>, "d": <ギア説明文>, "c": <コスト>,  "i": <アイコン画像> },
 const GEAR_INFO = {
 	GearType.DBL: { "t": "ダブルタップ", "d": "ゲートが2個ずつ\n出てくるようになる", "c": 3,  "i": null },
 	GearType.DEC: { "t": "デコンパイラ", "d": "ガブと敵の当たり判定が\n見えるようになる", "cost": 3, "icon":  null },

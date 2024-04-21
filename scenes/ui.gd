@@ -4,10 +4,10 @@ extends Control
 @onready var _body_labels = $CanvasLayer/Layout/Body/Labels
 @onready var _label_title = $CanvasLayer/Layout/Body/Labels/Title
 @onready var _label_description = $CanvasLayer/Layout/Body/Labels/Description
-@onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level
-@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money
-@onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra
-@onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score
+@onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/Label
+@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/Label
+@onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/Label
+@onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/Label
 
 
 func _ready():

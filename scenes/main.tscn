@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=21 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
@@ -14,7 +14,33 @@
 [ext_resource type="Texture2D" uid="uid://d05bnbjcevyb" path="res://images/bg2.png" id="11_tgw8p"]
 [ext_resource type="Texture2D" uid="uid://dgc5bj44x21n2" path="res://images/bg1.png" id="12_tgrh1"]
 
-[sub_resource type="Theme" id="Theme_qpr15"]
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iejyb"]
+bg_color = Color(0.501961, 0.25098, 0.25098, 0.752941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4xxw"]
+bg_color = Color(0.25098, 0.501961, 0.25098, 0.752941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dan31"]
+bg_color = Color(0.25098, 0.25098, 0.501961, 0.752941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_0cm0c"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 0.752941)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5tnh0"]
 animations = [{
@@ -57,8 +83,6 @@ size = Vector2(256, 256)
 [node name="UI" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 script = ExtResource("1_twex4")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
@@ -79,14 +103,25 @@ theme_override_constants/margin_bottom = 10
 [node name="VBoxContainer" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
 layout_mode = 2
 
-[node name="Level" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+[node name="Level" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iejyb")
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
 text = "LEVEL
 9999"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="X1" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 layout_mode = 2
@@ -95,14 +130,25 @@ theme_override_font_sizes/font_size = 32
 text = "×"
 horizontal_alignment = 1
 
-[node name="Money" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+[node name="Money" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_d4xxw")
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
 text = "MONEY
 9999"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="X2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -112,14 +158,25 @@ theme_override_font_sizes/font_size = 32
 text = "×"
 horizontal_alignment = 1
 
-[node name="Extra" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+[node name="Extra" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dan31")
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
 text = "EXTRA
 9999"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="X3" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 custom_minimum_size = Vector2(20, 0)
@@ -129,8 +186,19 @@ theme_override_font_sizes/font_size = 32
 text = "="
 horizontal_alignment = 1
 
-[node name="Score" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
+[node name="Score" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
 layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+theme_override_styles/panel = SubResource("StyleBoxFlat_0cm0c")
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
 theme_override_fonts/font = ExtResource("1_vc8gg")
@@ -138,6 +206,7 @@ theme_override_font_sizes/font_size = 24
 text = "SCORE
 99999"
 horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Body" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 layout_mode = 2
@@ -187,7 +256,6 @@ theme_override_constants/separation = 10
 layout_mode = 2
 size_flags_horizontal = 3
 size_flags_vertical = 3
-theme = SubResource("Theme_qpr15")
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "■"
@@ -274,7 +342,6 @@ texture = ExtResource("3_fq3iy")
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="Gates" type="Sprite2D" parent="Game"]
-visible = false
 clip_children = 1
 z_index = 9
 position = Vector2(180, 320)
@@ -282,6 +349,8 @@ scale = Vector2(2, 1.875)
 texture = ExtResource("3_fq3iy")
 
 [node name="ParallaxBackground" type="ParallaxBackground" parent="Game"]
+offset = Vector2(0, -10)
+transform = Transform2D(1, 0, 0, 1, 0, -10)
 
 [node name="ParallaxLayer4" type="ParallaxLayer" parent="Game/ParallaxBackground"]
 motion_scale = Vector2(0.2, 0.2)
