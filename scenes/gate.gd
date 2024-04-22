@@ -2,17 +2,19 @@ extends Node2D
 
 
 # Nodes
-@onready var _gate_top = $GateTop
-@onready var _gate_bottom = $GateBottom
+@onready var _gate_top = $Gates/GateTop
+@onready var _gate_bottom = $Gates/GateBottom
 
 # Constants
 const DESTROY_TIME = 5 # 生まれて何秒後に自身を破壊するか
 
 # Variables
-var gap = 1.0 # ゲートの開き具合 (x128px)
+var gap = 0 # ゲートの開き (デフォルト: 256px)
 
 
 func _ready():
+	_gate_top.position.y -= gap / 2
+	_gate_bottom.position.y += gap / 2
 	_destroy()
 
 

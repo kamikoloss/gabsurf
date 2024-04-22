@@ -17,13 +17,18 @@ const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
 const SLOW_SPEED_GAMEOVER = 0.25
 const SLOW_SPEED_SHOP = 0.5
 const GATE_HEIGHT_MIN = -80 # (px)
-const GATE_HEIGHT_MAX = 80 # (px) 
+const GATE_HEIGHT_MAX = 80 # (px)
+const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 
 # Variables
 var _level_base = 10 # ゲート通過時に Level に加算される値
 var _money_base = 1 # Money 取得時に加算される値
-var _shop_quota = 50 # Level がいくつ貯まるたびに Shop が出現するか
-var _shop_saved = 0 # Level と同じだけ増加する Shop が出現したら 0 に戻す
+var _gate_gap = 0 # ゲートの開き
+
+var _shop_quota = 5 # ゲートを何回通るたびに店が出現するか
+var _shop_counter = 0 # ゲートを通るたびに 1 増加する 店が出現したら 0 に戻す
+var _difficult_quota = 5 # ゲートを何回通るたびに難易度が上昇するか
+var _difficult_counter = 0 # ゲートを通るたびに 1 増加する 難易度が上昇したら 0 に戻す
 
 var _is_spawn_gate = false # ゲートを生成するか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
@@ -115,14 +120,21 @@ func _on_hero_got_level():
 	Global.level += _level_base
 	Global.score = _calc_score()
 
-	# 一定 Level が貯まった場合: 店を生成する
-	_shop_saved += _level_base
-	if (_shop_quota <= _shop_saved):
+	_shop_counter += 1
+	_difficult_counter += 1
+
+	# 店生成の規定回数に達した場合
+	if (_shop_quota <= _shop_counter):
 		_spawn_shop()
-		_shop_saved = 0
-		# ゲートと敵の生成停止タイミング
+		_shop_counter = 0
 		_is_spawn_gate = false
 		_is_spawn_enemy = false
+
+	# 難易度上昇の規定回数に達した場合
+	if (_difficult_quota <= _difficult_counter):
+		_difficult_counter = 0
+		_gate_gap -= GATE_GAP_STEP
+		print("current gate gap: {0}".format([_gate_gap]))
 
 
 func _on_hero_got_money():
@@ -131,20 +143,15 @@ func _on_hero_got_money():
 
 
 func _on_hero_entered_shop():
-	if (Global.game_state != Global.GameState.ACTIVE):
-		return
-
-	_enter_slow(SLOW_SPEED_SHOP)
+	if (Global.game_state == Global.GameState.ACTIVE):
+		_enter_slow(SLOW_SPEED_SHOP)
 
 
 func _on_hero_exited_shop():
-	if (Global.game_state != Global.GameState.ACTIVE):
-		return
-
-	_exit_slow()
-	# ゲートと敵の生成再開タイミング
-	_is_spawn_gate = true
-	_is_spawn_enemy = true
+	if (Global.game_state == Global.GameState.ACTIVE):
+		_exit_slow()
+		_is_spawn_gate = true
+		_is_spawn_enemy = true
 
 
 func _on_hero_got_gear(gear_type):
@@ -184,6 +191,7 @@ func _spawn_gate():
 	var _height_diff = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
 	_gate.position.x += (_hero.position.x + 360)
 	_gate.position.y += (_height_diff + 320)
+	_gate.gap = _gate_gap
 	get_tree().root.get_node("Main").add_child(_gate)
 
 

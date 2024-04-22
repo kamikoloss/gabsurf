@@ -277,6 +277,30 @@ theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "●"
 
+[node name="News" type="Panel" parent="UI/CanvasLayer"]
+offset_left = -20.0
+offset_top = 120.0
+offset_right = 380.0
+offset_bottom = 140.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+theme_override_styles/panel = SubResource("StyleBoxFlat_0cm0c")
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/News"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "[NEWS] ゲート幅 256 -> 224"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_sqtl6")
 
