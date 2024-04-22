@@ -15,7 +15,6 @@ const DEAD_ROTATION_SPEED = -20 # 死んだときに回転するスピード
 
 
 func _ready():
-	# Signal 接続
 	Global.game_ended.connect(_on_game_ended)
 	Global.ui_jumped.connect(_on_ui_jumped)
 
@@ -34,7 +33,7 @@ func _physics_process(delta):
 		move_and_slide()
 
 	# ゲームオーバー: 回転する + 落下する
-	# 吹き飛ぶ処理は一度きりの設定なので _dead() 内でやる
+	# 吹き飛ぶ処理は _on_game_ended() 内でやる
 	if (Global.game_state == Global.GameState.GAMEOVER):
 		_hero_sprite.rotation += DEAD_ROTATION_SPEED * delta
 		move_and_slide()

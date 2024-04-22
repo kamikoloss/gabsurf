@@ -1,11 +1,16 @@
 extends Node2D
 
 
-# Called when the node enters the scene tree for the first time.
+# Constants
+const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
+
+
 func _ready():
-	pass # Replace with function body.
+	_destroy()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass
+# 指定秒数後に自身を破壊する
+func _destroy():
+	await get_tree().create_timer(DESTROY_TIME).timeout
+	print("Shop is destroyed.")
+	queue_free()

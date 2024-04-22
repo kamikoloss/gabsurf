@@ -6,7 +6,7 @@ extends Node2D
 @onready var _gate_bottom = $GateBottom
 
 # Constants
-var DESTROY_TIME = 5 # 生まれて何秒後に自身を破壊するか
+const DESTROY_TIME = 5 # 生まれて何秒後に自身を破壊するか
 
 # Variables
 var gap = 1.0 # ゲートの開き具合 (x128px)

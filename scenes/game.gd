@@ -37,7 +37,6 @@ var _rng = RandomNumberGenerator.new()
 
 
 func _ready():
-	# Signal 接続
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.ui_paused.connect(_on_ui_paused)
 	Global.ui_retried.connect(_on_ui_retried)
@@ -48,7 +47,6 @@ func _ready():
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 
-	# 初期化
 	_initialize_game()
 
 
@@ -69,6 +67,7 @@ func _initialize_game():
 	set_physics_process(false)
 
 	Global.initialize()
+	Gear.initialize()
 	Global.game_initialized.emit()
 
 	_is_spawn_gate = true
@@ -121,6 +120,9 @@ func _on_hero_got_level():
 	if (_shop_quota <= _shop_saved):
 		_spawn_shop()
 		_shop_saved = 0
+		# ゲートと敵の生成停止タイミング
+		_is_spawn_gate = false
+		_is_spawn_enemy = false
 
 
 func _on_hero_got_money():
@@ -132,8 +134,6 @@ func _on_hero_entered_shop():
 	if (Global.game_state != Global.GameState.ACTIVE):
 		return
 
-	_is_spawn_gate = false
-	_is_spawn_enemy = false
 	_enter_slow(SLOW_SPEED_SHOP)
 
 
@@ -141,9 +141,10 @@ func _on_hero_exited_shop():
 	if (Global.game_state != Global.GameState.ACTIVE):
 		return
 
+	_exit_slow()
+	# ゲートと敵の生成再開タイミング
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
-	_exit_slow()
 
 
 func _on_hero_got_gear(gear_type):
