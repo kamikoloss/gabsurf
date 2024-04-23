@@ -65,39 +65,38 @@ script = ExtResource("1_ukssn")
 
 [node name="Mask" type="Sprite2D" parent="."]
 clip_children = 1
-z_index = 9
-position = Vector2(180, 320)
 scale = Vector2(2, 1.875)
 texture = ExtResource("1_qsvs6")
 
-[node name="Gates" type="Node2D" parent="."]
+[node name="Gates" type="Node2D" parent="Mask"]
+scale = Vector2(0.5, 0.533333)
 
-[node name="GateTop" type="Area2D" parent="Gates" groups=["Wall"]]
+[node name="GateTop" type="Area2D" parent="Mask/Gates" groups=["Wall"]]
 position = Vector2(0, -384)
 scale = Vector2(0.05, 2)
 
-[node name="Square" type="Sprite2D" parent="Gates/GateTop"]
+[node name="Square" type="Sprite2D" parent="Mask/Gates/GateTop"]
 texture = ExtResource("1_qsvs6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Gates/GateTop"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/GateTop"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="GateBottom" type="Area2D" parent="Gates" groups=["Wall"]]
+[node name="GateBottom" type="Area2D" parent="Mask/Gates" groups=["Wall"]]
 position = Vector2(0, 384)
 scale = Vector2(0.05, 2)
 
-[node name="Square" type="Sprite2D" parent="Gates/GateBottom"]
+[node name="Square" type="Sprite2D" parent="Mask/Gates/GateBottom"]
 texture = ExtResource("1_qsvs6")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Gates/GateBottom"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/GateBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="Money" type="Area2D" parent="Gates" groups=["Level", "Money"]]
+[node name="Money" type="Area2D" parent="Mask/Gates" groups=["Level", "Money"]]
 scale = Vector2(0.4, 0.4)
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Gates/Money"]
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Mask/Gates/Money"]
 sprite_frames = SubResource("SpriteFrames_xplrb")
 autoplay = "default"
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Gates/Money"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/Money"]
 shape = SubResource("CircleShape2D_w74on")

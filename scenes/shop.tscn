@@ -20,19 +20,34 @@ shape = SubResource("RectangleShape2D_8o4fh")
 
 [node name="Enter" type="Panel" parent="."]
 offset_left = -440.0
-offset_top = -60.0
+offset_top = -40.0
 offset_right = -320.0
-offset_bottom = 60.0
+offset_bottom = 40.0
 
-[node name="Label" type="Label" parent="Enter"]
-layout_mode = 0
-offset_right = 120.0
-offset_bottom = 120.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Enter"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -29.5
+offset_bottom = 29.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Enter/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "SHOP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Enter/VBoxContainer"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 32
-text = "→
-SHOP
-1"
+text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -42,15 +57,30 @@ offset_top = -60.0
 offset_right = 520.0
 offset_bottom = 60.0
 
-[node name="Label" type="Label" parent="Exit"]
-layout_mode = 0
-offset_right = 120.0
-offset_bottom = 120.0
+[node name="VBoxContainer" type="VBoxContainer" parent="Exit"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -29.5
+offset_bottom = 29.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="Exit/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "GATE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="Exit/VBoxContainer"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 32
-text = "→
-Gate
-224"
+text = "999"
 horizontal_alignment = 1
 vertical_alignment = 1
 

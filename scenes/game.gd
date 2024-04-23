@@ -25,10 +25,11 @@ var _level_base = 10 # ゲート通過時に Level に加算される値
 var _money_base = 1 # Money 取得時に加算される値
 var _gate_gap = 0 # ゲートの開き
 
-var _shop_quota = 5 # ゲートを何回通るたびに店が出現するか
-var _shop_counter = 0 # ゲートを通るたびに 1 増加する 店が出現したら 0 に戻す
-var _difficult_quota = 5 # ゲートを何回通るたびに難易度が上昇するか
-var _difficult_counter = 0 # ゲートを通るたびに 1 増加する 難易度が上昇したら 0 に戻す
+var _gate_counter_shop_temp = 0 # ゲートを通るたびに 1 増加する 店が出現したら 0 に戻す
+var _gate_counter_shop_quota = 5 # ゲートを何回通るたびに店が出現するか
+var _gate_counter_difficult_temp = 0 # ゲートを通るたびに 1 増加する 難易度が上昇したら 0 に戻す
+var _gate_counter_difficult_quota = 5 # ゲートを何回通るたびに難易度が上昇するか
+var _shop_counter = 0 # 店を生成するたびに 1 増加する
 
 var _is_spawn_gate = false # ゲートを生成するか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
@@ -120,19 +121,20 @@ func _on_hero_got_level():
 	Global.level += _level_base
 	Global.score = _calc_score()
 
-	_shop_counter += 1
-	_difficult_counter += 1
+	_gate_counter_shop_temp += 1
+	_gate_counter_difficult_temp += 1
 
 	# 店生成の規定回数に達した場合
-	if (_shop_quota <= _shop_counter):
-		_spawn_shop()
-		_shop_counter = 0
+	if (_gate_counter_shop_quota <= _gate_counter_shop_temp):
+		_gate_counter_shop_temp = 0
+		_shop_counter += 1
 		_is_spawn_gate = false
 		_is_spawn_enemy = false
+		_spawn_shop()
 
 	# 難易度上昇の規定回数に達した場合
-	if (_difficult_quota <= _difficult_counter):
-		_difficult_counter = 0
+	if (_gate_counter_difficult_quota <= _gate_counter_difficult_temp):
+		_gate_counter_difficult_temp = 0
 		_gate_gap -= GATE_GAP_STEP
 		print("current gate gap: {0}".format([_gate_gap]))
 
@@ -188,10 +190,10 @@ func _exit_slow():
 func _spawn_gate():
 	print("Gate is spawned.")
 	var _gate = GATE_SCENE.instantiate()
-	var _height_diff = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
 	_gate.position.x += (_hero.position.x + 360)
-	_gate.position.y += (_height_diff + 320)
+	_gate.position.y += 320
 	_gate.gap = _gate_gap
+	_gate.height_diff += _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
 	get_tree().root.get_node("Main").add_child(_gate)
 
 
@@ -231,4 +233,6 @@ func _spawn_shop():
 	var _shop = SHOP_SCENE.instantiate()
 	_shop.position.x += (_hero.position.x + 720)
 	_shop.position.y += 320
+	_shop.number = _shop_counter
+	_shop.gate_gap = 256 + _gate_gap
 	get_tree().root.get_node("Main").add_child(_shop)
