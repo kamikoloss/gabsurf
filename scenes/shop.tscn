@@ -5,7 +5,7 @@
 [ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="3_4ajlw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o4fh"]
-size = Vector2(640, 640)
+size = Vector2(480, 640)
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_esaij"]
 radius = 32.0
@@ -14,30 +14,48 @@ radius = 32.0
 script = ExtResource("1_t1qse")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Shop"]]
-position = Vector2(80, 0)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
 shape = SubResource("RectangleShape2D_8o4fh")
 
-[node name="Sign" type="Panel" parent="."]
-offset_left = -240.0
+[node name="Enter" type="Panel" parent="."]
+offset_left = -440.0
 offset_top = -60.0
-offset_right = -120.0
+offset_right = -320.0
 offset_bottom = 60.0
 
-[node name="Label" type="Label" parent="Sign"]
+[node name="Label" type="Label" parent="Enter"]
 layout_mode = 0
 offset_right = 120.0
 offset_bottom = 120.0
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 32
 text = "→
-SHOP"
+SHOP
+1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Exit" type="Panel" parent="."]
+offset_left = 400.0
+offset_top = -60.0
+offset_right = 520.0
+offset_bottom = 60.0
+
+[node name="Label" type="Label" parent="Exit"]
+layout_mode = 0
+offset_right = 120.0
+offset_bottom = 120.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 32
+text = "→
+Gate
+224"
 horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GearA" type="Node2D" parent="."]
-position = Vector2(0, -200)
+position = Vector2(-240, -200)
 
 [node name="Text" type="Panel" parent="GearA"]
 offset_right = 480.0
@@ -86,7 +104,7 @@ position = Vector2(400, 60)
 shape = SubResource("CircleShape2D_esaij")
 
 [node name="GearB" type="Node2D" parent="."]
-position = Vector2(0, 80)
+position = Vector2(-240, 80)
 
 [node name="Text" type="Panel" parent="GearB"]
 offset_right = 480.0

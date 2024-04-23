@@ -4,10 +4,10 @@ extends Control
 @onready var _body_labels = $CanvasLayer/Layout/Body/Labels
 @onready var _label_title = $CanvasLayer/Layout/Body/Labels/Title
 @onready var _label_description = $CanvasLayer/Layout/Body/Labels/Description
-@onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/Label
-@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/Label
-@onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/Label
-@onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/Label
+@onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer/Label2
+@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer/Label2
+@onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer/Label2
+@onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer/Label2
 
 
 func _ready():
@@ -71,19 +71,19 @@ func _on_game_ended():
 
 
 func _on_level_changed(value):
-	_label_level.text = "LEVEL\n{0}".format([value])
+	_label_level.text = str(value)
 
 
 func _on_money_changed(value):
-	_label_money.text = "MONEY\n{0}".format([value])
+	_label_money.text = str(value)
 
 
 func _on_extra_changed(value):
-	_label_extra.text = "EXTRA\n{0}".format([value])
+	_label_extra.text = str(value)
 
 
 func _on_score_changed(value):
-	_label_score.text = "SCORE\n{0}".format([value])
+	_label_score.text = str(value)
 
 
 func _on_life_changed(value):

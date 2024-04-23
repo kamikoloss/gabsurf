@@ -108,18 +108,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_iejyb")
 
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 14
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
-text = "LEVEL
-9999"
+text = "LEVEL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "9999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -135,18 +148,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_d4xxw")
 
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 14
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
-text = "MONEY
-9999"
+text = "MONEY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "9999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -163,18 +189,31 @@ layout_mode = 2
 size_flags_horizontal = 3
 theme_override_styles/panel = SubResource("StyleBoxFlat_dan31")
 
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 14
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer"]
+layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
-text = "EXTRA
-9999"
+text = "EXTRA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "9999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -192,19 +231,31 @@ size_flags_horizontal = 3
 size_flags_stretch_ratio = 1.5
 theme_override_styles/panel = SubResource("StyleBoxFlat_0cm0c")
 
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score"]
 layout_mode = 1
-anchors_preset = 15
+anchors_preset = 14
+anchor_top = 0.5
 anchor_right = 1.0
-anchor_bottom = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
 grow_horizontal = 2
 grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.5
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "SCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
-text = "SCORE
-999999"
+text = "999999"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -276,30 +327,6 @@ size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "●"
-
-[node name="News" type="Panel" parent="UI/CanvasLayer"]
-offset_left = -20.0
-offset_top = 120.0
-offset_right = 380.0
-offset_bottom = 140.0
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.5
-theme_override_styles/panel = SubResource("StyleBoxFlat_0cm0c")
-
-[node name="Label" type="Label" parent="UI/CanvasLayer/News"]
-layout_mode = 1
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.5
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "[NEWS] ゲート幅 256 -> 224"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_sqtl6")

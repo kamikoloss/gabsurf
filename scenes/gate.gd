@@ -9,7 +9,7 @@ extends Node2D
 const DESTROY_TIME = 5 # 生まれて何秒後に自身を破壊するか
 
 # Variables
-var gap = 0 # ゲートの開き (デフォルト: 256px)
+var gap = 0 # ゲートがデフォルトから何 px 開くか
 
 
 func _ready():
