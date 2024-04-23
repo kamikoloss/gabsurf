@@ -39,32 +39,37 @@ var level = 0:
 	get:
 		return level
 	set(value):
-		level_changed.emit(value)
 		level = value
+		level_changed.emit(value)
+		score = _calc_score()
 var money = 0:
 	get:
 		return money
 	set(value):
-		money_changed.emit(value)
 		money = value
+		money_changed.emit(value)
+		score = _calc_score()
 var extra = 1:
 	get:
 		return extra
 	set(value):
-		extra_changed.emit(value)
 		extra = value
+		extra_changed.emit(value)
+		score = _calc_score()
 var score = 0:
 	get:
 		return score
 	set(value):
-		score_changed.emit(value)
 		score = value
+		score_changed.emit(value)
 var life = 1:
 	get:
 		return life
 	set(value):
-		life_changed.emit(value)
 		life = value
+		life_changed.emit(value)
+
+var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
 
 
 # グローバル変数の初期化を行う
@@ -76,3 +81,9 @@ func initialize():
 	extra = 1
 	score = 0
 	life = 1
+	hero_move_velocity = 200
+
+
+# Score を計算する
+func _calc_score():
+	return level * money * extra

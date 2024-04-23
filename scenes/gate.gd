@@ -30,5 +30,5 @@ func _ready():
 # 指定秒数後に自身を破壊する
 func _destroy():
 	await get_tree().create_timer(DESTROY_TIME).timeout
-	print("Gate is destroyed.")
+	#print("Gate is destroyed.")
 	queue_free()

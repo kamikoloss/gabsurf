@@ -19,5 +19,5 @@ func _process(delta):
 # 指定秒数後に自身を破壊する
 func _destroy():
 	await get_tree().create_timer(DESTROY_TIME).timeout
-	print("Enemy is destroyed.")
+	#print("Enemy is destroyed.")
 	queue_free()

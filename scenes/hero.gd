@@ -6,7 +6,6 @@ extends CharacterBody2D
 @onready var _collision_circle = $CollisionCircle
 
 # Constants
-const MOVE_VELOCITY = 200 # 横移動の速度 (px/s)
 const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
 const FALL_VELOCITY_MAX = 300 # 終端速度 (px/s)
@@ -29,7 +28,7 @@ func _physics_process(delta):
 
 	# ゲーム中: 横に動き続ける + 落下する
 	if (Global.game_state == Global.GameState.ACTIVE):
-		velocity.x = MOVE_VELOCITY
+		velocity.x = Global.hero_move_velocity
 		move_and_slide()
 
 	# ゲームオーバー: 回転する + 落下する
@@ -69,15 +68,22 @@ func _on_area_2d_area_entered(area):
 		Global.hero_got_money.emit()
 		area.queue_free()
 
-	if (area.is_in_group("Gear")):
-		print("Hero got gear.")
-		var _gear = area.get_node("../")
-		Global.hero_got_gear.emit(_gear.type)
-		area.queue_free()
-
 	if (area.is_in_group("Shop")):
 		print("Hero entered shop.")
 		Global.hero_entered_shop.emit()
+
+	if (area.is_in_group("Gear")):
+		var _shop = area.get_node("../../")
+		var _gear = area.get_node("../")
+		print("are", area.position, area.global_position)
+		var _gear_type = _shop.gear_a if area.global_position.y < 320 else _shop.gear_b
+		if (Global.money < Gear.GEAR_INFO[_gear_type]["c"]):
+			# 所持金が足りない場合: 買えない
+			print("No money!!")
+		else:
+			print("Hero got gear {0}.".format([_gear_type]))
+			Global.hero_got_gear.emit(_gear_type)
+			_gear.queue_free()
 
 
 func _on_area_2d_area_exited(area):

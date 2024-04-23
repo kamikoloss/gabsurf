@@ -122,12 +122,11 @@ text = "あいうえあいうえあいうえあいうえ
 あいうえあいうえあいうえあいうえ"
 
 [node name="Image" type="Sprite2D" parent="GearA"]
-modulate = Color(1, 1, 1, 0.501961)
 position = Vector2(400, 60)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_4ajlw")
 
-[node name="Area2D" type="Area2D" parent="GearA"]
+[node name="Area2D" type="Area2D" parent="GearA" groups=["Gear"]]
 position = Vector2(400, 60)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GearA/Area2D"]
@@ -171,12 +170,11 @@ text = "あいうえあいうえあいうえあいうえ
 あいうえあいうえあいうえあいうえ"
 
 [node name="Image" type="Sprite2D" parent="GearB"]
-modulate = Color(1, 1, 1, 0.501961)
 position = Vector2(400, 60)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_4ajlw")
 
-[node name="Area2D" type="Area2D" parent="GearB"]
+[node name="Area2D" type="Area2D" parent="GearB" groups=["Gear"]]
 position = Vector2(400, 60)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GearB/Area2D"]
