@@ -465,10 +465,17 @@ motion_mirroring = Vector2(1540, 0)
 texture = ExtResource("12_tgrh1")
 centered = false
 
-[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Game"]
+[node name="AudioPlayers" type="Node2D" parent="Game"]
+
+[node name="BGM" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
 stream = ExtResource("14_fbbs1")
 volume_db = -3.0
 autoplay = true
+
+[node name="SE" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
+
+[node name="SE2" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
+volume_db = -3.0
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="UI" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="UI" method="_on_jump_button_down"]

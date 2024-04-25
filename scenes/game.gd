@@ -5,16 +5,27 @@ const GATE_SCENE = preload("res://scenes/gate.tscn")
 const ENEMY_SCENE = preload("res://scenes/enemy.tscn")
 const SHOP_SCENE = preload("res://scenes/shop.tscn")
 
+# Resources
+const JUMP_SOUND = preload("res://sounds/パパッ.mp3")
+const MONEY_SOUND = preload("res://sounds/金額表示.mp3")
+const GEAR_SOUND = preload("res://sounds/きらーん1.mp3")
+const DAMAGE_SOUND = preload("res://sounds/ビシッとツッコミ2.mp3")
+const GAMEOVER_SOUND = preload("res://sounds/お寺の鐘.mp3")
+const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
+
 # Nodes
 @onready var _hero = $Hero
 @onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
 @onready var _walls = $Walls
-@onready var _bgm_player = $AudioStreamPlayer2D
+@onready var _audio_players = $AudioPlayers
+@onready var _bgm_player = $AudioPlayers/BGM
+@onready var _se_player = $AudioPlayers/SE
+@onready var _se_player_ui = $AudioPlayers/SE2
 
 # Constants
 const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
-const SLOW_SPEED_GAMEOVER = 0.25 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_SPEED_SHOP = 0.75 # Shop 入店中に何倍速のスローになるか
+const SLOW_SPEED_GAMEOVER = 0.5 # ゲームオーバー時に何倍速のスローになるか
 const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px)
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
@@ -63,7 +74,7 @@ func _process(delta):
 	# Hero に追随させる
 	if (_hero != null):
 		_walls.position.x = _hero.position.x
-		_bgm_player.position.x = _hero.position.x
+		_audio_players.position.x = _hero.position.x
 
 	_process_spawn_gate(delta)
 	_process_spawn_enemy(delta)
@@ -97,6 +108,12 @@ func _on_ui_jumped():
 		if (_bgm_position != null):
 			_bgm_player.play(_bgm_position)
 		Global.game_state = Global.GameState.ACTIVE
+	
+	# ゲーム中
+	if (Global.game_state == Global.GameState.ACTIVE):
+		# SE を鳴らす
+		_play_se_ui(JUMP_SOUND)
+
 
 
 func _on_ui_paused():
@@ -126,6 +143,7 @@ func _on_hero_damged():
 	# Hero の残機が 0 になった場合: ゲームオーバー
 	if (Global.life == 0):
 		Global.game_state = Global.GameState.GAMEOVER
+		_play_se(GAMEOVER_SOUND)
 		_enter_slow(SLOW_SPEED_GAMEOVER)
 		print("Game is ended.")
 		Global.game_ended.emit()
@@ -133,6 +151,7 @@ func _on_hero_damged():
 
 	# まだ残機がある場合: 無敵状態に突入する
 	if (!Global.is_hero_anti_damage):
+		_play_se(DAMAGE_SOUND)
 		_enter_anti_damage()
 
 
@@ -159,6 +178,7 @@ func _on_hero_got_level():
 
 func _on_hero_got_money():
 	Global.money += _money_base
+	_play_se(MONEY_SOUND)
 
 
 func _on_hero_entered_shop():
@@ -176,6 +196,7 @@ func _on_hero_exited_shop():
 func _on_hero_got_gear(gear):
 	Global.money -= Gear.GEAR_INFO[gear]["c"]
 	Gear.my_gears += [gear]
+	_play_se(GEAR_SOUND)
 
 	# ギアの効果を発動する
 	match (gear):
@@ -296,3 +317,16 @@ func _spawn_shop():
 	_shop.gate_gap = 256 + _gate_gap
 	get_tree().root.get_node("Main").add_child(_shop)
 	#print("Shop is spawned.")
+
+# SE を鳴らす
+func _play_se(sound):
+	_se_player.stop()
+	_se_player.stream = sound
+	_se_player.play()
+
+
+# SE を鳴らす (UI)
+func _play_se_ui(sound):
+	_se_player_ui.stop()
+	_se_player_ui.stream = sound
+	_se_player_ui.play()

@@ -86,9 +86,10 @@ func _on_area_2d_area_entered(area):
 		Global.hero_got_level.emit()
 
 	if (area.is_in_group("Money")):
-		print("Hero got money.")
-		Global.hero_got_money.emit()
-		area.queue_free()
+		if (Global.game_state == Global.GameState.ACTIVE):
+			print("Hero got money.")
+			Global.hero_got_money.emit()
+			area.queue_free()
 
 	if (area.is_in_group("Shop")):
 		print("Hero entered shop.")
