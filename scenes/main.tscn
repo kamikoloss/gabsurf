@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=22 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
@@ -13,6 +13,7 @@
 [ext_resource type="Texture2D" uid="uid://cr6qhnwts24w6" path="res://images/bg3.png" id="10_ewvld"]
 [ext_resource type="Texture2D" uid="uid://d05bnbjcevyb" path="res://images/bg2.png" id="11_tgw8p"]
 [ext_resource type="Texture2D" uid="uid://dgc5bj44x21n2" path="res://images/bg1.png" id="12_tgrh1"]
+[ext_resource type="AudioStream" uid="uid://f848jtf71m04" path="res://sounds/Cassette_Tape_Dream_2.mp3" id="14_fbbs1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iejyb"]
 bg_color = Color(0.501961, 0.25098, 0.25098, 0.752941)
@@ -463,6 +464,11 @@ motion_mirroring = Vector2(1540, 0)
 [node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer"]
 texture = ExtResource("12_tgrh1")
 centered = false
+
+[node name="AudioStreamPlayer2D" type="AudioStreamPlayer2D" parent="Game"]
+stream = ExtResource("14_fbbs1")
+volume_db = -3.0
+autoplay = true
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="UI" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="UI" method="_on_jump_button_down"]

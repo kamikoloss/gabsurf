@@ -9,6 +9,7 @@ const SHOP_SCENE = preload("res://scenes/shop.tscn")
 @onready var _hero = $Hero
 @onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
 @onready var _walls = $Walls
+@onready var _bgm_player = $AudioStreamPlayer2D
 
 # Constants
 const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
@@ -38,6 +39,9 @@ var _enemy_spawn_timer = 0.0
 
 var _slow_tween = null
 var _anti_damage_tween = null
+
+var _bgm_position = null
+
 var _rng = RandomNumberGenerator.new()
 
 
@@ -56,9 +60,10 @@ func _ready():
 
 
 func _process(delta):
-	# Walls を Hero に追随させる
+	# Hero に追随させる
 	if (_hero != null):
 		_walls.position.x = _hero.position.x
+		_bgm_player.position.x = _hero.position.x
 
 	_process_spawn_gate(delta)
 	_process_spawn_enemy(delta)
@@ -89,6 +94,8 @@ func _on_ui_jumped():
 		Engine.time_scale = 1.0
 		set_process(true)
 		set_physics_process(true)
+		if (_bgm_position != null):
+			_bgm_player.play(_bgm_position)
 		Global.game_state = Global.GameState.ACTIVE
 
 
@@ -98,6 +105,8 @@ func _on_ui_paused():
 		Engine.time_scale = 0.0
 		set_process(false)
 		set_physics_process(false)
+		_bgm_position = _bgm_player.get_playback_position()
+		_bgm_player.stop()
 		Global.game_state = Global.GameState.PAUSED
 
 
@@ -109,6 +118,9 @@ func _on_ui_retried():
 
 
 func _on_hero_damged():
+	if (Global.game_state != Global.GameState.ACTIVE):
+		return
+
 	Global.life -= 1
 
 	# Hero の残機が 0 になった場合: ゲームオーバー
@@ -195,12 +207,18 @@ func _get_slow_tween():
 
 # 通常速度からスローになっていく
 func _enter_slow(speed):
-	_get_slow_tween().tween_property(Engine, "time_scale", speed, SLOW_DURATION)
+	var _tween = _get_slow_tween()
+	_tween.set_parallel(true)	
+	_tween.tween_property(Engine, "time_scale", speed, SLOW_DURATION)
+	_tween.tween_property(_bgm_player, "pitch_scale", speed, SLOW_DURATION)
 
 
 # スローから通常速度になっていく
 func _exit_slow():
-	_get_slow_tween().tween_property(Engine, "time_scale", 1.0, SLOW_DURATION)
+	var _tween = _get_slow_tween()
+	_tween.set_parallel(true)
+	_tween.tween_property(Engine, "time_scale", 1.0, SLOW_DURATION)
+	_tween.tween_property(_bgm_player, "pitch_scale", 1.0, SLOW_DURATION)
 
 
 # 無敵時間用の Tween を取得する
