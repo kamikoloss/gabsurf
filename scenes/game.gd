@@ -7,12 +7,13 @@ const SHOP_SCENE = preload("res://scenes/shop.tscn")
 
 # Nodes
 @onready var _hero = $Hero
+@onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
 @onready var _walls = $Walls
 
 # Constants
 const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
 const SLOW_SPEED_GAMEOVER = 0.25 # ゲームオーバー時に何倍速のスローになるか
-const SLOW_SPEED_SHOP = 0.5 # Shop 入店中に何倍速のスローになるか
+const SLOW_SPEED_SHOP = 0.75 # Shop 入店中に何倍速のスローになるか
 const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px)
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
@@ -36,6 +37,7 @@ var _enemy_spawn_cooltime = 3.0 # 何秒ごとに敵を生成するか
 var _enemy_spawn_timer = 0.0
 
 var _slow_tween = null
+var _anti_damage_tween = null
 var _rng = RandomNumberGenerator.new()
 
 
@@ -75,6 +77,8 @@ func _initialize_game():
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
 
+	_hero_anti_damage_bar.visible = false
+
 	Global.game_initialized.emit()
 
 
@@ -113,6 +117,11 @@ func _on_hero_damged():
 		_enter_slow(SLOW_SPEED_GAMEOVER)
 		print("Game is ended.")
 		Global.game_ended.emit()
+		return
+
+	# まだ残機がある場合: 無敵状態に突入する
+	if (!Global.is_hero_anti_damage):
+		_enter_anti_damage()
 
 
 func _on_hero_got_level():
@@ -192,6 +201,31 @@ func _enter_slow(speed):
 # スローから通常速度になっていく
 func _exit_slow():
 	_get_slow_tween().tween_property(Engine, "time_scale", 1.0, SLOW_DURATION)
+
+
+# 無敵時間用の Tween を取得する
+func _get_anti_damage_tween():
+	if (_anti_damage_tween):
+		_anti_damage_tween.kill()
+
+	_anti_damage_tween = create_tween()
+	_anti_damage_tween.set_trans(Tween.TRANS_LINEAR)
+	return _anti_damage_tween
+
+
+# 無敵状態に突入する
+func _enter_anti_damage():
+	Global.is_hero_anti_damage = true
+
+	var _tween = _get_anti_damage_tween()
+	var _duration = 10.0
+	_hero_anti_damage_bar.visible = true
+	_hero_anti_damage_bar.value = 100
+
+	_tween.tween_property(_hero_anti_damage_bar, "value", 0, _duration)
+	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
+	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
+	_tween.tween_callback(func(): print("hogehoge"))
 
 
 # ゲートを生成する

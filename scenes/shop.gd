@@ -16,7 +16,6 @@ const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
 # Variables
 var number = 0
 var gate_gap = 0
-
 var gear_a = null
 var gear_b = null
 

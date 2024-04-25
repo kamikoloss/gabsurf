@@ -34,6 +34,7 @@ enum GameState {
 
 # Variables
 var game_state = GameState.TITLE
+var is_hero_anti_damage = false # 無敵状態かどうか
 
 var level = 0:
 	get:
@@ -76,6 +77,8 @@ var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
 	game_state = GameState.TITLE
+	is_hero_anti_damage = false
+
 	level = 0
 	money = 0
 	extra = 1

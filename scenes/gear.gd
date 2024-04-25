@@ -35,11 +35,11 @@ const GEAR_INFO = {
 # 最初から店に並ぶギアのリストのデフォルト値
 const GEARS_DEFAULT = [ 
 	#GearType.DEC,
-	GearType.EXT,
-	GearType.JET,
-	GearType.KIL,
+	#GearType.EXT,
+	#GearType.JET,
+	#GearType.KIL,
 	GearType.LIF,
-	GearType.MIS,
+	#GearType.MIS,
 	GearType.SHO,
 ]
 
