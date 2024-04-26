@@ -23,9 +23,10 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 @onready var _se_player_ui = $AudioPlayers/SE2
 
 # Constants
-const SLOW_DURATION = 1.0 # スロー状態に何秒かけて移行するか
-const SLOW_SPEED_SHOP = 0.75 # Shop 入店中に何倍速のスローになるか
-const SLOW_SPEED_GAMEOVER = 0.5 # ゲームオーバー時に何倍速のスローになるか
+const SLOW_DURATION_SHOP = 1.0 # 入店時に何秒かけてスローになるか
+const SLOW_SPEED_SHOP = 0.8 # Shop 入店時に何倍速のスローになるか
+const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
+const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px)
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
@@ -144,7 +145,7 @@ func _on_hero_damged():
 	if (Global.life == 0):
 		Global.game_state = Global.GameState.GAMEOVER
 		_play_se(GAMEOVER_SOUND)
-		_enter_slow(SLOW_SPEED_GAMEOVER)
+		_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 		print("Game is ended.")
 		Global.game_ended.emit()
 		return
@@ -183,12 +184,12 @@ func _on_hero_got_money():
 
 func _on_hero_entered_shop():
 	if (Global.game_state == Global.GameState.ACTIVE):
-		_enter_slow(SLOW_SPEED_SHOP)
+		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
 
 
 func _on_hero_exited_shop():
 	if (Global.game_state == Global.GameState.ACTIVE):
-		_exit_slow()
+		_exit_slow(SLOW_DURATION_SHOP)
 		_is_spawn_gate = true
 		_is_spawn_enemy = true
 
@@ -227,19 +228,20 @@ func _get_slow_tween():
 
 
 # 通常速度からスローになっていく
-func _enter_slow(speed):
+func _enter_slow(speed, duration):
+	var _bgm_speed = (1.0 + speed) / 2 # BGM は弱めのスロー
 	var _tween = _get_slow_tween()
 	_tween.set_parallel(true)	
-	_tween.tween_property(Engine, "time_scale", speed, SLOW_DURATION)
-	_tween.tween_property(_bgm_player, "pitch_scale", speed, SLOW_DURATION)
+	_tween.tween_property(Engine, "time_scale", speed, duration)
+	_tween.tween_property(_bgm_player, "pitch_scale", _bgm_speed, duration)
 
 
 # スローから通常速度になっていく
-func _exit_slow():
+func _exit_slow(duration):
 	var _tween = _get_slow_tween()
 	_tween.set_parallel(true)
-	_tween.tween_property(Engine, "time_scale", 1.0, SLOW_DURATION)
-	_tween.tween_property(_bgm_player, "pitch_scale", 1.0, SLOW_DURATION)
+	_tween.tween_property(Engine, "time_scale", 1.0, duration)
+	_tween.tween_property(_bgm_player, "pitch_scale", 1.0, duration)
 
 
 # 無敵時間用の Tween を取得する
@@ -257,7 +259,7 @@ func _enter_anti_damage():
 	Global.is_hero_anti_damage = true
 
 	var _tween = _get_anti_damage_tween()
-	var _duration = 10.0
+	var _duration = 1.0
 	_hero_anti_damage_bar.visible = true
 	_hero_anti_damage_bar.value = 100
 
@@ -317,6 +319,7 @@ func _spawn_shop():
 	_shop.gate_gap = 256 + _gate_gap
 	get_tree().root.get_node("Main").add_child(_shop)
 	#print("Shop is spawned.")
+
 
 # SE を鳴らす
 func _play_se(sound):

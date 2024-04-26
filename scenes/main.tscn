@@ -329,6 +329,42 @@ theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "●"
 
+[node name="ParallaxBackground" type="ParallaxBackground" parent="UI"]
+offset = Vector2(0, -10)
+transform = Transform2D(1, 0, 0, 1, 0, -10)
+
+[node name="ParallaxLayer4" type="ParallaxLayer" parent="UI/ParallaxBackground"]
+motion_scale = Vector2(0.2, 0.2)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="UI/ParallaxBackground/ParallaxLayer4"]
+texture = ExtResource("9_jgobs")
+centered = false
+
+[node name="ParallaxLayer3" type="ParallaxLayer" parent="UI/ParallaxBackground"]
+motion_scale = Vector2(0.4, 0.4)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="UI/ParallaxBackground/ParallaxLayer3"]
+texture = ExtResource("10_ewvld")
+centered = false
+
+[node name="ParallaxLayer2" type="ParallaxLayer" parent="UI/ParallaxBackground"]
+motion_scale = Vector2(0.8, 0.8)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="UI/ParallaxBackground/ParallaxLayer2"]
+texture = ExtResource("11_tgw8p")
+centered = false
+
+[node name="ParallaxLayer" type="ParallaxLayer" parent="UI/ParallaxBackground"]
+motion_scale = Vector2(1.6, 1.6)
+motion_mirroring = Vector2(1540, 0)
+
+[node name="Bg1" type="Sprite2D" parent="UI/ParallaxBackground/ParallaxLayer"]
+texture = ExtResource("12_tgrh1")
+centered = false
+
 [node name="Game" type="Node2D" parent="."]
 script = ExtResource("1_sqtl6")
 
@@ -420,50 +456,6 @@ texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
-
-[node name="Gates" type="Sprite2D" parent="Game"]
-clip_children = 1
-z_index = 9
-position = Vector2(180, 320)
-scale = Vector2(2, 1.875)
-texture = ExtResource("3_fq3iy")
-
-[node name="ParallaxBackground" type="ParallaxBackground" parent="Game"]
-offset = Vector2(0, -10)
-transform = Transform2D(1, 0, 0, 1, 0, -10)
-
-[node name="ParallaxLayer4" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-motion_scale = Vector2(0.2, 0.2)
-motion_mirroring = Vector2(1540, 0)
-
-[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer4"]
-texture = ExtResource("9_jgobs")
-centered = false
-
-[node name="ParallaxLayer3" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-motion_scale = Vector2(0.4, 0.4)
-motion_mirroring = Vector2(1540, 0)
-
-[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer3"]
-texture = ExtResource("10_ewvld")
-centered = false
-
-[node name="ParallaxLayer2" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-motion_scale = Vector2(0.8, 0.8)
-motion_mirroring = Vector2(1540, 0)
-
-[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer2"]
-texture = ExtResource("11_tgw8p")
-centered = false
-
-[node name="ParallaxLayer" type="ParallaxLayer" parent="Game/ParallaxBackground"]
-z_index = 15
-motion_scale = Vector2(1.6, 1.6)
-motion_mirroring = Vector2(1540, 0)
-
-[node name="Bg1" type="Sprite2D" parent="Game/ParallaxBackground/ParallaxLayer"]
-texture = ExtResource("12_tgrh1")
-centered = false
 
 [node name="AudioPlayers" type="Node2D" parent="Game"]
 

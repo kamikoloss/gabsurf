@@ -98,6 +98,7 @@ func _on_area_2d_area_entered(area):
 	if (area.is_in_group("Gear")):
 		var _shop = area.get_node("../../")
 		var _gear = area.get_node("../")
+		var _gear_image = _gear.get_node("./Image")
 		var _is_gear_a = area.global_position.y < 320 # TODO: ひどい
 		var _gear_type = _shop.gear_a if _is_gear_a else _shop.gear_b 
 		if (Global.money < Gear.GEAR_INFO[_gear_type]["c"]):
@@ -106,7 +107,7 @@ func _on_area_2d_area_entered(area):
 		else:
 			print("Hero got gear {0}.".format([_gear_type]))
 			Global.hero_got_gear.emit(_gear_type)
-			_gear.queue_free()
+			_gear_image.queue_free()
 
 
 func _on_area_2d_area_exited(area):
