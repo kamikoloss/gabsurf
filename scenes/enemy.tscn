@@ -1,4 +1,4 @@
-[gd_scene load_steps=7 format=3 uid="uid://gcdoe2l0jlmr"]
+[gd_scene load_steps=8 format=3 uid="uid://gcdoe2l0jlmr"]
 
 [ext_resource type="Script" path="res://scenes/enemy.gd" id="1_8q5bn"]
 [ext_resource type="Texture2D" uid="uid://dihvqfmg1whbt" path="res://images/enemy1.png" id="1_dp5p4"]
@@ -22,7 +22,10 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_h7ter"]
 radius = 64.0
 
-[node name="Enemy" type="Area2D" groups=["Wall"]]
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rpv58"]
+size = Vector2(96, 32)
+
+[node name="Enemy" type="Area2D" groups=["Enemy"]]
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_8q5bn")
 
@@ -38,3 +41,9 @@ visible = false
 self_modulate = Color(1, 0, 0, 0.25098)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_tfefr")
+
+[node name="Area2D" type="Area2D" parent="." groups=["Weak"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -64)
+shape = SubResource("RectangleShape2D_rpv58")

@@ -78,8 +78,19 @@ func _on_life_changed(value):
 func _on_area_2d_area_entered(area):
 	if (area.is_in_group("Wall")):
 		if (!Global.is_hero_anti_damage):
-			print("Hero is damged.")
+			print("Hero is damged by wall.")
 			Global.hero_damged.emit()
+
+	if (area.is_in_group("Enemy")):
+		if (!Global.is_hero_anti_damage && !area.is_dead):
+			print("Hero is damged by enemy.")
+			Global.hero_damged.emit()
+
+	if (area.is_in_group("Weak")):
+		print("Hero attacks.")
+		var _enemy = area.get_node("../")
+		Global.enemy_damaged.emit()
+		_enemy.die()
 
 	if (area.is_in_group("Level")):
 		print("Hero got level.")

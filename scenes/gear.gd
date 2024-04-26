@@ -29,7 +29,7 @@ const GEAR_INFO = {
 	GearType.KIL: { "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +2",  "c": 3, "m": 3, "i": 6 },
 	GearType.LIF: { "t": "生命保険", "d": "残機 +1", "c": 3, "m": null, "i": 3 },
 	GearType.MIS: { "t": "ミサイル", "d": "ジャンプ5回ごとに\nミサイルを1発発射する",  "m": 3, "c": 3, "i": 6, },
-	#GearType.SHO: { "t": "安全靴", "d": "敵を踏んで倒せるようになる", "c": 3, "m": 1, "i": 7 },
+	GearType.SHO: { "t": "安全靴", "d": "敵を踏んで倒せるようになる", "c": 3, "m": 1, "i": 7 },
 }
 
 # 最初から店に並ぶギアのリストのデフォルト値
@@ -39,8 +39,8 @@ const GEARS_DEFAULT = [
 	GearType.JET,
 	#GearType.KIL,
 	GearType.LIF,
-	#GearType.MIS,
-	#GearType.SHO,
+	GearType.MIS,
+	GearType.SHO,
 ]
 
 

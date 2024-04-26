@@ -16,6 +16,8 @@ signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき
 signal hero_got_gear # Gear を取ったとき
 
+signal enemy_damaged # Hero が Enemy を倒したとき
+
 signal level_changed
 signal money_changed
 signal extra_changed
