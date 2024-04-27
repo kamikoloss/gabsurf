@@ -6,7 +6,7 @@ extends Area2D
 
 # Variables
 var is_dead = false
-var speed = 40 # 飛行速度 (px/s)
+var speed = 50 # 飛行速度 (px/s)
 
 var _dead_velocity = Vector2.ZERO
 

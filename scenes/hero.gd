@@ -67,11 +67,20 @@ func _on_ui_jumped():
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
 
-	# MIS 所持中: ジャンプn回ごとにミサイルを発射する
+	# MIS 所持中
 	if Gear.my_gears.has(Gear.GearType.MIS):
 		_jump_counter_weapon += 1
+
+		var _jump_text = ""
+		for n in _jump_counter_weapon:
+			_jump_text += "●"
+		for n in (_jump_counter_weapon_quota - _jump_counter_weapon):
+			_jump_text += "○"
+		_jump_label.text = _jump_text
+
 		if _jump_counter_weapon_quota <= _jump_counter_weapon:
 			_jump_counter_weapon = 0
+			# ミサイルを発射する
 			var _weapon = WEAPON_SCENE.instantiate()
 			_weapon.position = position
 			get_tree().root.get_node("Main").add_child(_weapon)
