@@ -11,6 +11,7 @@ size = Vector2(480, 640)
 radius = 32.0
 
 [node name="Shop" type="Node2D"]
+z_index = 10
 script = ExtResource("1_t1qse")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Shop"]]

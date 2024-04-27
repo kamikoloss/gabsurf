@@ -24,11 +24,13 @@ func _ready():
 	_enter_label.text = str(number)
 	_exit_label.text = str(gate_gap)
 	
-	# 店に並べるギアを抽選する
+	# 店に並べるギアを2つ抽選する
+	# 被らないようにする
+	# TODO: 最大保持数を超えているギアは出現させないようにする
 	gear_a = Gear.get_random_gear()
 	for n in 100:
 		gear_b = Gear.get_random_gear()
-		if (gear_a != gear_b):
+		if gear_a != gear_b:
 			break
 	print("Gears are {0} and {1}.".format([gear_a, gear_b]))
 

@@ -67,13 +67,14 @@ func _ready():
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
+	Global.hero_kills_enemy.connect(_on_hero_kills_enemy)
 
 	_initialize_game()
 
 
 func _process(delta):
 	# Hero に追随させる
-	if (_hero != null):
+	if _hero != null:
 		_walls.position.x = _hero.position.x
 		_audio_players.position.x = _hero.position.x
 
@@ -102,7 +103,7 @@ func _initialize_game():
 func _on_ui_jumped():
 	# タイトル or ポーズ中 -> ゲーム中
 	var states = [Global.GameState.TITLE, Global.GameState.PAUSED]
-	if (states.has(Global.game_state)):
+	if states.has(Global.game_state):
 		Engine.time_scale = 1.0
 		set_process(true)
 		set_physics_process(true)
@@ -111,7 +112,7 @@ func _on_ui_jumped():
 		Global.game_state = Global.GameState.ACTIVE
 	
 	# ゲーム中
-	if (Global.game_state == Global.GameState.ACTIVE):
+	if Global.game_state == Global.GameState.ACTIVE:
 		# SE を鳴らす
 		_play_se_ui(JUMP_SOUND)
 
@@ -119,7 +120,7 @@ func _on_ui_jumped():
 
 func _on_ui_paused():
 	# ゲーム中 -> ポーズ中
-	if (Global.game_state == Global.GameState.ACTIVE):
+	if Global.game_state == Global.GameState.ACTIVE:
 		Engine.time_scale = 0.0
 		set_process(false)
 		set_physics_process(false)
@@ -131,18 +132,19 @@ func _on_ui_paused():
 func _on_ui_retried():
 	# ポーズ中 or ゲームオーバー: シーンを再読み込みする
 	var states = [Global.GameState.PAUSED, Global.GameState.GAMEOVER]
-	if (states.has(Global.game_state)):
+	if states.has(Global.game_state):
 		get_tree().reload_current_scene()
 
 
 func _on_hero_damged():
-	if (Global.game_state != Global.GameState.ACTIVE):
+	# ゲーム中でない: ダメージを受けても何も起きない
+	if Global.game_state != Global.GameState.ACTIVE:
 		return
 
 	Global.life -= 1
 
 	# Hero の残機が 0 になった場合: ゲームオーバー
-	if (Global.life == 0):
+	if Global.life == 0:
 		Global.game_state = Global.GameState.GAMEOVER
 		_play_se(GAMEOVER_SOUND)
 		_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
@@ -151,7 +153,7 @@ func _on_hero_damged():
 		return
 
 	# まだ残機がある場合: 無敵状態に突入する
-	if (!Global.is_hero_anti_damage):
+	if !Global.is_hero_anti_damage:
 		_play_se(DAMAGE_SOUND)
 		_enter_anti_damage()
 
@@ -162,14 +164,14 @@ func _on_hero_got_level():
 	_gate_counter_difficult += 1
 
 	# 難易度上昇の規定回数に達した場合
-	if (_gate_counter_difficult_quota <= _gate_counter_difficult):
+	if _gate_counter_difficult_quota <= _gate_counter_difficult:
 		_gate_counter_difficult = 0
 		_gate_gap -= GATE_GAP_STEP
 		print("current gate gap: {0}".format([_gate_gap]))
 
 	# 店生成の規定回数に達した場合
 	# 店の看板で難易度を表示するので難易度の処理よりあとに書く
-	if (_gate_counter_shop_quota <= _gate_counter_shop):
+	if _gate_counter_shop_quota <= _gate_counter_shop:
 		_gate_counter_shop = 0
 		_shop_counter += 1
 		_is_spawn_gate = false
@@ -183,12 +185,12 @@ func _on_hero_got_money():
 
 
 func _on_hero_entered_shop():
-	if (Global.game_state == Global.GameState.ACTIVE):
+	if Global.game_state == Global.GameState.ACTIVE:
 		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
 
 
 func _on_hero_exited_shop():
-	if (Global.game_state == Global.GameState.ACTIVE):
+	if Global.game_state == Global.GameState.ACTIVE:
 		_exit_slow(SLOW_DURATION_SHOP)
 		_is_spawn_gate = true
 		_is_spawn_enemy = true
@@ -200,7 +202,7 @@ func _on_hero_got_gear(gear):
 	_play_se(GEAR_SOUND)
 
 	# ギアの効果を発動する
-	match (gear):
+	match gear:
 		Gear.GearType.EXT:
 			Global.extra += 5
 		Gear.GearType.JET:
@@ -216,9 +218,13 @@ func _on_hero_got_gear(gear):
 			pass
 
 
+func _on_hero_kills_enemy():
+	_play_se(DAMAGE_SOUND)
+
+
 # スロー用の Tween を取得する
 func _get_slow_tween():
-	if (_slow_tween):
+	if _slow_tween:
 		_slow_tween.kill()
 
 	_slow_tween = create_tween()
@@ -246,7 +252,7 @@ func _exit_slow(duration):
 
 # 無敵時間用の Tween を取得する
 func _get_anti_damage_tween():
-	if (_anti_damage_tween):
+	if _anti_damage_tween:
 		_anti_damage_tween.kill()
 
 	_anti_damage_tween = create_tween()
@@ -259,14 +265,14 @@ func _enter_anti_damage():
 	Global.is_hero_anti_damage = true
 
 	var _tween = _get_anti_damage_tween()
-	var _duration = 1.0
+	var _duration = 1.0 # TODO: 引数にする
 	_hero_anti_damage_bar.visible = true
 	_hero_anti_damage_bar.value = 100
 
 	_tween.tween_property(_hero_anti_damage_bar, "value", 0, _duration)
 	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
 	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
-	_tween.tween_callback(func(): print("hogehoge"))
+	#_tween.tween_callback(func(): print("Anti-damage is finished."))
 
 
 # ゲートを生成する
@@ -282,10 +288,10 @@ func _spawn_gate():
 
 # ゲートを生成しつづける (_process 内で呼ぶ)
 func _process_spawn_gate(delta):
-	if (_is_spawn_gate):
+	if _is_spawn_gate:
 		_gate_spawn_timer += delta
 
-	if (_gate_spawn_cooltime < _gate_spawn_timer):
+	if _gate_spawn_cooltime < _gate_spawn_timer:
 		_spawn_gate()
 		_gate_spawn_timer = 0
 
@@ -302,10 +308,10 @@ func _spawn_enemy():
 
 # 敵を生成しつづける (_process 内で呼ぶ)
 func _process_spawn_enemy(delta):
-	if (_is_spawn_enemy):
+	if _is_spawn_enemy:
 		_enemy_spawn_timer += delta
 
-	if (_enemy_spawn_cooltime < _enemy_spawn_timer):
+	if _enemy_spawn_cooltime < _enemy_spawn_timer:
 		_spawn_enemy()
 		_enemy_spawn_timer = 0
 

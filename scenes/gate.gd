@@ -19,7 +19,7 @@ func _ready():
 	_gate_top.position.y -= gap / 2
 	_gate_bottom.position.y += gap / 2
 
-	# ゲートの上下
+	# ゲートの座標
 	_gate_top.position.y += height_diff
 	_gate_bottom.position.y += height_diff
 	_money.position.y += height_diff

@@ -22,9 +22,9 @@ enum GearType {
 # ギアの情報
 # { "t": <名称>, "d": <説明文>, "c": <コスト>, "m": 最大何個買えるか, "i": <アイコン画像の index> },
 const GEAR_INFO = {
-	#GearType.DEC: { "t": "デコンパイラ", "d": "ガブと敵と壁の当たり判定が\n見えるようになる", "c": 3, "i": 0 },
+	GearType.DEC: { "t": "デコンパイラ", "d": "ガブと敵と壁の当たり判定が\n見えるようになる", "c": 3, "i": 0 },
 	GearType.EXT: { "t": "エナジーフード", "d": "EXTRA +5", "c": 3, "m": null, "i": 2 },
-	#GearType.GAT: { "t": "自撮りドローン", "d": "ゲートが{0}個ずつ\n出てくるようになる", "m": 3, "c": 3, "i": 1 },
+	GearType.GAT: { "t": "自撮りドローン", "d": "ゲートが{0}個ずつ\n出てくるようになる", "m": 3, "c": 3, "i": 1 },
 	GearType.JET: { "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "c": 3, "m": 1, "i": 7 },
 	GearType.KIL: { "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +2",  "c": 3, "m": 3, "i": 6 },
 	GearType.LIF: { "t": "生命保険", "d": "残機 +1", "c": 3, "m": null, "i": 3 },
@@ -35,8 +35,8 @@ const GEAR_INFO = {
 # 最初から店に並ぶギアのリストのデフォルト値
 const GEARS_DEFAULT = [ 
 	#GearType.DEC,
-	GearType.EXT,
-	GearType.JET,
+	#GearType.EXT,
+	#GearType.JET,
 	#GearType.KIL,
 	GearType.LIF,
 	GearType.MIS,

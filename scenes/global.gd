@@ -15,8 +15,7 @@ signal hero_got_money # Money を取ったとき
 signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき
 signal hero_got_gear # Gear を取ったとき
-
-signal enemy_damaged # Hero が Enemy を倒したとき
+signal hero_kills_enemy # Enemy を倒したとき
 
 signal level_changed
 signal money_changed
@@ -37,6 +36,7 @@ enum GameState {
 # Variables
 var game_state = GameState.TITLE
 var is_hero_anti_damage = false # 無敵状態かどうか
+var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
 
 var level = 0:
 	get:
@@ -69,10 +69,9 @@ var life = 1:
 	get:
 		return life
 	set(value):
+		var _is_damage = value < life # 減ったかどうか 
 		life = value
-		life_changed.emit(value)
-
-var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
+		life_changed.emit(value, _is_damage)
 
 
 # グローバル変数の初期化を行う
@@ -80,13 +79,13 @@ var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
 func initialize():
 	game_state = GameState.TITLE
 	is_hero_anti_damage = false
+	hero_move_velocity = 200
 
 	level = 0
 	money = 0
 	extra = 1
 	score = 0
 	life = 1
-	hero_move_velocity = 200
 
 
 # Score を計算する

@@ -8,12 +8,14 @@ extends Area2D
 var is_dead = false
 var speed = 50 # 飛行速度 (px/s)
 
+var _dead_velocity = Vector2.ZERO
 
 # Constants
 const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
-const DEAD_VELOCITY = Vector2(200, -800) # 死んだときに吹き飛ぶベクトル
-const DEAD_ROTATION_SPEED = 20 # 死んだときに回転するスピード
-#const DEAD_COLOR = 
+const FALL_VELOCITY = Vector2(0, 800) # 落下速度
+const DEAD_VELOCITY = Vector2(400, -400) # 死んだときに吹き飛ぶベクトル
+const DEAD_ROTATION = 20 # 死んだときに回転するスピード
+const DEAD_COLOR = Color(0, 0, 255) # 死んだときになる色
 
 
 func _ready():
@@ -23,14 +25,16 @@ func _ready():
 func _process(delta):
 	position.x -= 50 * delta
 
-	if (is_dead):
-		position += DEAD_VELOCITY * delta
-		rotation += DEAD_ROTATION_SPEED * delta
+	if is_dead:
+		_dead_velocity += FALL_VELOCITY * delta
+		position += _dead_velocity * delta
+		rotation += DEAD_ROTATION * delta
 
 
 func die():
 	is_dead = true
-	_sprite.modulate = Color(0, 0, 255)
+	_dead_velocity = DEAD_VELOCITY
+	_sprite.modulate = DEAD_COLOR
 
 
 # 指定秒数後に自身を破壊する

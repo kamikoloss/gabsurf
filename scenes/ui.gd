@@ -11,14 +11,12 @@ extends Control
 
 
 func _ready():
-	# Signal 接続
 	Global.game_initialized.connect(_on_game_initialized)
 	Global.game_ended.connect(_on_game_ended)
 	Global.level_changed.connect(_on_level_changed)
 	Global.money_changed.connect(_on_money_changed)
 	Global.extra_changed.connect(_on_extra_changed)
 	Global.score_changed.connect(_on_score_changed)
-	Global.life_changed.connect(_on_life_changed)
 
 
 # 入力制御
@@ -38,15 +36,15 @@ func _input(event):
 func _on_jump_button_down():
 	# タイトル or ポーズ中: Body を非表示にする
 	var states = [Global.GameState.TITLE, Global.GameState.PAUSED]
-	if (states.has(Global.game_state)):
+	if states.has(Global.game_state):
 		_body_labels.visible = false
 
 	Global.ui_jumped.emit()
 
 
 func _on_pause_button_down():
-	# ゲーム中: Body を表示する
-	if (Global.game_state == Global.GameState.ACTIVE):
+	# ゲーム中: Body (画面中央 UI) を表示する
+	if Global.game_state == Global.GameState.ACTIVE:
 		_body_labels.visible = true
 		_label_title.text = "PAUSED"
 		_label_description.text = "▲ / Space でゲーム再開\n● / Enter でリトライ"
@@ -84,7 +82,3 @@ func _on_extra_changed(value):
 
 func _on_score_changed(value):
 	_label_score.text = str(value)
-
-
-func _on_life_changed(value):
-	pass # TODO

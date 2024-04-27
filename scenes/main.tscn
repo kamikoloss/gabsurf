@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=23 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
@@ -75,6 +75,9 @@ animations = [{
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_oj05t"]
 radius = 64.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_e62gy"]
+size = Vector2(96, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
 size = Vector2(256, 256)
@@ -370,7 +373,6 @@ script = ExtResource("1_sqtl6")
 
 [node name="Hero" type="CharacterBody2D" parent="Game"]
 z_index = 30
-z_as_relative = false
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("3_ksiqv")
@@ -384,7 +386,6 @@ limit_bottom = 0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Game/Hero"]
 sprite_frames = SubResource("SpriteFrames_5tnh0")
-animation = &"die"
 autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero"]
@@ -396,20 +397,38 @@ self_modulate = Color(0, 1, 0, 0.25098)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_h180i")
 
-[node name="Area2D" type="Area2D" parent="Game/Hero"]
+[node name="Body" type="Area2D" parent="Game/Hero"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Body"]
 shape = SubResource("CircleShape2D_oj05t")
+
+[node name="Shoes" type="Area2D" parent="Game/Hero"]
+scale = Vector2(1, 1)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Shoes"]
+position = Vector2(0, 80)
+shape = SubResource("RectangleShape2D_e62gy")
 
 [node name="UI" type="Control" parent="Game/Hero"]
 layout_mode = 3
 anchors_preset = 0
 
+[node name="Jump" type="Label" parent="Game/Hero/UI"]
+offset_left = -160.0
+offset_top = -140.0
+offset_right = 160.0
+offset_bottom = -100.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "●●●○○"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Game/Hero/UI"]
 offset_left = -64.0
-offset_top = 112.0
+offset_top = 110.0
 offset_right = 192.0
-offset_bottom = 368.0
+offset_bottom = 366.0
 scale = Vector2(0.5, 0.05)
 step = 0.1
 value = 100.0
@@ -418,6 +437,7 @@ tint_progress = Color(1, 0, 1, 1)
 
 [node name="Life" type="Label" parent="Game/Hero/UI"]
 self_modulate = Color(1, 0, 1, 1)
+layout_mode = 0
 offset_left = -160.0
 offset_top = 120.0
 offset_right = 160.0
@@ -472,5 +492,6 @@ volume_db = -3.0
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="UI" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="UI" method="_on_jump_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Retry" to="UI" method="_on_retry_button_down"]
-[connection signal="area_entered" from="Game/Hero/Area2D" to="Game/Hero" method="_on_area_2d_area_entered"]
-[connection signal="area_exited" from="Game/Hero/Area2D" to="Game/Hero" method="_on_area_2d_area_exited"]
+[connection signal="area_entered" from="Game/Hero/Body" to="Game/Hero" method="_on_body_area_entered"]
+[connection signal="area_exited" from="Game/Hero/Body" to="Game/Hero" method="_on_body_area_exited"]
+[connection signal="area_entered" from="Game/Hero/Shoes" to="Game/Hero" method="_on_shoes_area_entered"]

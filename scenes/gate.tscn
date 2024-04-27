@@ -61,6 +61,7 @@ animations = [{
 radius = 64.0
 
 [node name="Gate" type="Node2D"]
+z_index = 20
 script = ExtResource("1_ukssn")
 
 [node name="Mask" type="Sprite2D" parent="."]
