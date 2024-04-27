@@ -92,7 +92,7 @@ func _on_body_area_entered(area):
 			Global.hero_damged.emit()
 
 	if area.is_in_group("Enemy"):
-		if Global.is_hero_anti_damage && !area.is_dead:
+		if !Global.is_hero_anti_damage && !area.is_dead:
 			print("Hero is damged by enemy.")
 			Global.hero_damged.emit()
 

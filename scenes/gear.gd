@@ -33,29 +33,47 @@ const GEAR_INFO = {
 }
 
 # 最初から店に並ぶギアのリストのデフォルト値
-const GEARS_DEFAULT = [ 
+const GEARS_ON_SALE_DEFAULT = [ 
 	#GearType.DEC,
 	#GearType.EXT,
 	#GearType.JET,
 	#GearType.KIL,
-	GearType.LIF,
-	GearType.MIS,
+	#GearType.LIF,
+	#GearType.MIS,
 	GearType.SHO,
 ]
 
-
 # Variables
-var gears_on_sale = [] # 店に並ぶギアのリスト 売り切れたものは除外していく
+var gears_on_sale = [] # 店に並ぶギアのリスト
 var my_gears = [] # 所持しているギアのリスト
 
 
 # グローバル変数の初期化を行う
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
-	gears_on_sale = GEARS_DEFAULT
+	gears_on_sale = GEARS_ON_SALE_DEFAULT
 	my_gears = []
 
 
 # ランダムなギアを取得する
-func get_random_gear():
-	return gears_on_sale[randi() % gears_on_sale.size()]
+# 抽選に失敗した場合は null を返す
+func get_random_gear(_ignore_gear = null):
+	var _gear = null
+
+	for n in 10:
+		var _random = gears_on_sale[randi() % gears_on_sale.size()]
+		print(_random)
+		# 避けるギアが抽選された場合: 次のループへ
+		if (_random == _ignore_gear):
+			continue
+		# すでに持っている場合
+		if Gear.my_gears.has(_random):
+			# まだ持てる場合は店に並べる
+			if Gear.my_gears.count(_random) < Gear.GEAR_INFO[_random]["m"]:
+				_gear = _random
+				break
+		# まだ持っていない場合: 店に並べる
+		else:
+			_gear = _random
+
+	return _gear
