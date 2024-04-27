@@ -5,6 +5,9 @@
 [ext_resource type="Texture2D" uid="uid://js8md7ddgw43" path="res://images/enemy2.png" id="2_i21dx"]
 [ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="3_tfefr"]
 
+[sub_resource type="CircleShape2D" id="CircleShape2D_h7ter"]
+radius = 64.0
+
 [sub_resource type="SpriteFrames" id="SpriteFrames_ltb2c"]
 animations = [{
 "frames": [{
@@ -19,20 +22,18 @@ animations = [{
 "speed": 4.0
 }]
 
-[sub_resource type="CircleShape2D" id="CircleShape2D_h7ter"]
-radius = 64.0
-
 [node name="Enemy" type="Area2D" groups=["Enemy"]]
 z_index = 15
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_8q5bn")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+scale = Vector2(1, 1)
+shape = SubResource("CircleShape2D_h7ter")
+
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_ltb2c")
 autoplay = "default"
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-shape = SubResource("CircleShape2D_h7ter")
 
 [node name="CollisionCircle" type="Sprite2D" parent="."]
 visible = false

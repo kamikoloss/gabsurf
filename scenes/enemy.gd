@@ -6,7 +6,7 @@ extends Area2D
 
 # Variables
 var is_dead = false
-var speed = 50 # 飛行速度 (px/s)
+var speed = 40 # 飛行速度 (px/s)
 
 var _dead_velocity = Vector2.ZERO
 
@@ -23,7 +23,7 @@ func _ready():
 
 
 func _process(delta):
-	position.x -= 50 * delta
+	position.x -= speed * delta
 
 	if is_dead:
 		_dead_velocity += FALL_VELOCITY * delta

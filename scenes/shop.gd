@@ -33,17 +33,27 @@ func _ready():
 	print("Gears are {0} and {1}.".format([gear_a, gear_b]))
 
 	# 店にギアを並べる
-	if (gear_a == null):
+	if gear_a == null:
 		_gear_a_parent.queue_free()
 	else:
 		_gear_a_label_title.text = Gear.GEAR_INFO[gear_a]["t"]
-		_gear_a_label_description.text = Gear.GEAR_INFO[gear_a]["d"]
+		var _desc = Gear.GEAR_INFO[gear_a]["d"]
+		if Gear.GEAR_INFO[gear_a]["f"] != null:
+			var _format = Gear.GEAR_INFO[gear_a]["f"]
+			var _count = Gear.my_gears.count(gear_a)
+			_desc = _desc.format([_format[_count]])
+		_gear_a_label_description.text = _desc
 		_gear_a_sprite.texture = Gear.ITEM_SPRITES[Gear.GEAR_INFO[gear_a]["i"]]
 
-	if (gear_b == null):
+	if gear_b == null:
 		_gear_b_parent.queue_free()
 	else:
 		_gear_b_label_title.text = Gear.GEAR_INFO[gear_b]["t"]
+		var _desc = Gear.GEAR_INFO[gear_b]["d"]
+		if Gear.GEAR_INFO[gear_b]["f"] != null:
+			var _format = Gear.GEAR_INFO[gear_b]["f"]
+			var _count = Gear.my_gears.count(gear_b)
+			_desc.format([_format[_count]])
 		_gear_b_label_description.text = Gear.GEAR_INFO[gear_b]["d"]
 		_gear_b_sprite.texture = Gear.ITEM_SPRITES[Gear.GEAR_INFO[gear_b]["i"]]
 

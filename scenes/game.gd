@@ -208,14 +208,8 @@ func _on_hero_got_gear(gear):
 		Gear.GearType.JET:
 			Global.hero_move_velocity *= 1.25
 			Global.extra *= 2
-		Gear.GearType.KIL:
-			pass
 		Gear.GearType.LIF:
 			Global.life += 1
-		Gear.GearType.MIS:
-			pass
-		Gear.GearType.SHO:
-			pass
 
 
 func _on_hero_kills_enemy():
@@ -280,7 +274,7 @@ func _spawn_gate():
 	var _gate = GATE_SCENE.instantiate()
 	_gate.position.x += (_hero.position.x + 360)
 	_gate.position.y += 320
-	_gate.gap = _gate_gap
+	_gate.gap_diff = _gate_gap
 	_gate.height_diff += _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
 	get_tree().root.get_node("Main").add_child(_gate)
 	#print("Gate is spawned.")
