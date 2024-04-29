@@ -7,6 +7,7 @@
 size = Vector2(256, 64)
 
 [node name="Weapon" type="Area2D" groups=["Weapon"]]
+z_index = 16
 scale = Vector2(0.4, 0.4)
 script = ExtResource("1_66fqe")
 

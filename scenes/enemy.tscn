@@ -23,7 +23,7 @@ animations = [{
 }]
 
 [node name="Enemy" type="Area2D" groups=["Enemy"]]
-z_index = 15
+z_index = 14
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_8q5bn")
 

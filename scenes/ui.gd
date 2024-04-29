@@ -1,13 +1,21 @@
 extends Control
 
 
+# Nodes
 @onready var _body_labels = $CanvasLayer/Layout/Body/Labels
 @onready var _label_title = $CanvasLayer/Layout/Body/Labels/Title
 @onready var _label_description = $CanvasLayer/Layout/Body/Labels/Description
 @onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer/Label2
 @onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer/Label2
 @onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer/Label2
+@onready var _panel_score = $CanvasLayer/Layout/Header/VBoxContainer/Score
 @onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer/Label2
+
+# Constants
+var SHAKE_DURATION = 0.5
+
+# Variables
+var _shake_tween = null
 
 
 func _ready():
@@ -82,3 +90,20 @@ func _on_extra_changed(value):
 
 func _on_score_changed(value):
 	_label_score.text = str(value)
+	#_shake_ui(_label_score)
+
+
+func _get_shake_tween():
+	if _shake_tween:
+		_shake_tween.kill()
+
+	_shake_tween = create_tween()
+	return _shake_tween
+
+
+func _shake_ui(ui):
+	var _tween = _get_shake_tween()
+	var _pos = ui.position # 最初のポジション
+	_tween.set_parallel(true)
+	_tween.tween_property(ui, "position", Vector2(_pos.x, _pos.y + 40), SHAKE_DURATION).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
+	_tween.tween_property(ui, "position", Vector2(_pos.x, _pos.y), SHAKE_DURATION).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
