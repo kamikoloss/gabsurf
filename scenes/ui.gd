@@ -2,13 +2,12 @@ extends Control
 
 
 # Nodes
-@onready var _body_labels = $CanvasLayer/Layout/Body/Labels
-@onready var _label_title = $CanvasLayer/Layout/Body/Labels/Title
-@onready var _label_description = $CanvasLayer/Layout/Body/Labels/Description
+@onready var _panel_body = $CanvasLayer/Layout/Body/Panel
+@onready var _label_title = $CanvasLayer/Layout/Body/Panel/Labels/Title
+@onready var _label_description = $CanvasLayer/Layout/Body/Panel/Labels/Description
 @onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer/Label2
 @onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer/Label2
 @onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer/Label2
-@onready var _panel_score = $CanvasLayer/Layout/Header/VBoxContainer/Score
 @onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer/Label2
 
 # Constants
@@ -21,6 +20,7 @@ var _extra_from = 1
 var _score_from = 0
 
 var _level_tween = null
+var _money_tween = null
 var _extra_tween = null
 var _score_tween = null
 
@@ -52,7 +52,7 @@ func _on_jump_button_down():
 	# タイトル or ポーズ中: Body を非表示にする
 	var states = [Global.GameState.TITLE, Global.GameState.PAUSED]
 	if states.has(Global.game_state):
-		_body_labels.visible = false
+		_panel_body.visible = false
 
 	Global.ui_jumped.emit()
 
@@ -60,7 +60,7 @@ func _on_jump_button_down():
 func _on_pause_button_down():
 	# ゲーム中: Body (画面中央 UI) を表示する
 	if Global.game_state == Global.GameState.ACTIVE:
-		_body_labels.visible = true
+		_panel_body.visible = true
 		_label_title.text = "PAUSED"
 		_label_description.text = "▲ / Space でゲーム再開\n● / Enter でリトライ"
 
@@ -72,13 +72,13 @@ func _on_retry_button_down():
 
 
 func _on_game_initialized():
-	_body_labels.visible = true
+	_panel_body.visible = true
 	_label_title.text = "GABSURF"
 	_label_description.text = "▲ / Space でゲーム開始\n■ / Esc でポーズ"
 
 
 func _on_game_ended():
-	_body_labels.visible = true
+	_panel_body.visible = true
 	_label_title.text = "GAME OVER"
 	_label_description.text = "● / Enter でリトライ"
 
@@ -90,7 +90,9 @@ func _on_level_changed(from):
 
 
 func _on_money_changed(from):
-	_label_money.text = str(Global.money)
+	var _tween = _get_money_tween()
+	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tween.tween_method(func(v): _label_money.text = str(v), from, Global.money, LABEL_DURATION)
 
 
 func _on_extra_changed(from):
@@ -111,6 +113,14 @@ func _get_level_tween():
 	_level_tween = create_tween()
 	_level_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	return _level_tween
+
+
+func _get_money_tween():
+	if _money_tween:
+		_money_tween.kill()
+	_money_tween = create_tween()
+	_money_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	return _money_tween
 
 
 func _get_extra_tween():

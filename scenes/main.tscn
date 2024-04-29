@@ -274,11 +274,16 @@ theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="Labels" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body"]
+[node name="Panel" type="Panel" parent="UI/CanvasLayer/Layout/Body"]
 layout_mode = 2
+
+[node name="Labels" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel"]
+layout_mode = 2
+offset_right = 340.0
+offset_bottom = 452.0
 alignment = 1
 
-[node name="Title" type="Label" parent="UI/CanvasLayer/Layout/Body/Labels"]
+[node name="Title" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
@@ -287,7 +292,7 @@ text = "TITLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="UI/CanvasLayer/Layout/Body/Labels"]
+[node name="Description" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
 custom_minimum_size = Vector2(0, 80)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
