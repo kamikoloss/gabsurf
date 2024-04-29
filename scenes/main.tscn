@@ -270,9 +270,7 @@ vertical_alignment = 1
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/margin_left = 10
-theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
-theme_override_constants/margin_bottom = 10
 
 [node name="Panel" type="Panel" parent="UI/CanvasLayer/Layout/Body"]
 layout_mode = 2
@@ -302,6 +300,16 @@ Description
 Description"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Gears" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
+custom_minimum_size = Vector2(0, 80)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "Gears: {AAAA,BBBB,CCCC}"
+horizontal_alignment = 1
+vertical_alignment = 1
+autowrap_mode = 3
 
 [node name="Footer" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 custom_minimum_size = Vector2(0, 80)

@@ -5,10 +5,12 @@ extends Control
 @onready var _panel_body = $CanvasLayer/Layout/Body/Panel
 @onready var _label_title = $CanvasLayer/Layout/Body/Panel/Labels/Title
 @onready var _label_description = $CanvasLayer/Layout/Body/Panel/Labels/Description
+@onready var _label_gears = $CanvasLayer/Layout/Body/Panel/Labels/Gears
 @onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer/Label2
 @onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer/Label2
 @onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer/Label2
 @onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer/Label2
+
 
 # Constants
 const LABEL_DURATION = 0.5 # (s)
@@ -63,6 +65,12 @@ func _on_pause_button_down():
 		_panel_body.visible = true
 		_label_title.text = "PAUSED"
 		_label_description.text = "▲ / Space でゲーム再開\n● / Enter でリトライ"
+		var _gears = "Gears: {"
+		for g in Gear.my_gears:
+			_gears += Gear.GEAR_INFO[g]["t"]
+			_gears += ","
+		_gears += "}"
+		_label_gears.text = _gears
 
 	Global.ui_paused.emit()
 
@@ -75,6 +83,7 @@ func _on_game_initialized():
 	_panel_body.visible = true
 	_label_title.text = "GABSURF"
 	_label_description.text = "▲ / Space でゲーム開始\n■ / Esc でポーズ"
+	_label_gears.text = "Gears: {}"
 
 
 func _on_game_ended():
