@@ -65,12 +65,7 @@ func _on_pause_button_down():
 		_panel_body.visible = true
 		_label_title.text = "PAUSED"
 		_label_description.text = "▲ / Space でゲーム再開\n● / Enter でリトライ"
-		var _gears = "Gears: {"
-		for g in Gear.my_gears:
-			_gears += Gear.GEAR_INFO[g]["t"]
-			_gears += ","
-		_gears += "}"
-		_label_gears.text = _gears
+		_refresh_label_gear()
 
 	Global.ui_paused.emit()
 
@@ -83,13 +78,14 @@ func _on_game_initialized():
 	_panel_body.visible = true
 	_label_title.text = "GABSURF"
 	_label_description.text = "▲ / Space でゲーム開始\n■ / Esc でポーズ"
-	_label_gears.text = "Gears: {}"
+	_refresh_label_gear()
 
 
 func _on_game_ended():
 	_panel_body.visible = true
 	_label_title.text = "GAME OVER"
 	_label_description.text = "● / Enter でリトライ"
+	_refresh_label_gear()
 
 
 func _on_level_changed(from):
@@ -114,6 +110,15 @@ func _on_score_changed(from):
 	var _tween = _get_score_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	_tween.tween_method(func(v): _label_score.text = str(v), from, Global.score, LABEL_DURATION)
+
+
+func _refresh_label_gear():
+	var _gears = "Gears: {"
+	for g in Gear.my_gears:
+		_gears += Gear.GEAR_INFO[g]["t"]
+		_gears += ","
+	_gears += "}"
+	_label_gears.text = _gears
 
 
 func _get_level_tween():
