@@ -141,15 +141,15 @@ func _on_body_area_entered(area):
 	if area.is_in_group("Gear"):
 		var _shop = area.get_node("../../")
 		var _is_gear_a = area.global_position.y < 320 # TODO: ひどい
-		var _gear_type = _shop.gear_a if _is_gear_a else _shop.gear_b 
-		if Global.money < Gear.GEAR_INFO[_gear_type]["c"]:
+		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
+		if Global.money < Gear.GEAR_INFO[_gear]["c"]:
 			# 所持金が足りない場合: 買えない
 			print("No money!!")
 		else:
-			print("Hero got gear {0}.".format([_gear_type]))
+			print("Hero got gear {0}.".format([_gear]))
 			area.get_node("../Image").queue_free()
 			area.get_node("../Area2D").queue_free()
-			Global.hero_got_gear.emit(_gear_type)
+			Global.hero_got_gear.emit(_gear)
 
 
 func _on_body_area_exited(area):

@@ -1,5 +1,14 @@
 extends Node
 
+
+# ギアの種類
+enum GearType {
+	ATK, DEC, EXT, GAT,
+	JET, KIL, LIF,
+	MIS, MSM, MSW
+}
+
+
 # Resources
 const ITEM_SPRITES = [
 	null, # item0.png はない
@@ -12,12 +21,6 @@ const ITEM_SPRITES = [
 	preload("res://images/item7.png"),
 ]
 
-# ギアの種類
-enum GearType {
-	ATK, DEC, EXT, GAT,
-	JET, KIL, LIF,
-	MIS, MSM, MSW
-}
 
 # ギアの情報
 # "c": コスト, "m": 最大何個買えるか (0 は制限なし), "i": ITEM_SPRITES の index,
@@ -46,6 +49,7 @@ const GEARS_ON_SALE_DEFAULT = [
 	GearType.MIS,
 ]
 
+
 # Variables
 var gears_on_sale = [] # 店に並ぶギアのリスト
 var my_gears = [] # 所持しているギアのリスト
@@ -60,25 +64,46 @@ func initialize():
 
 # ランダムなギアを取得する
 # 抽選に失敗した場合は null を返す
-func get_random_gear(_ignore_gear = null):
+func get_random_gear(ignore = null):
 	var _gear = null
 
 	for n in 10:
 		var _random = gears_on_sale[randi() % gears_on_sale.size()]
 
-		# 避けるギアが抽選された場合: 次のループへ
-		if (_random == _ignore_gear):
+		# 避けるギアが抽選された場合: NG 次のループへ
+		if (_random == ignore):
 			continue
 
 		# すでに持っている場合
-		if Gear.my_gears.has(_random):
-			# まだ最大数に達していない場合: 店に並べる
-			if Gear.my_gears.count(_random) < Gear.GEAR_INFO[_random]["m"]:
+		if my_gears.has(_random):
+			# まだ最大数に達していない場合: OK
+			if my_gears.count(_random) < GEAR_INFO[_random]["m"]:
 				_gear = _random
 				break
-		# まだ持っていない場合: 店に並べる
+		# まだ持っていない場合: OK
 		else:
 			_gear = _random
 			break
 
 	return _gear
+
+
+# ギア情報を取得する
+func get_gear_info(gear):
+	var _gear_info = GEAR_INFO[gear]
+	var _desc = ""
+
+	# 説明文を必要に応じてフォーマットする
+	if _gear_info["f"] != null:
+		var _format = _gear_info["f"][my_gears.count(gear)]
+		_desc = _gear_info["d"].format([_format])
+	else:
+		_desc = _gear_info["d"]
+
+	return {
+		"c": _gear_info["c"],
+		"m": _gear_info["m"],
+		"i": ITEM_SPRITES[_gear_info["i"]],
+		"t": _gear_info["t"],
+		"d": _desc,
+	}

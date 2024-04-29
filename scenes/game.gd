@@ -220,6 +220,15 @@ func _on_hero_got_gear(gear):
 func _on_hero_kills_enemy():
 	_play_se(DAMAGE_SOUND)
 
+	# KIL
+	match Gear.my_gears.count(Gear.GearType.KIL):
+		1:
+			Global.extra += 2
+		2:
+			Global.extra += 3
+		3:
+			Global.extra += 5
+
 
 # スロー用の Tween を取得する
 func _get_slow_tween():

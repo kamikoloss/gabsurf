@@ -498,7 +498,7 @@ shape = SubResource("RectangleShape2D_d24ya")
 
 [node name="BGM" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
 stream = ExtResource("14_fbbs1")
-volume_db = -3.0
+volume_db = -6.0
 autoplay = true
 
 [node name="SE" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]

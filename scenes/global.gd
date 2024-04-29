@@ -12,9 +12,9 @@ signal ui_retried # リトライボタンを押したとき
 signal hero_damged # ダメージを受けたとき
 signal hero_got_level # Level を取ったとき
 signal hero_got_money # Money を取ったとき
+signal hero_got_gear # Gear を取ったとき
 signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき
-signal hero_got_gear # Gear を取ったとき
 signal hero_kills_enemy # Enemy を倒したとき
 
 signal level_changed
