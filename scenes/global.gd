@@ -42,36 +42,40 @@ var level = 0:
 	get:
 		return level
 	set(value):
+		var _from = level
 		level = value
-		level_changed.emit(value)
+		level_changed.emit(_from)
 		score = _calc_score()
 var money = 0:
 	get:
 		return money
 	set(value):
+		var _from = money
 		money = value
-		money_changed.emit(value)
+		money_changed.emit(_from)
 		score = _calc_score()
 var extra = 1:
 	get:
 		return extra
 	set(value):
+		var _from = extra
 		extra = value
-		extra_changed.emit(value)
+		extra_changed.emit(_from)
 		score = _calc_score()
 var score = 0:
 	get:
 		return score
 	set(value):
+		var _from = score
 		score = value
-		score_changed.emit(value)
+		score_changed.emit(_from)
 var life = 1:
 	get:
 		return life
 	set(value):
-		var _is_damage = value < life # 減ったかどうか 
+		var _from = life
 		life = value
-		life_changed.emit(value, _is_damage)
+		life_changed.emit(_from)
 
 
 # グローバル変数の初期化を行う

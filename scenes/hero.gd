@@ -95,14 +95,14 @@ func _on_hero_got_gear(gear):
 			_jump_counter_weapon_quota = _msb[_msb_count]
 
 
-func _on_life_changed(value, is_damage):
+func _on_life_changed(from):
 	var _life_text = ""
-	for n in value:
+	for n in Global.life:
 		_life_text += "♥"
 	_life_label.text = _life_text
 
 	# ダメージを受けたがまだ残機がある場合: コケる
-	if is_damage:
+	if Global.game_state == Global.GameState.ACTIVE && Global.life > 0:
 		_hero_sprite.stop()
 		_hero_sprite.play("die")
 		await get_tree().create_timer(0.5).timeout

@@ -12,10 +12,17 @@ extends Control
 @onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer/Label2
 
 # Constants
-var SHAKE_DURATION = 0.5
+const LABEL_DURATION = 0.5 # (s)
 
 # Variables
-var _shake_tween = null
+var _level_from = 0
+var _money_from = 0
+var _extra_from = 1
+var _score_from = 0
+
+var _level_tween = null
+var _extra_tween = null
+var _score_tween = null
 
 
 func _ready():
@@ -76,34 +83,47 @@ func _on_game_ended():
 	_label_description.text = "● / Enter でリトライ"
 
 
-func _on_level_changed(value):
-	_label_level.text = str(value)
+func _on_level_changed(from):
+	var _tween = _get_level_tween()
+	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tween.tween_method(func(v): _label_level.text = str(v), from, Global.level, LABEL_DURATION)
 
 
-func _on_money_changed(value):
-	_label_money.text = str(value)
+func _on_money_changed(from):
+	_label_money.text = str(Global.money)
 
 
-func _on_extra_changed(value):
-	_label_extra.text = str(value)
+func _on_extra_changed(from):
+	var _tween = _get_extra_tween()
+	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tween.tween_method(func(v): _label_extra.text = str(v), from, Global.extra, LABEL_DURATION)
 
 
-func _on_score_changed(value):
-	_label_score.text = str(value)
-	#_shake_ui(_label_score)
+func _on_score_changed(from):
+	var _tween = _get_score_tween()
+	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_tween.tween_method(func(v): _label_score.text = str(v), from, Global.score, LABEL_DURATION)
 
 
-func _get_shake_tween():
-	if _shake_tween:
-		_shake_tween.kill()
+func _get_level_tween():
+	if _level_tween:
+		_level_tween.kill()
+	_level_tween = create_tween()
+	_level_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	return _level_tween
 
-	_shake_tween = create_tween()
-	return _shake_tween
+
+func _get_extra_tween():
+	if _extra_tween:
+		_extra_tween.kill()
+	_extra_tween = create_tween()
+	_extra_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	return _extra_tween
 
 
-func _shake_ui(ui):
-	var _tween = _get_shake_tween()
-	var _pos = ui.position # 最初のポジション
-	_tween.set_parallel(true)
-	_tween.tween_property(ui, "position", Vector2(_pos.x, _pos.y + 40), SHAKE_DURATION).set_trans(Tween.TRANS_BOUNCE).set_ease(Tween.EASE_OUT)
-	_tween.tween_property(ui, "position", Vector2(_pos.x, _pos.y), SHAKE_DURATION).set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+func _get_score_tween():
+	if _score_tween:
+		_score_tween.kill()
+	_score_tween = create_tween()
+	_score_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	return _score_tween
