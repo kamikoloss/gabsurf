@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://cxqj3ync58bdc"]
+[gd_scene load_steps=14 format=3 uid="uid://cxqj3ync58bdc"]
 
 [ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="1_qsvs6"]
 [ext_resource type="Script" path="res://scenes/gate.gd" id="1_ukssn"]
@@ -60,6 +60,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_w74on"]
 radius = 64.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_6y2dd"]
+size = Vector2(80, 80)
+
 [node name="Gate" type="Node2D"]
 z_index = 20
 script = ExtResource("1_ukssn")
@@ -101,3 +104,10 @@ autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/Money"]
 shape = SubResource("CircleShape2D_w74on")
+
+[node name="Area2D" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_6y2dd")
+
+[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

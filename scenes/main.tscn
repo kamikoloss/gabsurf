@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=24 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
@@ -81,6 +81,9 @@ size = Vector2(96, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
 size = Vector2(256, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_d24ya"]
+size = Vector2(520, 800)
 
 [node name="Main" type="Node"]
 
@@ -403,7 +406,6 @@ texture = ExtResource("4_h180i")
 shape = SubResource("CircleShape2D_oj05t")
 
 [node name="Shoes" type="Area2D" parent="Game/Hero"]
-scale = Vector2(1, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Shoes"]
 position = Vector2(0, 80)
@@ -414,6 +416,7 @@ layout_mode = 3
 anchors_preset = 0
 
 [node name="Jump" type="Label" parent="Game/Hero/UI"]
+layout_mode = 0
 offset_left = -160.0
 offset_top = -140.0
 offset_right = 160.0
@@ -425,6 +428,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="TextureProgressBar" type="TextureProgressBar" parent="Game/Hero/UI"]
+layout_mode = 0
 offset_left = -64.0
 offset_top = 110.0
 offset_right = 192.0
@@ -476,6 +480,19 @@ texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
+
+[node name="ScreenIn" type="Area2D" parent="Game" groups=["ScreenIn"]]
+visible = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenIn"]
+position = Vector2(180, 320)
+shape = SubResource("RectangleShape2D_d24ya")
+
+[node name="ScreenOut" type="Area2D" parent="Game" groups=["ScreenOut"]]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenOut"]
+position = Vector2(180, 320)
+shape = SubResource("RectangleShape2D_d24ya")
 
 [node name="AudioPlayers" type="Node2D" parent="Game"]
 

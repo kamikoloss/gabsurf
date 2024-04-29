@@ -28,7 +28,6 @@ scale = Vector2(0.2, 0.2)
 script = ExtResource("1_8q5bn")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-scale = Vector2(1, 1)
 shape = SubResource("CircleShape2D_h7ter")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -40,3 +39,6 @@ visible = false
 self_modulate = Color(1, 0, 0, 0.25098)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("3_tfefr")
+
+[connection signal="area_entered" from="." to="." method="_on_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]

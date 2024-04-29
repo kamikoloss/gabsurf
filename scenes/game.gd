@@ -17,6 +17,8 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 @onready var _hero = $Hero
 @onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
 @onready var _walls = $Walls
+@onready var _screen_in = $ScreenIn
+@onready var _screen_out = $ScreenOut
 @onready var _audio_players = $AudioPlayers
 @onready var _bgm_player = $AudioPlayers/BGM
 @onready var _se_player = $AudioPlayers/SE
@@ -75,8 +77,11 @@ func _ready():
 func _process(delta):
 	# Hero に追随させる
 	if _hero != null:
-		_walls.position.x = _hero.position.x
-		_audio_players.position.x = _hero.position.x
+		var _x_zero = _hero.position.x - 120
+		_walls.position.x = _x_zero
+		_screen_in.position.x = _x_zero
+		_screen_out.position.x = _x_zero
+		_audio_players.position.x = _x_zero
 
 	_process_spawn_gate(delta)
 	_process_spawn_enemy(delta)

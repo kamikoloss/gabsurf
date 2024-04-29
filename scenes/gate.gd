@@ -6,9 +6,6 @@ extends Node2D
 @onready var _gate_bottom = $Mask/Gates/GateBottom
 @onready var _money = $Mask/Gates/Money
 
-# Constants
-const DESTROY_TIME = 5 # 生まれて何秒後に自身を破壊するか
-
 # Variables
 var gap_diff = 0 # ゲートがデフォルトから何 px 開くか
 var height_diff = 0 # ゲートがデフォルトから何 px 上下に移動するか
@@ -24,11 +21,8 @@ func _ready():
 	_gate_bottom.position.y += height_diff
 	_money.position.y += height_diff
 
-	_destroy()
 
-
-# 指定秒数後に自身を破壊する
-func _destroy():
-	await get_tree().create_timer(DESTROY_TIME).timeout
-	#print("Gate is destroyed.")
-	queue_free()
+func _on_area_2d_area_exited(area):
+	if area.is_in_group("ScreenOut"):
+		#print("Wall is destroyed.")
+		queue_free()
