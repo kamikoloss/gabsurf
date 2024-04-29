@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=25 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
@@ -81,6 +81,9 @@ size = Vector2(96, 32)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
 size = Vector2(256, 256)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3ebco"]
+size = Vector2(360, 640)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d24ya"]
 size = Vector2(520, 800)
@@ -276,10 +279,22 @@ theme_override_constants/margin_right = 10
 layout_mode = 2
 
 [node name="Labels" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel"]
-layout_mode = 2
-offset_right = 340.0
-offset_bottom = 452.0
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 alignment = 1
+
+[node name="Version" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
+custom_minimum_size = Vector2(0, 40)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "v0.1.0"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Title" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
 custom_minimum_size = Vector2(0, 80)
@@ -499,9 +514,11 @@ visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenIn"]
 position = Vector2(180, 320)
-shape = SubResource("RectangleShape2D_d24ya")
+shape = SubResource("RectangleShape2D_3ebco")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="ScreenOut" type="Area2D" parent="Game" groups=["ScreenOut"]]
+visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenOut"]
 position = Vector2(180, 320)
