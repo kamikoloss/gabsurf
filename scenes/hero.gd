@@ -102,11 +102,11 @@ func _on_life_changed(from):
 	_life_label.text = _life_text
 
 	# ダメージを受けたがまだ残機がある場合: コケる
-	if Global.game_state == Global.GameState.ACTIVE && Global.life > 0:
+	if Global.game_state == Global.GameState.ACTIVE && Global.life < from:
 		_hero_sprite.stop()
 		_hero_sprite.play("die")
 		await get_tree().create_timer(0.5).timeout
-		# NOTE: ACTIVE を条件に入れないとゲームオーバー時に "die" から戻る
+		# NOTE: ゲームオーバー時は 0.5 秒後 ACTIVE じゃないので "default" に戻らない
 		# TODO: ごちゃごちゃしているので整理する
 		if Global.game_state == Global.GameState.ACTIVE:
 			_hero_sprite.stop()
@@ -156,6 +156,7 @@ func _on_body_area_entered(area):
 func _on_body_area_exited(area):
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
 	if area.is_in_group("ScreenOut") && Global.game_state == Global.GameState.ACTIVE:
+		position.y = -9999
 		print("Hero exited screen.")
 		Global.game_ended.emit()
 

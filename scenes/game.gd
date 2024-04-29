@@ -206,7 +206,7 @@ func _on_hero_got_gear(gear):
 		Gear.GearType.EXT:
 			Global.extra += 5
 		Gear.GearType.GTG:
-			_gate_gap -= 64
+			_gate_gap += 64
 		Gear.GearType.LIF:
 			Global.life += 1
 		Gear.GearType.SCL:
@@ -230,7 +230,7 @@ func _on_hero_kills_enemy():
 	_play_se(DAMAGE_SOUND)
 
 	# EME
-	var _eme = [1, 2, 3]
+	var _eme = [0, 1, 2, 3]
 	var _eme_count = Gear.my_gears.count(Gear.GearType.EME)
 	Global.extra += _eme[_eme_count]
 
@@ -267,7 +267,6 @@ func _exit_slow(duration):
 func _get_anti_damage_tween():
 	if _anti_damage_tween:
 		_anti_damage_tween.kill()
-
 	_anti_damage_tween = create_tween()
 	_anti_damage_tween.set_trans(Tween.TRANS_LINEAR)
 	return _anti_damage_tween
