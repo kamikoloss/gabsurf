@@ -292,7 +292,7 @@ custom_minimum_size = Vector2(0, 40)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
-text = "v0.1.0"
+text = "v0.2.0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -510,7 +510,6 @@ texture = ExtResource("3_fq3iy")
 shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="ScreenIn" type="Area2D" parent="Game" groups=["ScreenIn"]]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenIn"]
 position = Vector2(180, 320)
@@ -518,7 +517,6 @@ shape = SubResource("RectangleShape2D_3ebco")
 debug_color = Color(0, 0.6, 0.701961, 0.419608)
 
 [node name="ScreenOut" type="Area2D" parent="Game" groups=["ScreenOut"]]
-visible = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenOut"]
 position = Vector2(180, 320)
