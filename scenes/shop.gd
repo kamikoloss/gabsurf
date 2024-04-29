@@ -6,14 +6,16 @@ extends Node2D
 @onready var _gear_ui = {
 	"a": {
 		"parent": $GearA,
-		"title": $GearA/Text/MarginContainer/HBoxContainer/VBoxContainer/Title,
-		"desc": $GearA/Text/MarginContainer/HBoxContainer/VBoxContainer/Description,
+		"title": $GearA/Text/MarginContainer/VBoxContainer/Title,
+		"desc": $GearA/Text/MarginContainer/VBoxContainer/Description,
+		"cost": $GearA/Money/Label,
 		"icon": $GearA/Image, 
 	},
 	"b": {
 		"parent": $GearB,
-		"title": $GearB/Text/MarginContainer/HBoxContainer/VBoxContainer/Title,
-		"desc": $GearB/Text/MarginContainer/HBoxContainer/VBoxContainer/Description,
+		"title": $GearB/Text/MarginContainer/VBoxContainer/Title,
+		"desc": $GearB/Text/MarginContainer/VBoxContainer/Description,
+		"cost": $GearB/Money/Label,
 		"icon": $GearB/Image, 
 	},
 }
@@ -25,6 +27,7 @@ const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
 var number = 0
 var gate_gap = 0 # TODO: 難易度なので Global においてもいい？
 var gear = { "a": null, "b": null }
+
 
 func _ready():
 	_enter_label.text = str(number)
@@ -40,9 +43,10 @@ func _ready():
 		if gear[k] == null:
 			_gear_ui[k]["parent"].queue_free()
 		else:
-			var _gear_info = Gear.get_gear_info(gear[k])
+			var _gear_info = Gear.get_gear_ui(gear[k])
 			_gear_ui[k]["title"].text = _gear_info["t"]
 			_gear_ui[k]["desc"].text = _gear_info["d"]
+			_gear_ui[k]["cost"].text = _gear_info["c"]
 			_gear_ui[k]["icon"].texture = _gear_info["i"]
 
 	_destroy()

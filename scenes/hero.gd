@@ -67,8 +67,8 @@ func _on_ui_jumped():
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
 
-	# MIS 所持中
-	if Gear.my_gears.has(Gear.GearType.MIS):
+	# MSB 所持中
+	if Gear.my_gears.has(Gear.GearType.MSB):
 		_jump_counter_weapon += 1
 
 		var _jump_text = ""
@@ -88,11 +88,11 @@ func _on_ui_jumped():
 
 func _on_hero_got_gear(gear):
 	match gear:
-		Gear.GearType.MIS:
+		Gear.GearType.MSB:
 			_jump_label.visible = true
-			var _count = Gear.my_gears.count(Gear.GearType.MIS) # 増える前の数
-			_jump_counter_weapon_quota = [5, 3, 2][_count]
-			print(_count, _jump_counter_weapon_quota)
+			var _msb = [5, 3, 2]
+			var _msb_count = Gear.my_gears.count(Gear.GearType.MSB) # 増える前の数
+			_jump_counter_weapon_quota = _msb[_msb_count]
 
 
 func _on_life_changed(value, is_damage):
@@ -140,19 +140,25 @@ func _on_body_area_entered(area):
 
 	if area.is_in_group("Gear"):
 		var _shop = area.get_node("../../")
-		var _is_gear_a = area.global_position.y < 320 # TODO: ひどい
+		var _is_gear_a = area.get_node("../").position.y > 0
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
-		if Global.money < Gear.GEAR_INFO[_gear]["c"]:
+		var _cost = Gear.GEAR_INFO[_gear]["c"]
+		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
-			print("No money!!")
+			print("No money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
-			print("Hero got gear {0}.".format([_gear]))
 			area.get_node("../Image").queue_free()
-			area.get_node("../Area2D").queue_free()
+			area.queue_free()
+			print("Hero got gear {0}. (cost: {1})".format([Gear.GEAR_INFO[_gear]["t"], _cost]))
 			Global.hero_got_gear.emit(_gear)
 
 
 func _on_body_area_exited(area):
+	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
+	if area.is_in_group("ScreenOut") && Global.game_state == Global.GameState.ACTIVE:
+		print("Hero exited screen.")
+		Global.game_ended.emit()
+
 	if area.is_in_group("Shop"):
 		print("Hero exited shop.")
 		Global.hero_exited_shop.emit()
@@ -160,7 +166,7 @@ func _on_body_area_exited(area):
 
 func _on_shoes_area_entered(area):
 	if area.is_in_group("Enemy"):
-		if Gear.my_gears.has(Gear.GearType.ATK) && !area.is_dead:
+		if Gear.my_gears.has(Gear.GearType.SHO) && !area.is_dead:
 			print("Hero kills enemy.")
 			area.die() # area = enemy
 			Global.hero_kills_enemy.emit()

@@ -33,6 +33,7 @@ const GATE_HEIGHT_MIN = -80 # (px)
 const GATE_HEIGHT_MAX = 80 # (px)
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
+const ENEMY_SPAWN_COOLTIME_BASE = 3.0
 
 # Variables
 var _money_base = 1 # Money 取得時に加算される値
@@ -48,7 +49,7 @@ var _is_spawn_gate = false # ゲートを生成するか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
 var _gate_spawn_timer = 0.0
 var _is_spawn_enemy = false # 敵を生成するか
-var _enemy_spawn_cooltime = 3.0 # 何秒ごとに敵を生成するか
+var _enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_BASE # 何秒ごとに敵を生成するか
 var _enemy_spawn_timer = 0.0
 
 var _slow_tween = null
@@ -189,6 +190,30 @@ func _on_hero_got_money():
 	_play_se(MONEY_SOUND)
 
 
+func _on_hero_got_gear(gear):
+	Global.money -= Gear.GEAR_INFO[gear]["c"]
+	Gear.my_gears += [gear]
+	_play_se(GEAR_SOUND)
+
+	# ギアの効果を発動する
+	# EME: _on_hero_kills_enemy()
+	# MSB: hero._on_hero_got_gear
+	match gear:
+		Gear.GearType.EMS:
+			var _ems = [2, 3, 5]
+			var _ems_count = Gear.my_gears.count(Gear.GearType.EMS)
+			_enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_BASE / _ems[_ems_count]
+		Gear.GearType.EXT:
+			Global.extra += 5
+		Gear.GearType.GTG:
+			_gate_gap -= 64
+		Gear.GearType.LIF:
+			Global.life += 1
+		Gear.GearType.SCL:
+			Global.hero_move_velocity *= 1.25
+			Global.extra *= 2
+
+
 func _on_hero_entered_shop():
 	if Global.game_state == Global.GameState.ACTIVE:
 		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
@@ -201,33 +226,13 @@ func _on_hero_exited_shop():
 		_is_spawn_enemy = true
 
 
-func _on_hero_got_gear(gear):
-	Global.money -= Gear.GEAR_INFO[gear]["c"]
-	Gear.my_gears += [gear]
-	_play_se(GEAR_SOUND)
-
-	# ギアの効果を発動する
-	match gear:
-		Gear.GearType.EXT:
-			Global.extra += 5
-		Gear.GearType.JET:
-			Global.hero_move_velocity *= 1.25
-			Global.extra *= 2
-		Gear.GearType.LIF:
-			Global.life += 1
-
-
 func _on_hero_kills_enemy():
 	_play_se(DAMAGE_SOUND)
 
-	# KIL
-	match Gear.my_gears.count(Gear.GearType.KIL):
-		1:
-			Global.extra += 2
-		2:
-			Global.extra += 3
-		3:
-			Global.extra += 5
+	# EME
+	var _eme = [1, 2, 3]
+	var _eme_count = Gear.my_gears.count(Gear.GearType.EME)
+	Global.extra += _eme[_eme_count]
 
 
 # スロー用の Tween を取得する

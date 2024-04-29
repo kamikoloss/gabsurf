@@ -1,11 +1,39 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwxachiyntvge"]
+[gd_scene load_steps=10 format=3 uid="uid://cwxachiyntvge"]
 
 [ext_resource type="Script" path="res://scenes/shop.gd" id="1_t1qse"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_bu7gq"]
 [ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="3_4ajlw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o4fh"]
-size = Vector2(480, 640)
+size = Vector2(360, 640)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kttc5"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlqq6"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j506a"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp7ik"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_esaij"]
 radius = 32.0
@@ -20,10 +48,11 @@ script = ExtResource("1_t1qse")
 shape = SubResource("RectangleShape2D_8o4fh")
 
 [node name="Enter" type="Panel" parent="."]
-offset_left = -440.0
+offset_left = -480.0
 offset_top = -40.0
-offset_right = -320.0
+offset_right = -360.0
 offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_kttc5")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Enter"]
 layout_mode = 1
@@ -57,6 +86,7 @@ offset_left = 400.0
 offset_top = -40.0
 offset_right = 520.0
 offset_bottom = 40.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_rlqq6")
 
 [node name="VBoxContainer" type="VBoxContainer" parent="Exit"]
 layout_mode = 1
@@ -86,97 +116,127 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GearA" type="Node2D" parent="."]
-position = Vector2(-240, -200)
+position = Vector2(-180, 80)
 
 [node name="Text" type="Panel" parent="GearA"]
-offset_right = 480.0
+offset_right = 360.0
 offset_bottom = 120.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_j506a")
 
 [node name="MarginContainer" type="MarginContainer" parent="GearA/Text"]
 layout_mode = 0
-offset_right = 480.0
+offset_right = 360.0
 offset_bottom = 120.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GearA/Text/MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GearA/Text/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GearA/Text/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="GearA/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="GearA/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 24
-text = "あいうえあいうえ (LV.X)"
+text = "あいうえあいうえ"
 
-[node name="Description" type="Label" parent="GearA/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Description" type="Label" parent="GearA/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 16
-text = "あいうえあいうえあいうえあいうえ
-あいうえあいうえあいうえあいうえ
-あいうえあいうえあいうえあいうえ"
+text = "あいうえあいうえあいうえ
+あいうえあいうえあいうえ
+あいうえあいうえあいうえ"
+
+[node name="Money" type="Panel" parent="GearA"]
+offset_left = 280.0
+offset_top = -32.0
+offset_right = 360.0
+offset_bottom = 8.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
+
+[node name="Label" type="Label" parent="GearA/Money"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "$99"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Image" type="Sprite2D" parent="GearA"]
-position = Vector2(400, 60)
+position = Vector2(300, 60)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_4ajlw")
 
 [node name="Area2D" type="Area2D" parent="GearA" groups=["Gear"]]
-position = Vector2(400, 60)
+position = Vector2(300, 60)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GearA/Area2D"]
 shape = SubResource("CircleShape2D_esaij")
 
 [node name="GearB" type="Node2D" parent="."]
-position = Vector2(-240, 80)
+position = Vector2(-180, -200)
 
 [node name="Text" type="Panel" parent="GearB"]
-offset_right = 480.0
+offset_right = 360.0
 offset_bottom = 120.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_j506a")
 
 [node name="MarginContainer" type="MarginContainer" parent="GearB/Text"]
 layout_mode = 0
-offset_right = 480.0
+offset_right = 360.0
 offset_bottom = 120.0
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_top = 10
 theme_override_constants/margin_right = 10
 theme_override_constants/margin_bottom = 10
 
-[node name="HBoxContainer" type="HBoxContainer" parent="GearB/Text/MarginContainer"]
-layout_mode = 2
-
-[node name="VBoxContainer" type="VBoxContainer" parent="GearB/Text/MarginContainer/HBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="GearB/Text/MarginContainer"]
 layout_mode = 2
 theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="GearB/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="GearB/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 24
-text = "あいうえあいうえ (LV.X)"
+text = "あいうえあいうえ"
 
-[node name="Description" type="Label" parent="GearB/Text/MarginContainer/HBoxContainer/VBoxContainer"]
+[node name="Description" type="Label" parent="GearB/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 16
-text = "あいうえあいうえあいうえあいうえ
-あいうえあいうえあいうえあいうえ
-あいうえあいうえあいうえあいうえ"
+text = "あいうえあいうえあいうえ
+あいうえあいうえあいうえ
+あいうえあいうえあいうえ"
+
+[node name="Money" type="Panel" parent="GearB"]
+offset_left = 280.0
+offset_top = -32.0
+offset_right = 360.0
+offset_bottom = 8.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
+
+[node name="Label" type="Label" parent="GearB/Money"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "$99"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Image" type="Sprite2D" parent="GearB"]
-position = Vector2(400, 60)
+position = Vector2(300, 60)
 scale = Vector2(0.4, 0.4)
 texture = ExtResource("3_4ajlw")
 
 [node name="Area2D" type="Area2D" parent="GearB" groups=["Gear"]]
-position = Vector2(400, 60)
+position = Vector2(300, 60)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="GearB/Area2D"]
 shape = SubResource("CircleShape2D_esaij")
