@@ -16,13 +16,9 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 # Nodes
 @onready var _hero = $Hero
 @onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
-@onready var _walls = $Walls
-@onready var _screen_in = $ScreenIn
-@onready var _screen_out = $ScreenOut
-@onready var _audio_players = $AudioPlayers
-@onready var _bgm_player = $AudioPlayers/BGM
-@onready var _se_player = $AudioPlayers/SE
-@onready var _se_player_ui = $AudioPlayers/SE2
+@onready var _bgm_player = $Hero/AudioPlayers/BGM
+@onready var _se_player = $Hero/AudioPlayers/SE
+@onready var _se_player_ui = $Hero/AudioPlayers/SE2
 
 # Constants
 const SLOW_DURATION_SHOP = 1.0 # 入店時に何秒かけてスローになるか
@@ -76,14 +72,6 @@ func _ready():
 
 
 func _process(delta):
-	# Hero に追随させる
-	if _hero != null:
-		var _x_zero = _hero.position.x - 120
-		_walls.position.x = _x_zero
-		_screen_in.position.x = _x_zero
-		_screen_out.position.x = _x_zero
-		_audio_players.position.x = _x_zero
-
 	_process_spawn_gate(delta)
 	_process_spawn_enemy(delta)
 

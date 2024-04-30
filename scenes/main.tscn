@@ -79,14 +79,14 @@ radius = 64.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e62gy"]
 size = Vector2(96, 32)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
-size = Vector2(256, 256)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ebco"]
 size = Vector2(360, 640)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_d24ya"]
 size = Vector2(520, 800)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
+size = Vector2(256, 256)
 
 [node name="Main" type="Node"]
 
@@ -439,6 +439,37 @@ shape = SubResource("CircleShape2D_oj05t")
 position = Vector2(0, 80)
 shape = SubResource("RectangleShape2D_e62gy")
 
+[node name="ScreenIn" type="Area2D" parent="Game/Hero" groups=["ScreenIn"]]
+position = Vector2(-300, -800)
+scale = Vector2(2.5, 2.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/ScreenIn"]
+position = Vector2(180, 320)
+shape = SubResource("RectangleShape2D_3ebco")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="ScreenOut" type="Area2D" parent="Game/Hero" groups=["ScreenOut"]]
+position = Vector2(-300, -800)
+scale = Vector2(2.5, 2.5)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/ScreenOut"]
+position = Vector2(180, 320)
+shape = SubResource("RectangleShape2D_d24ya")
+
+[node name="AudioPlayers" type="Node2D" parent="Game/Hero"]
+position = Vector2(-300, -800)
+scale = Vector2(2.5, 2.5)
+
+[node name="BGM" type="AudioStreamPlayer2D" parent="Game/Hero/AudioPlayers"]
+stream = ExtResource("14_fbbs1")
+volume_db = -6.0
+autoplay = true
+
+[node name="SE" type="AudioStreamPlayer2D" parent="Game/Hero/AudioPlayers"]
+
+[node name="SE2" type="AudioStreamPlayer2D" parent="Game/Hero/AudioPlayers"]
+volume_db = -3.0
+
 [node name="UI" type="Control" parent="Game/Hero"]
 layout_mode = 3
 anchors_preset = 0
@@ -480,15 +511,13 @@ text = "♥♥♥♥♥"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Node2D" type="Node2D" parent="Game/Hero"]
-
 [node name="Walls" type="Node2D" parent="Game"]
 z_index = 20
 
 [node name="WallTop" type="Area2D" parent="Game/Walls" groups=["Wall"]]
 z_index = 10
-position = Vector2(180, 86)
-scale = Vector2(4, 0.05)
+position = Vector2(128000, 86)
+scale = Vector2(1000, 0.05)
 
 [node name="Square" type="Sprite2D" parent="Game/Walls/WallTop"]
 self_modulate = Color(1, 0, 0, 0.25098)
@@ -499,8 +528,8 @@ shape = SubResource("RectangleShape2D_4c1x3")
 
 [node name="WallBottom" type="Area2D" parent="Game/Walls" groups=["Wall"]]
 z_index = 10
-position = Vector2(180, 554)
-scale = Vector2(4, 0.05)
+position = Vector2(128000, 554)
+scale = Vector2(1000, 0.05)
 
 [node name="Square" type="Sprite2D" parent="Game/Walls/WallBottom"]
 self_modulate = Color(1, 0, 0, 0.25098)
@@ -508,31 +537,6 @@ texture = ExtResource("3_fq3iy")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
-
-[node name="ScreenIn" type="Area2D" parent="Game" groups=["ScreenIn"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenIn"]
-position = Vector2(180, 320)
-shape = SubResource("RectangleShape2D_3ebco")
-debug_color = Color(0, 0.6, 0.701961, 0.419608)
-
-[node name="ScreenOut" type="Area2D" parent="Game" groups=["ScreenOut"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/ScreenOut"]
-position = Vector2(180, 320)
-shape = SubResource("RectangleShape2D_d24ya")
-
-[node name="AudioPlayers" type="Node2D" parent="Game"]
-
-[node name="BGM" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
-stream = ExtResource("14_fbbs1")
-volume_db = -6.0
-autoplay = true
-
-[node name="SE" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
-
-[node name="SE2" type="AudioStreamPlayer2D" parent="Game/AudioPlayers"]
-volume_db = -3.0
 
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="UI" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="UI" method="_on_jump_button_down"]
