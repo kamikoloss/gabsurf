@@ -22,6 +22,11 @@ const ITEM_SPRITES = [
 	preload("res://images/item5.png"),
 	preload("res://images/item6.png"),
 	preload("res://images/item7.png"),
+	preload("res://images/item8.png"),
+	preload("res://images/item9.png"),
+	preload("res://images/item10.png"),
+	preload("res://images/item11.png"),
+	preload("res://images/item12.png"),
 ]
 
 
@@ -29,17 +34,17 @@ const ITEM_SPRITES = [
 # "c": コスト, "m": 最大何個買えるか (0 は制限なし), "i": ITEM_SPRITES の index,
 # "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
 const GEAR_INFO = {
-	GearType.COL: { "c": 2, "m": 1, "i": 1, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
-	GearType.EME: { "c": 3, "m": 3, "i": 6, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
-	GearType.EMS: { "c": 5, "m": 3, "i": 4, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
-	GearType.EXT: { "c": 3, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
-	GearType.GTG: { "c": 5, "m": 5, "i": 5, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
+	GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
+	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
+	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
+	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
+	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
 	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "自撮りドローン", "d": "ゲートが{0}個ずつ\n出てくるようになる", "f": [2, 3, 5] },
-	GearType.LIF: { "c": 5, "m": 5, "i": 3, "t": "生命保険", "d": "残機\n+1", "f": null },
+	GearType.LIF: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
 	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },
 	GearType.MSM: { "c": 2, "m": 3, "i": 6, "t": "マルチミサイル", "d": "ミサイルを{0}\n方向に発射する", "f": [2, 3, 5] },
 	GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "超ミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
-	GearType.SCL: { "c": 5, "m": 1, "i": 7, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
+	GearType.SCL: { "c": 5, "m": 1, "i": 9, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
 	GearType.SHO: { "c": 2, "m": 1, "i": 7, "t": "安全靴", "d": "敵を踏んで\n倒せるようになる", "f": null },
 }
 
