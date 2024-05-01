@@ -50,27 +50,37 @@ const GEAR_INFO = {
 	GearType.SHO: { "c": 2, "m": 1, "i": 7, "t": "安全靴", "d": "敵を踏んで\n倒せるようになる", "f": null },
 }
 
-# 最初から店に並ぶギアのリストのデフォルト値
-const GEARS_ON_SALE_DEFAULT = [ 
-	#GearType.COL,
-	GearType.EME, GearType.EMS,
-	GearType.EXT,
-	GearType.GTG, #GearType.GTM,
-	GearType.LFP, GearType.LFM, 
-	GearType.MSB, #GearType.MSM, GearType.MSW,
-	GearType.SCL, GearType.SHO,
-]
+# ランクごとに店に並ぶギアのリスト
+const GEAR_RANK = {
+	Global.Rank.WHITE: [
+		GearType.EME,
+		GearType.EXT,
+		GearType.MSB,
+		GearType.SHO,
+	],
+	Global.Rank.BLUE: [
+		#GearType.GTM,
+	],
+	Global.Rank.GREEN: [
+		GearType.EMS,
+		GearType.GTG,
+		GearType.LFP,
+		GearType.SCL,
+	],
+	Global.Rank.RED: [
+		 GearType.LFM,
+	],
+	Global.Rank.GOLD: [],
+}
 
 
 # Variables
-var gears_on_sale = [] # 店に並ぶギアのリスト
 var my_gears = [] # 所持しているギアのリスト
 
 
 # グローバル変数の初期化を行う
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
-	gears_on_sale = GEARS_ON_SALE_DEFAULT
 	my_gears = []
 
 
@@ -78,9 +88,16 @@ func initialize():
 # 抽選に失敗した場合は null を返す
 func get_random_gear(ignore = null):
 	var _gear = null
+	var _gears_on_sale = []
 
+	# 現在のランクまでのギアを店頭に並べる
+	for r in Global.Rank.values():
+		if r <= Global.rank:
+			_gears_on_sale += GEAR_RANK[r]
+
+	# ギアを抽選する
 	for n in 10:
-		var _random = gears_on_sale[randi() % gears_on_sale.size()]
+		var _random = _gears_on_sale[randi() % _gears_on_sale.size()]
 
 		# 避けるギアが抽選された場合: NG 次のループへ
 		if (_random == ignore):
@@ -103,7 +120,12 @@ func get_random_gear(ignore = null):
 # Shop UI 用のギア情報を取得する
 func get_gear_ui(gear):
 	var _gear_info = GEAR_INFO[gear]
+	var _title_suffix = ""
 	var _desc = ""
+
+	# タイトルの末尾に "(所持数/最大数)" をつける
+	var _count = my_gears.count(gear)
+	_title_suffix = " ({0}/{1})".format([_count + 1, _gear_info["m"]])
 
 	# 説明文を必要に応じてフォーマットする
 	if _gear_info["f"] != null:
@@ -115,6 +137,6 @@ func get_gear_ui(gear):
 	return {
 		"c": "$" + str(_gear_info["c"]),
 		"i": ITEM_SPRITES[_gear_info["i"]],
-		"t": _gear_info["t"],
+		"t": _gear_info["t"] + _title_suffix,
 		"d": _desc,
 	}

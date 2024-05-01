@@ -450,7 +450,7 @@ shape = SubResource("RectangleShape2D_e62gy")
 
 [node name="Screen" type="Node2D" parent="Game/Hero"]
 position = Vector2(-300, -800)
-scale = Vector2(2.5, 2.5)
+scale = Vector2(100, 100)
 
 [node name="ScreenIn" type="Area2D" parent="Game/Hero/Screen" groups=["ScreenIn"]]
 
