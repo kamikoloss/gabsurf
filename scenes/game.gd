@@ -98,17 +98,17 @@ func _initialize_game():
 
 func _on_ui_jumped():
 	# タイトル or ポーズ中 -> ゲーム中
-	var states = [Global.GameState.TITLE, Global.GameState.PAUSED]
-	if states.has(Global.game_state):
+	var states = [Global.State.TITLE, Global.State.PAUSED]
+	if states.has(Global.state):
 		Engine.time_scale = 1.0
 		set_process(true)
 		set_physics_process(true)
 		if (_bgm_position != null):
 			_bgm_player.play(_bgm_position)
-		Global.game_state = Global.GameState.ACTIVE
+		Global.state = Global.State.ACTIVE
 	
 	# ゲーム中
-	if Global.game_state == Global.GameState.ACTIVE:
+	if Global.state == Global.State.ACTIVE:
 		# SE を鳴らす
 		_play_se_ui(JUMP_SOUND)
 
@@ -116,32 +116,32 @@ func _on_ui_jumped():
 
 func _on_ui_paused():
 	# ゲーム中 -> ポーズ中
-	if Global.game_state == Global.GameState.ACTIVE:
+	if Global.state == Global.State.ACTIVE:
 		Engine.time_scale = 0.0
 		set_process(false)
 		set_physics_process(false)
 		_bgm_position = _bgm_player.get_playback_position()
 		_bgm_player.stop()
-		Global.game_state = Global.GameState.PAUSED
+		Global.state = Global.State.PAUSED
 
 
 func _on_ui_retried():
 	# ポーズ中 or ゲームオーバー: シーンを再読み込みする
-	var states = [Global.GameState.PAUSED, Global.GameState.GAMEOVER]
-	if states.has(Global.game_state):
+	var states = [Global.State.PAUSED, Global.State.GAMEOVER]
+	if states.has(Global.state):
 		get_tree().reload_current_scene()
 
 
 func _on_hero_damged():
 	# ゲーム中でない: ダメージを受けても何も起きない
-	if Global.game_state != Global.GameState.ACTIVE:
+	if Global.state != Global.State.ACTIVE:
 		return
 
 	Global.life -= 1
 
 	# Hero の残機が 0 になった場合: ゲームオーバー
-	if Global.life == 0:
-		Global.game_state = Global.GameState.GAMEOVER
+	if Global.life <= 0:
+		Global.state = Global.State.GAMEOVER
 		_play_se(GAMEOVER_SOUND)
 		_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 		print("Game is ended.")
@@ -189,7 +189,7 @@ func _on_hero_got_gear(gear):
 	# EME: _on_hero_kills_enemy()
 	# MSB: hero._on_hero_got_gear
 	match gear:
-		Gear.GearTyoe.EMP:
+		Gear.GearType.EMP:
 			_enemy_spawn_height_max = 0
 		Gear.GearType.EMS:
 			var _ems = [2, 3, 5]
@@ -210,12 +210,12 @@ func _on_hero_got_gear(gear):
 
 
 func _on_hero_entered_shop():
-	if Global.game_state == Global.GameState.ACTIVE:
+	if Global.state == Global.State.ACTIVE:
 		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
 
 
 func _on_hero_exited_shop():
-	if Global.game_state == Global.GameState.ACTIVE:
+	if Global.state == Global.State.ACTIVE:
 		_exit_slow(SLOW_DURATION_SHOP)
 		_is_spawn_gate = true
 		_is_spawn_enemy = true

@@ -52,8 +52,8 @@ func _input(event):
 
 func _on_jump_button_down():
 	# タイトル or ポーズ中: Body を非表示にする
-	var states = [Global.GameState.TITLE, Global.GameState.PAUSED]
-	if states.has(Global.game_state):
+	var states = [Global.State.TITLE, Global.State.PAUSED]
+	if states.has(Global.state):
 		_panel_body.visible = false
 
 	Global.ui_jumped.emit()
@@ -61,7 +61,7 @@ func _on_jump_button_down():
 
 func _on_pause_button_down():
 	# ゲーム中: Body (画面中央 UI) を表示する
-	if Global.game_state == Global.GameState.ACTIVE:
+	if Global.state == Global.State.ACTIVE:
 		_panel_body.visible = true
 		_label_title.text = "PAUSED"
 		_label_description.text = "▲ / Space でゲーム再開\n● / Enter でリトライ"

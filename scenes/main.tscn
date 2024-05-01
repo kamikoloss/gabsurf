@@ -154,7 +154,7 @@ layout_mode = 2
 size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
-text = "9999"
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -194,7 +194,7 @@ layout_mode = 2
 size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
-text = "9999"
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -235,7 +235,7 @@ layout_mode = 2
 size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
-text = "9999"
+text = "1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -277,7 +277,7 @@ layout_mode = 2
 size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 24
-text = "999999"
+text = "0"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -516,7 +516,7 @@ offset_right = 160.0
 offset_bottom = 160.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 32
-text = "♥♥♥♥♥"
+text = "♥"
 horizontal_alignment = 1
 vertical_alignment = 1
 

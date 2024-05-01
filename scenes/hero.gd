@@ -37,19 +37,19 @@ func _physics_process(delta):
 	
 	# ゲーム中 or ゲームオーバー:
 	# 終端速度に達するまで加速する
-	var states = [Global.GameState.ACTIVE, Global.GameState.GAMEOVER]
-	if states.has(Global.game_state):
+	var states = [Global.State.ACTIVE, Global.State.GAMEOVER]
+	if states.has(Global.state):
 		if velocity.y < FALL_VELOCITY_MAX:
 			velocity.y += FALL_VELOCITY * delta
 
 	# ゲーム中: 横に動き続ける + 落下する
-	if Global.game_state == Global.GameState.ACTIVE:
+	if Global.state == Global.State.ACTIVE:
 		velocity.x = Global.hero_move_velocity
 		move_and_slide()
 
 	# ゲームオーバー: 回転する + 落下する
 	# 吹き飛ぶ処理は _on_game_ended() 内でやる
-	if Global.game_state == Global.GameState.GAMEOVER:
+	if Global.state == Global.State.GAMEOVER:
 		_hero_sprite.rotation += DEAD_ROTATION * delta
 		move_and_slide()
 
@@ -63,11 +63,11 @@ func _on_game_ended():
 
 func _on_ui_jumped():
 	# ゲームオーバー: 何もしない
-	if Global.game_state == Global.GameState.GAMEOVER:
+	if Global.state == Global.State.GAMEOVER:
 		return
 
 	# クールタイム中: 何もしない
-	if Global.game_state == Global.GameState.ACTIVE && _jump_timer < JUMP_COOLTIME:
+	if Global.state == Global.State.ACTIVE && _jump_timer < JUMP_COOLTIME:
 		return
 
 	# ゲーム中 or タイトル or ポーズ中: 再開と同時にジャンプする
@@ -111,19 +111,19 @@ func _on_life_changed(from):
 	_life_label.text = _life_text
 
 	# ダメージを受けたがまだ残機がある場合: コケる
-	if Global.game_state == Global.GameState.ACTIVE && Global.life < from:
+	if Global.state == Global.State.ACTIVE && Global.life < from:
 		_hero_sprite.stop()
 		_hero_sprite.play("die")
 		await get_tree().create_timer(0.5).timeout
 		# NOTE: ゲームオーバー時は 0.5 秒後 ACTIVE じゃないので "default" に戻らない
 		# TODO: ごちゃごちゃしているので整理する
-		if Global.game_state == Global.GameState.ACTIVE:
+		if Global.state == Global.State.ACTIVE:
 			_hero_sprite.stop()
 			_hero_sprite.play("default")
 
 
 func _on_body_area_entered(area):
-	if Global.game_state != Global.GameState.ACTIVE:
+	if Global.state != Global.State.ACTIVE:
 		return
 
 	if area.is_in_group("Wall"):
@@ -165,7 +165,7 @@ func _on_body_area_entered(area):
 
 
 func _on_body_area_exited(area):
-	if Global.game_state != Global.GameState.ACTIVE:
+	if Global.state != Global.State.ACTIVE:
 		return
 
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
@@ -179,7 +179,7 @@ func _on_body_area_exited(area):
 
 
 func _on_shoes_area_entered(area):
-	if Global.game_state != Global.GameState.ACTIVE:
+	if Global.state != Global.State.ACTIVE:
 		return
 
 	if area.is_in_group("Enemy"):
