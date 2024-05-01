@@ -4,7 +4,7 @@ extends Node
 # ギアの種類
 enum GearType {
 	COL,
-	EME, EMS,
+	EME, EMP, EMS,
 	EXT,
 	GTG, GTM,
 	LFP, LFM,
@@ -36,10 +36,11 @@ const ITEM_SPRITES = [
 const GEAR_INFO = {
 	GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
 	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
+	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "ウーハー", "d": "敵が下半分にだけ\n出てくるようになる", "f": [2, 3, 5] },
 	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
 	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
 	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
-	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "自撮りドローン", "d": "ゲートが{0}個ずつ\n出てくるようになる", "f": [2, 3, 5] },
+	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "", "d": "ゲートが{0}個ずつ\n出てくるようになる", "f": [2, 3, 5] },
 	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
 	GearType.LFM: { "c": 5, "m": 5, "i": 12, "t": "臓器売買", "d": "残機 -1\nEXTRA x2", "f": null },
 	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },

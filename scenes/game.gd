@@ -25,8 +25,8 @@ const SLOW_DURATION_SHOP = 1.0 # 入店時に何秒かけてスローになる�
 const SLOW_SPEED_SHOP = 0.8 # Shop 入店時に何倍速のスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
-const GATE_HEIGHT_MIN = -80 # (px)
-const GATE_HEIGHT_MAX = 80 # (px)
+const GATE_HEIGHT_MIN = -80
+const GATE_HEIGHT_MAX = 80
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
 const ENEMY_SPAWN_COOLTIME_BASE = 3.0
@@ -47,6 +47,8 @@ var _gate_spawn_timer = 0.0
 var _is_spawn_enemy = false # 敵を生成するか
 var _enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_BASE # 何秒ごとに敵を生成するか
 var _enemy_spawn_timer = 0.0
+var _enemy_spawn_height_min = GATE_HEIGHT_MIN
+var _enemy_spawn_height_max = GATE_HEIGHT_MAX
 
 var _slow_tween = null
 var _anti_damage_tween = null
@@ -187,6 +189,8 @@ func _on_hero_got_gear(gear):
 	# EME: _on_hero_kills_enemy()
 	# MSB: hero._on_hero_got_gear
 	match gear:
+		Gear.GearTyoe.EMP:
+			_enemy_spawn_height_max = 0
 		Gear.GearType.EMS:
 			var _ems = [2, 3, 5]
 			var _ems_count = Gear.my_gears.count(Gear.GearType.EMS)
