@@ -7,7 +7,7 @@ enum GearType {
 	EME, EMS,
 	EXT,
 	GTG, GTM,
-	LIF,
+	LFP, LFM,
 	MSB, MSM, MSW,
 	SCL, SHO,
 }
@@ -40,7 +40,8 @@ const GEAR_INFO = {
 	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
 	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
 	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "自撮りドローン", "d": "ゲートが{0}個ずつ\n出てくるようになる", "f": [2, 3, 5] },
-	GearType.LIF: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
+	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
+	GearType.LFM: { "c": 5, "m": 5, "i": 12, "t": "臓器売買", "d": "残機 -1\nEXTRA x2", "f": null },
 	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },
 	GearType.MSM: { "c": 2, "m": 3, "i": 6, "t": "マルチミサイル", "d": "ミサイルを{0}\n方向に発射する", "f": [2, 3, 5] },
 	GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "超ミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
@@ -54,7 +55,7 @@ const GEARS_ON_SALE_DEFAULT = [
 	GearType.EME, GearType.EMS,
 	GearType.EXT,
 	GearType.GTG, #GearType.GTM,
-	GearType.LIF,
+	GearType.LFP, GearType.LFM, 
 	GearType.MSB, #GearType.MSM, GearType.MSW,
 	GearType.SCL, GearType.SHO,
 ]

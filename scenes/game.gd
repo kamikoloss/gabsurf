@@ -195,8 +195,11 @@ func _on_hero_got_gear(gear):
 			Global.extra += 5
 		Gear.GearType.GTG:
 			_gate_gap += 64
-		Gear.GearType.LIF:
+		Gear.GearType.LFP:
 			Global.life += 1
+		Gear.GearType.LFM:
+			Global.life -= 1
+			Global.extra *= 2
 		Gear.GearType.SCL:
 			Global.hero_move_velocity *= 1.25
 			Global.extra *= 2
