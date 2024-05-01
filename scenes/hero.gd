@@ -114,6 +114,9 @@ func _on_life_changed(from):
 
 
 func _on_body_area_entered(area):
+	if Global.game_state != Global.GameState.ACTIVE:
+		return
+
 	if area.is_in_group("Wall"):
 		if !Global.is_hero_anti_damage:
 			print("Hero is damged by wall.")
@@ -129,10 +132,9 @@ func _on_body_area_entered(area):
 		Global.hero_got_level.emit()
 
 	if area.is_in_group("Money"):
-		if Global.game_state == Global.GameState.ACTIVE:
-			print("Hero got money.")
-			area.queue_free()
-			Global.hero_got_money.emit()
+		print("Hero got money.")
+		area.queue_free()
+		Global.hero_got_money.emit()
 
 	if area.is_in_group("Shop"):
 		print("Hero entered shop.")
@@ -154,9 +156,11 @@ func _on_body_area_entered(area):
 
 
 func _on_body_area_exited(area):
+	if Global.game_state != Global.GameState.ACTIVE:
+		return
+
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
-	if area.is_in_group("ScreenOut") && Global.game_state == Global.GameState.ACTIVE:
-		position.y = -9999
+	if area.is_in_group("ScreenOut"):
 		print("Hero exited screen.")
 		Global.game_ended.emit()
 
@@ -166,6 +170,9 @@ func _on_body_area_exited(area):
 
 
 func _on_shoes_area_entered(area):
+	if Global.game_state != Global.GameState.ACTIVE:
+		return
+
 	if area.is_in_group("Enemy"):
 		if Gear.my_gears.has(Gear.GearType.SHO) && !area.is_dead:
 			print("Hero kills enemy.")

@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://cxqj3ync58bdc"]
+[gd_scene load_steps=15 format=3 uid="uid://cxqj3ync58bdc"]
 
 [ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="1_qsvs6"]
 [ext_resource type="Script" path="res://scenes/gate.gd" id="1_ukssn"]
@@ -60,6 +60,9 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_w74on"]
 radius = 64.0
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0dqem"]
+size = Vector2(256, 256)
+
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6y2dd"]
 size = Vector2(80, 80)
 
@@ -95,7 +98,7 @@ texture = ExtResource("1_qsvs6")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/GateBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="Money" type="Area2D" parent="Mask/Gates" groups=["Level", "Money"]]
+[node name="Money" type="Area2D" parent="Mask/Gates" groups=["Money"]]
 scale = Vector2(0.4, 0.4)
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="Mask/Gates/Money"]
@@ -104,6 +107,12 @@ autoplay = "default"
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/Money"]
 shape = SubResource("CircleShape2D_w74on")
+
+[node name="Level" type="Area2D" parent="Mask/Gates" groups=["Level"]]
+scale = Vector2(0.05, 10)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/Level"]
+shape = SubResource("RectangleShape2D_0dqem")
 
 [node name="Area2D" type="Area2D" parent="."]
 
