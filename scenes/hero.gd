@@ -10,10 +10,12 @@ const WEAPON_SCENE = preload("res://scenes/weapon.tscn")
 @onready var _life_label = $UI/Life
 
 # Variables
+var _jump_timer = 0
 var _jump_counter_weapon = 0
 var _jump_counter_weapon_quota = 99 # Gear 取得時に変更
 
 # Constants
+const JUMP_COOLTIME = 0.05 # (s)
 const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
 const FALL_VELOCITY_MAX = 300 # 終端速度 (px/s)
@@ -31,6 +33,8 @@ func _ready():
 
 
 func _physics_process(delta):
+	_jump_timer += delta
+	
 	# ゲーム中 or ゲームオーバー:
 	# 終端速度に達するまで加速する
 	var states = [Global.GameState.ACTIVE, Global.GameState.GAMEOVER]
@@ -62,10 +66,15 @@ func _on_ui_jumped():
 	if Global.game_state == Global.GameState.GAMEOVER:
 		return
 
-	# タイトル or ポーズ中: 再開と同時にジャンプする
+	# クールタイム中: 何もしない
+	if Global.game_state == Global.GameState.ACTIVE && _jump_timer < JUMP_COOLTIME:
+		return
+
+	# ゲーム中 or タイトル or ポーズ中: 再開と同時にジャンプする
 	velocity.y = JUMP_VELOCITY
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
+	_jump_timer = 0
 
 	# MSB 所持中
 	if Gear.my_gears.has(Gear.GearType.MSB):
