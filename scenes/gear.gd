@@ -29,7 +29,6 @@ const ITEM_SPRITES = [
 	preload("res://images/item12.png"),
 ]
 
-
 # ギアの情報
 # "c": コスト, "m": 最大何個買えるか (0 は制限なし), "i": ITEM_SPRITES の index,
 # "t": 名称, "d": 説明文, "f": 説明文のフォーマット,

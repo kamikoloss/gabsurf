@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=26 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
@@ -16,27 +16,27 @@
 [ext_resource type="AudioStream" uid="uid://f848jtf71m04" path="res://sounds/Cassette_Tape_Dream_2.mp3" id="14_fbbs1"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iejyb"]
-bg_color = Color(0.501961, 0.12549, 0.12549, 0.752941)
+bg_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.25098, 0.12549, 0.12549, 0.752941)
+border_color = Color(0.12549, 0.12549, 0.12549, 0.752941)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_d4xxw"]
-bg_color = Color(0.12549, 0.501961, 0.12549, 0.752941)
+bg_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
 border_width_right = 2
 border_width_bottom = 2
-border_color = Color(0.12549, 0.25098, 0.12549, 0.752941)
+border_color = Color(0.12549, 0.12549, 0.12549, 0.752941)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dan31"]
-bg_color = Color(0.12549, 0.12549, 0.501961, 0.752941)
+bg_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
 border_width_right = 2
 border_width_bottom = 2
 border_color = Color(0.12549, 0.12549, 0.25098, 0.752941)
@@ -54,6 +54,16 @@ corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb1rg"]
+bg_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.12549, 0.12549, 0.12549, 0.752941)
+corner_radius_top_left = 8
+corner_radius_top_right = 8
+corner_radius_bottom_right = 8
+corner_radius_bottom_left = 8
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_5tnh0"]
 animations = [{
@@ -109,6 +119,247 @@ script = ExtResource("1_twex4")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
 
+[node name="Header" type="Control" parent="UI/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+
+[node name="Level" type="Panel" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 2
+offset_left = 10.0
+offset_top = 10.0
+offset_right = 70.0
+offset_bottom = 70.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_iejyb")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Header/Level"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Header/Level/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "LEVEL"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Header/Level/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="X1" type="Label" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(20, 60)
+layout_mode = 0
+offset_left = 70.0
+offset_top = 10.0
+offset_right = 90.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "×"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Money" type="Panel" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 0
+offset_left = 90.0
+offset_top = 10.0
+offset_right = 150.0
+offset_bottom = 70.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_d4xxw")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Header/Money"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Header/Money/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "MONEY"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Header/Money/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="X2" type="Label" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(20, 60)
+layout_mode = 0
+offset_left = 150.0
+offset_top = 10.0
+offset_right = 170.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "×"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Extra" type="Panel" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(60, 60)
+layout_mode = 0
+offset_left = 170.0
+offset_top = 10.0
+offset_right = 230.0
+offset_bottom = 70.0
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_dan31")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Header/Extra"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Header/Extra/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "EXTRA"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Header/Extra/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "1"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="=" type="Label" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(20, 60)
+layout_mode = 0
+offset_left = 230.0
+offset_top = 10.0
+offset_right = 250.0
+offset_bottom = 70.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 32
+text = "="
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Score" type="Panel" parent="UI/CanvasLayer/Header"]
+custom_minimum_size = Vector2(100, 60)
+layout_mode = 0
+offset_left = 250.0
+offset_top = 10.0
+offset_right = 350.0
+offset_bottom = 70.0
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 1.5
+theme_override_styles/panel = SubResource("StyleBoxFlat_0cm0c")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Header/Score"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -25.0
+offset_bottom = 25.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Header/Score/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "SCORE"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Label2" type="Label" parent="UI/CanvasLayer/Header/Score/VBoxContainer"]
+layout_mode = 2
+size_flags_stretch_ratio = 2.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 24
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Footer" type="Control" parent="UI/CanvasLayer"]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Pause" type="Label" parent="UI/CanvasLayer/Footer"]
+custom_minimum_size = Vector2(120, 60)
+layout_mode = 0
+offset_top = 510.0
+offset_right = 120.0
+offset_bottom = 570.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "ポーズ
+(ESC)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Jump" type="Label" parent="UI/CanvasLayer/Footer"]
+custom_minimum_size = Vector2(120, 60)
+offset_left = 120.0
+offset_top = 510.0
+offset_right = 240.0
+offset_bottom = 570.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "再開
+(Space)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Retry" type="Label" parent="UI/CanvasLayer/Footer"]
+custom_minimum_size = Vector2(120, 60)
+offset_left = 240.0
+offset_top = 510.0
+offset_right = 360.0
+offset_bottom = 570.0
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 16
+text = "リトライ
+(Enter)"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Layout" type="VBoxContainer" parent="UI/CanvasLayer"]
 custom_minimum_size = Vector2(360, 640)
 offset_right = 360.0
@@ -122,173 +373,23 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
-[node name="VBoxContainer" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Header"]
-layout_mode = 2
-
-[node name="Level" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_iejyb")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "LEVEL"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer"]
-layout_mode = 2
-size_flags_stretch_ratio = 2.0
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 24
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="X1" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 32
-text = "×"
-horizontal_alignment = 1
-
-[node name="Money" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_d4xxw")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "MONEY"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer"]
-layout_mode = 2
-size_flags_stretch_ratio = 2.0
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 24
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="X2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 32
-text = "×"
-horizontal_alignment = 1
-
-[node name="Extra" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-theme_override_styles/panel = SubResource("StyleBoxFlat_dan31")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "EXTRA"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer"]
-layout_mode = 2
-size_flags_stretch_ratio = 2.0
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 24
-text = "1"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="X3" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-custom_minimum_size = Vector2(20, 0)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 32
-text = "="
-horizontal_alignment = 1
-
-[node name="Score" type="Panel" parent="UI/CanvasLayer/Layout/Header/VBoxContainer"]
-layout_mode = 2
-size_flags_horizontal = 3
-size_flags_stretch_ratio = 1.5
-theme_override_styles/panel = SubResource("StyleBoxFlat_0cm0c")
-
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score"]
-layout_mode = 1
-anchors_preset = 14
-anchor_top = 0.5
-anchor_right = 1.0
-anchor_bottom = 0.5
-offset_top = -25.0
-offset_bottom = 25.0
-grow_horizontal = 2
-grow_vertical = 2
-
-[node name="Label" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer"]
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "SCORE"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Label2" type="Label" parent="UI/CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer"]
-layout_mode = 2
-size_flags_stretch_ratio = 2.0
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 24
-text = "0"
-horizontal_alignment = 1
-vertical_alignment = 1
-
-[node name="Body" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
+[node name="_1" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 layout_mode = 2
 size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+
+[node name="Body" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
+custom_minimum_size = Vector2(360, 360)
+layout_mode = 2
 theme_override_constants/margin_left = 10
 theme_override_constants/margin_right = 10
 
 [node name="Panel" type="Panel" parent="UI/CanvasLayer/Layout/Body"]
 layout_mode = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_mb1rg")
 
 [node name="Labels" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel"]
 layout_mode = 1
@@ -300,7 +401,7 @@ grow_vertical = 2
 alignment = 1
 
 [node name="Version" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
-custom_minimum_size = Vector2(0, 40)
+custom_minimum_size = Vector2(0, 32)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 16
@@ -309,7 +410,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Title" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 64)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 48
@@ -317,26 +418,23 @@ text = "TITLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Description" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
-custom_minimum_size = Vector2(0, 80)
-layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "Description
-Description
-Description"
-horizontal_alignment = 1
-vertical_alignment = 1
-
 [node name="Gears" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
-custom_minimum_size = Vector2(0, 80)
+custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 16
-text = "Gears: {AAAA,BBBB,CCCC}"
+theme_override_font_sizes/font_size = 12
+text = "Gears: {アイテムサンプル1,アイテムサンプル2,アイテムサンプル3,アイテムサンプル4,アイテムサンプル5,アイテムサンプル6,アイテムサンプル7,アイテムサンプル8,アイテムサンプル9,アイテムサンプル10,アイテムサンプル11,アイテムサンプル12,アイテムサンプル13,アイテムサンプル14,アイテムサンプル15,アイテムサンプル16,}"
 horizontal_alignment = 1
 vertical_alignment = 1
 autowrap_mode = 3
+
+[node name="_2" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
 
 [node name="Footer" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 custom_minimum_size = Vector2(0, 80)
@@ -351,9 +449,8 @@ layout_mode = 2
 theme_override_constants/separation = 8
 
 [node name="Pause" type="Button" parent="UI/CanvasLayer/Layout/Footer/Buttons"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "■"
@@ -361,16 +458,13 @@ text = "■"
 [node name="Jump" type="Button" parent="UI/CanvasLayer/Layout/Footer/Buttons"]
 layout_mode = 2
 size_flags_horizontal = 3
-size_flags_vertical = 3
-size_flags_stretch_ratio = 2.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "▲"
 
 [node name="Retry" type="Button" parent="UI/CanvasLayer/Layout/Footer/Buttons"]
+custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
-size_flags_horizontal = 3
-size_flags_vertical = 3
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 36
 text = "●"

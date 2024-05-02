@@ -2,14 +2,16 @@ extends Control
 
 
 # Nodes
+@onready var _label_level = $CanvasLayer/Header/Level/VBoxContainer/Label2
+@onready var _label_money = $CanvasLayer/Header/Money/VBoxContainer/Label2
+@onready var _label_extra = $CanvasLayer/Header/Extra/VBoxContainer/Label2
+@onready var _label_score = $CanvasLayer/Header/Score/VBoxContainer/Label2
 @onready var _panel_body = $CanvasLayer/Layout/Body/Panel
 @onready var _label_title = $CanvasLayer/Layout/Body/Panel/Labels/Title
-@onready var _label_description = $CanvasLayer/Layout/Body/Panel/Labels/Description
-@onready var _label_gears = $CanvasLayer/Layout/Body/Panel/Labels/Gears
-@onready var _label_level = $CanvasLayer/Layout/Header/VBoxContainer/Level/VBoxContainer/Label2
-@onready var _label_money = $CanvasLayer/Layout/Header/VBoxContainer/Money/VBoxContainer/Label2
-@onready var _label_extra = $CanvasLayer/Layout/Header/VBoxContainer/Extra/VBoxContainer/Label2
-@onready var _label_score = $CanvasLayer/Layout/Header/VBoxContainer/Score/VBoxContainer/Label2
+@onready var _label_gears = $CanvasLayer/Layout/Body/Panel/Labels/Gears # Debug
+@onready var _footer_pause = $CanvasLayer/Footer/Pause
+@onready var _footer_jump = $CanvasLayer/Footer/Jump
+@onready var _footer_retry = $CanvasLayer/Footer/Retry
 
 
 # Constants
@@ -55,6 +57,9 @@ func _on_jump_button_down():
 	var states = [Global.State.TITLE, Global.State.PAUSED]
 	if states.has(Global.state):
 		_panel_body.visible = false
+		_footer_pause.visible = false
+		_footer_jump.visible = false
+		_footer_retry.visible = false
 
 	Global.ui_jumped.emit()
 
@@ -64,7 +69,9 @@ func _on_pause_button_down():
 	if Global.state == Global.State.ACTIVE:
 		_panel_body.visible = true
 		_label_title.text = "PAUSED"
-		_label_description.text = "▲ / Space でゲーム再開\n● / Enter でリトライ"
+		_footer_pause.visible = false
+		_footer_jump.visible = true
+		_footer_retry.visible = true
 		_refresh_label_gear()
 
 	Global.ui_paused.emit()
@@ -77,14 +84,18 @@ func _on_retry_button_down():
 func _on_game_initialized():
 	_panel_body.visible = true
 	_label_title.text = "GABSURF"
-	_label_description.text = "▲ / Space でゲーム開始\n■ / Esc でポーズ"
+	_footer_pause.visible = true
+	_footer_jump.visible = true
+	_footer_retry.visible = false
 	_refresh_label_gear()
 
 
 func _on_game_ended():
 	_panel_body.visible = true
 	_label_title.text = "GAME OVER"
-	_label_description.text = "● / Enter でリトライ"
+	_footer_pause.visible = false
+	_footer_jump.visible = false
+	_footer_retry.visible = true
 	_refresh_label_gear()
 
 
