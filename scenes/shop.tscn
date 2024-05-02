@@ -9,6 +9,11 @@ size = Vector2(360, 640)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kttc5"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.752941, 0.752941, 0.752941, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -16,13 +21,11 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_rlqq6"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 1)
-corner_radius_top_left = 4
-corner_radius_top_right = 4
-corner_radius_bottom_right = 4
-corner_radius_bottom_left = 4
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j506a"]
-bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.752941, 0.752941, 0.752941, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -30,6 +33,21 @@ corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_yp7ik"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j506a"]
+bg_color = Color(0.25098, 0.25098, 0.25098, 1)
+border_width_left = 2
+border_width_top = 2
+border_width_right = 2
+border_width_bottom = 2
+border_color = Color(0.752941, 0.752941, 0.752941, 1)
 corner_radius_top_left = 4
 corner_radius_top_right = 4
 corner_radius_bottom_right = 4
@@ -116,7 +134,41 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="GearA" type="Node2D" parent="."]
-position = Vector2(-180, 80)
+position = Vector2(-180, -200)
+
+[node name="Cost" type="Panel" parent="GearA"]
+offset_left = 180.0
+offset_top = -40.0
+offset_right = 260.0
+offset_bottom = 10.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
+
+[node name="Label" type="Label" parent="GearA/Cost"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "$99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Max" type="Panel" parent="GearA"]
+offset_left = 270.0
+offset_top = -40.0
+offset_right = 350.0
+offset_bottom = 10.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
+
+[node name="Label" type="Label" parent="GearA/Max"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "1/3"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Text" type="Panel" parent="GearA"]
 offset_right = 360.0
@@ -127,20 +179,21 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_j506a")
 layout_mode = 0
 offset_right = 360.0
 offset_bottom = 120.0
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GearA/Text/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="GearA/Text/MarginContainer/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="GearA/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_bu7gq")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/normal_font = ExtResource("2_bu7gq")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
 text = "あいうえあいうえ"
+fit_content = true
 
 [node name="Description" type="Label" parent="GearA/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -149,23 +202,6 @@ theme_override_font_sizes/font_size = 16
 text = "あいうえあいうえあいうえ
 あいうえあいうえあいうえ
 あいうえあいうえあいうえ"
-
-[node name="Money" type="Panel" parent="GearA"]
-offset_left = 280.0
-offset_top = -32.0
-offset_right = 360.0
-offset_bottom = 8.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
-
-[node name="Label" type="Label" parent="GearA/Money"]
-layout_mode = 0
-offset_right = 80.0
-offset_bottom = 40.0
-theme_override_fonts/font = ExtResource("2_bu7gq")
-theme_override_font_sizes/font_size = 24
-text = "$99"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Image" type="Sprite2D" parent="GearA"]
 position = Vector2(300, 60)
@@ -179,7 +215,41 @@ position = Vector2(300, 60)
 shape = SubResource("CircleShape2D_esaij")
 
 [node name="GearB" type="Node2D" parent="."]
-position = Vector2(-180, -200)
+position = Vector2(-180, 80)
+
+[node name="Cost" type="Panel" parent="GearB"]
+offset_left = 180.0
+offset_top = -40.0
+offset_right = 260.0
+offset_bottom = 10.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
+
+[node name="Label" type="Label" parent="GearB/Cost"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "$99"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Max" type="Panel" parent="GearB"]
+offset_left = 270.0
+offset_top = -40.0
+offset_right = 350.0
+offset_bottom = 10.0
+theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
+
+[node name="Label" type="Label" parent="GearB/Max"]
+layout_mode = 0
+offset_right = 80.0
+offset_bottom = 40.0
+theme_override_fonts/font = ExtResource("2_bu7gq")
+theme_override_font_sizes/font_size = 24
+text = "1/3"
+horizontal_alignment = 1
+vertical_alignment = 1
 
 [node name="Text" type="Panel" parent="GearB"]
 offset_right = 360.0
@@ -190,20 +260,21 @@ theme_override_styles/panel = SubResource("StyleBoxFlat_j506a")
 layout_mode = 0
 offset_right = 360.0
 offset_bottom = 120.0
-theme_override_constants/margin_left = 10
+theme_override_constants/margin_left = 20
 theme_override_constants/margin_top = 10
-theme_override_constants/margin_right = 10
+theme_override_constants/margin_right = 20
 theme_override_constants/margin_bottom = 10
 
 [node name="VBoxContainer" type="VBoxContainer" parent="GearB/Text/MarginContainer"]
 layout_mode = 2
-theme_override_constants/separation = 10
 
-[node name="Title" type="Label" parent="GearB/Text/MarginContainer/VBoxContainer"]
+[node name="Title" type="RichTextLabel" parent="GearB/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("2_bu7gq")
-theme_override_font_sizes/font_size = 24
+theme_override_fonts/normal_font = ExtResource("2_bu7gq")
+theme_override_font_sizes/normal_font_size = 24
+bbcode_enabled = true
 text = "あいうえあいうえ"
+fit_content = true
 
 [node name="Description" type="Label" parent="GearB/Text/MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -212,23 +283,6 @@ theme_override_font_sizes/font_size = 16
 text = "あいうえあいうえあいうえ
 あいうえあいうえあいうえ
 あいうえあいうえあいうえ"
-
-[node name="Money" type="Panel" parent="GearB"]
-offset_left = 280.0
-offset_top = -32.0
-offset_right = 360.0
-offset_bottom = 8.0
-theme_override_styles/panel = SubResource("StyleBoxFlat_yp7ik")
-
-[node name="Label" type="Label" parent="GearB/Money"]
-layout_mode = 0
-offset_right = 80.0
-offset_bottom = 40.0
-theme_override_fonts/font = ExtResource("2_bu7gq")
-theme_override_font_sizes/font_size = 24
-text = "$99"
-horizontal_alignment = 1
-vertical_alignment = 1
 
 [node name="Image" type="Sprite2D" parent="GearB"]
 position = Vector2(300, 60)

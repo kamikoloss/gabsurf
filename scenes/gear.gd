@@ -119,12 +119,26 @@ func get_random_gear(ignore = null):
 # Shop UI 用のギア情報を取得する
 func get_gear_ui(gear):
 	var _gear_info = GEAR_INFO[gear]
-	var _title_suffix = ""
+	var _title = ""
 	var _desc = ""
+	var _max = ""
 
-	# タイトルの末尾に "(所持数/最大数)" をつける
-	var _count = my_gears.count(gear)
-	_title_suffix = " ({0}/{1})".format([_count + 1, _gear_info["m"]])
+	# ギア名をランクの色にする
+	var _rank_color = null
+	for _key in GEAR_RANK:
+		if (GEAR_RANK[_key].has(gear)):
+			_rank_color = _key
+	match _rank_color:
+		Global.Rank.WHITE:
+			_title = _gear_info["t"]
+		Global.Rank.BLUE:
+			_title = "[color=blue]{0}[/color]".format([_gear_info["t"]])
+		Global.Rank.GREEN:
+			_title = "[color=green]{0}[/color]".format([_gear_info["t"]])
+		Global.Rank.RED:
+			_title = "[color=red]{0}[/color]".format([_gear_info["t"]])
+		Global.Rank.GOLD:
+			_title = "[color=yellow]{0}[/color]".format([_gear_info["t"]])
 
 	# 説明文を必要に応じてフォーマットする
 	if _gear_info["f"] != null:
@@ -133,9 +147,14 @@ func get_gear_ui(gear):
 	else:
 		_desc = _gear_info["d"]
 
+	# "<買ったら何個目になるか> / <最大購入可能数>"
+	var _count = my_gears.count(gear)
+	_max = "{0}/{1}".format([_count + 1, _gear_info["m"]])
+
 	return {
-		"c": "$" + str(_gear_info["c"]),
-		"i": ITEM_SPRITES[_gear_info["i"]],
-		"t": _gear_info["t"] + _title_suffix,
-		"d": _desc,
+		"title": _title,
+		"desc": _desc,
+		"cost": "$" + str(_gear_info["c"]),
+		"max": _max,
+		"icon": ITEM_SPRITES[_gear_info["i"]],
 	}

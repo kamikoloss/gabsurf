@@ -8,14 +8,16 @@ extends Node2D
 		"parent": $GearA,
 		"title": $GearA/Text/MarginContainer/VBoxContainer/Title,
 		"desc": $GearA/Text/MarginContainer/VBoxContainer/Description,
-		"cost": $GearA/Money/Label,
+		"cost": $GearA/Cost/Label,
+		"max": $GearA/Max/Label,
 		"icon": $GearA/Image, 
 	},
 	"b": {
 		"parent": $GearB,
 		"title": $GearB/Text/MarginContainer/VBoxContainer/Title,
 		"desc": $GearB/Text/MarginContainer/VBoxContainer/Description,
-		"cost": $GearB/Money/Label,
+		"cost": $GearB/Cost/Label,
+		"max": $GearB/Max/Label,
 		"icon": $GearB/Image, 
 	},
 }
@@ -44,10 +46,11 @@ func _ready():
 			_gear_ui[k]["parent"].queue_free()
 		else:
 			var _gear_info = Gear.get_gear_ui(gear[k])
-			_gear_ui[k]["title"].text = _gear_info["t"]
-			_gear_ui[k]["desc"].text = _gear_info["d"]
-			_gear_ui[k]["cost"].text = _gear_info["c"]
-			_gear_ui[k]["icon"].texture = _gear_info["i"]
+			_gear_ui[k]["title"].text = _gear_info["title"]
+			_gear_ui[k]["desc"].text = _gear_info["desc"]
+			_gear_ui[k]["cost"].text = _gear_info["cost"]
+			_gear_ui[k]["max"].text = _gear_info["max"]
+			_gear_ui[k]["icon"].texture = _gear_info["icon"]
 
 	_destroy()
 
