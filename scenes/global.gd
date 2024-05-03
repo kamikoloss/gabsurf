@@ -42,6 +42,8 @@ enum Rank {
 	GOLD,
 }
 
+# Constants
+const LIFE_MAX = 3 # 残機の最大数
 
 # Variables
 var is_hero_anti_damage = false # 無敵状態かどうか
@@ -136,7 +138,7 @@ func initialize():
 	money = 0
 	extra = 1
 	score = 0
-	life = 1
+	life = LIFE_MAX
 
 
 # 現在の GameRank を計算する

@@ -95,7 +95,7 @@ var my_gears = [] # 所持しているギアのリスト
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
 	my_gears = []
-	#my_gears = [GearType.ATD, GearType.ATD, GearType.ATD, GearType.BDA, GearType.SHO] # 無敵デバッグ
+	#my_gears = [GearType.ATD, GearType.ATD, GearType.ATD, GearType.BDA, GearType.SHO, GearType.NOS] # 無敵ループデバッグ
 	#my_gears = [GearType.NOE, GearType.NOS] # 出現しなくなるデバッグ
 
 
@@ -110,8 +110,16 @@ func get_random_gear(ignore = null):
 		if r <= Global.rank:
 			_gears_on_sale += GEAR_RANK[r]
 
+	# 特殊条件
+	# 現在の残機が最大数の場合: LFP は並べない
+	if Global.life == Global.LIFE_MAX and _gears_on_sale.has(GearType.LFP):
+		_gears_on_sale.remove_at(_gears_on_sale.find(GearType.LFP))
+
 	# ギアを抽選する
 	for n in 10:
+		if _gears_on_sale.size() == 0:
+			break
+
 		var _random = _gears_on_sale[randi() % _gears_on_sale.size()]
 
 		# 避けるギアが抽選された場合: NG 次のループへ
