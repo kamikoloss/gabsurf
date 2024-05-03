@@ -127,14 +127,22 @@ func _on_body_area_entered(area):
 		return
 
 	if area.is_in_group("Wall"):
-		if !Global.is_hero_anti_damage:
-			print("Hero is damged by wall.")
-			Global.hero_damged.emit()
+		if Global.is_hero_anti_damage:
+			return
+		print("Hero is damged by wall.")
+		Global.hero_damged.emit()
 
 	if area.is_in_group("Enemy"):
-		if !Global.is_hero_anti_damage && !area.is_dead:
-			print("Hero is damged by enemy.")
-			Global.hero_damged.emit()
+		if area.is_dead or Global.is_hero_anti_damage:
+			return
+		if Gear.my_gears.has(Gear.GearType.BDA):
+			area.die() # area = enemy
+			print("Hero kills enemy.")
+			Global.hero_kills_enemy.emit()
+			return
+
+		print("Hero is damged by enemy.")
+		Global.hero_damged.emit()
 
 	if area.is_in_group("Level"):
 		print("Hero got level.")
@@ -183,7 +191,9 @@ func _on_shoes_area_entered(area):
 		return
 
 	if area.is_in_group("Enemy"):
-		if Gear.my_gears.has(Gear.GearType.SHO) && !area.is_dead:
+		if area.is_dead:
+			return
+		if Gear.my_gears.has(Gear.GearType.SHO):
 			print("Hero kills enemy.")
 			area.die() # area = enemy
 			Global.hero_kills_enemy.emit()

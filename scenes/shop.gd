@@ -38,7 +38,7 @@ func _ready():
 	# 店に並べるギアを2つ抽選する
 	gear["a"] = Gear.get_random_gear()
 	gear["b"] = Gear.get_random_gear(gear["a"])
-	print("Gears are {0} and {1}.".format([gear["a"], gear["b"]]))
+	print("Gears are {0} and {1}.".format([Gear.GEAR_INFO[gear["a"]]["t"], Gear.GEAR_INFO[gear["b"]]["t"]]))
 
 	# 店にギアを並べる
 	for k in ["a", "b"]:
