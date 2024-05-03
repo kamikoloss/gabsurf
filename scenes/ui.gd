@@ -15,7 +15,7 @@ extends Control
 @onready var _footer_retry = $CanvasLayer/Footer/Retry
 
 # Constants
-const BG_DURATION = 1.0 # (s)
+const BG_DURATION = 2.0 # (s)
 const LABEL_DURATION = 0.5 # (s)
 
 # Variables
