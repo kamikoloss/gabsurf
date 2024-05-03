@@ -204,6 +204,9 @@ func _on_hero_got_gear(gear):
 		Gear.GearType.LFM:
 			Global.life -= 1
 			Global.extra *= 2
+		Gear.GearType.LOT:
+			var _lot = _rng.randf_range(0, 5)
+			Global.money += _lot
 		Gear.GearType.SCL:
 			Global.hero_move_velocity *= 1.25
 			Global.extra *= 2
