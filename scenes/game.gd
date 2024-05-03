@@ -329,7 +329,7 @@ func _process_spawn_gate(delta):
 # 敵を生成する
 func _spawn_enemy():
 	var _enemy = ENEMY_SCENE.instantiate()
-	var _height_diff = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
+	var _height_diff = _rng.randf_range(_enemy_spawn_height_min, _enemy_spawn_height_max)
 	_enemy.position.x += (_hero.position.x + 360)
 	_enemy.position.y += (_height_diff + 320)
 	get_tree().root.get_node("Main").add_child(_enemy)
