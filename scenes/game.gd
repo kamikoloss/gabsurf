@@ -21,15 +21,15 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 @onready var _se_player_ui = $Hero/AudioPlayers/SE2
 
 # Constants
-const SLOW_DURATION_SHOP = 1.0 # 入店時に何秒かけてスローになるか
-const SLOW_SPEED_SHOP = 0.6 # Shop 入店時に何倍速のスローになるか
+const SLOW_SPEED_SHOP = 0.6 # ショップ入店時に何倍速のスローになるか
+const SLOW_DURATION_SHOP = 1.0 # ショップ入店時に何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_HEIGHT_MIN = 80
-const GATE_HEIGHT_MAX = -80
+const GATE_HEIGHT_MAX = -80 # マイナスが上であることに注意する
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
-const ENEMY_SPAWN_COOLTIME_BASE = 3.0
+const ENEMY_SPAWN_COOLTIME_BASE = 3.0 # 敵が何秒ごとに出現するかの基準値
 const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # ダメージ時に何秒無敵になるか
 
 # Variables
