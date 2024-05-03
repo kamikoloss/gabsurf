@@ -16,7 +16,7 @@ enum GearType {
 
 # Resources
 const ITEM_SPRITES = [
-	null, # item0.png はない
+	preload("res://images/circle.png"), # Debug
 	preload("res://images/item1.png"),
 	preload("res://images/item2.png"),
 	preload("res://images/item3.png"),
@@ -36,14 +36,14 @@ const ITEM_SPRITES = [
 # "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
 const GEAR_INFO = {
 	GearType.ATD: { "c": 5, "m": 3, "i": 3, "t": "プロテイン", "d": "敵を倒すたびに\n{0}秒無敵になる", "f": [1, 2, 3] },
-	GearType.BDA: { "c": 5, "m": 1, "i": 1, "t": "ボディーアーマー", "d": "無敵時に敵を体当たりで\n倒せるようになる", "f": null  },
+	GearType.BDA: { "c": 5, "m": 1, "i": 4, "t": "ボディーアーマー", "d": "無敵時に敵を体当たりで\n倒せるようになる", "f": null  },
 	#GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
 	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
 	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "音響装置", "d": "敵が下半分にだけ\n出現するようになる", "f": null },
 	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
 	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
 	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
-	#GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "", "d": "ゲートが{0}個ずつ\n出てくるようになる", "f": [2, 3, 5] },
+	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "ビール", "d": "ゲートが{0}個ずつ\n出現するようになる", "f": [2, 3, 5] },
 	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
 	GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +20", "f": null },
 	GearType.LOT: { "c": 2, "m": 5, "i": 5, "t": "宝くじ", "d": "MONEY +0 ~ +5", "f": null},
@@ -67,13 +67,14 @@ const GEAR_RANK = {
 	Global.Rank.BLUE: [
 		GearType.ATD,
 		GearType.EMP,
+		GearType.GTM,
 		GearType.LOT,
 	],
 	Global.Rank.GREEN: [
-		GearType.EMS,
-		GearType.GTG,
-		GearType.LFP,
-		GearType.SCL,
+		#GearType.EMS,
+		#GearType.GTG,
+		#GearType.LFP,
+		#GearType.SCL,
 	],
 	Global.Rank.RED: [
 		GearType.BDA,

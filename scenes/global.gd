@@ -68,7 +68,7 @@ var rank = null:
 		print("rank is changed. ({0} -> {1})".format([_from, value]))
 		rank_changed.emit(_from)
 
-var level = null:
+var level: int = -1:
 	get:
 		return level
 	set(value):
@@ -79,7 +79,7 @@ var level = null:
 		#print("level is changed. ({0} -> {1})".format([_from, value]))
 		level_changed.emit(_from)
 		score = _calc_score()
-var money = null:
+var money: int = -1:
 	get:
 		return money
 	set(value):
@@ -90,7 +90,7 @@ var money = null:
 		#print("money is changed. ({0} -> {1})".format([_from, value]))
 		money_changed.emit(_from)
 		score = _calc_score()
-var extra = null:
+var extra: int = -1:
 	get:
 		return extra
 	set(value):
@@ -101,7 +101,7 @@ var extra = null:
 		#print("extra is changed. ({0} -> {1})".format([_from, value]))
 		extra_changed.emit(_from)
 		score = _calc_score()
-var score = null:
+var score: int = -1:
 	get:
 		return score
 	set(value):
@@ -112,7 +112,7 @@ var score = null:
 		#print("score is changed. ({0} -> {1})".format([_from, value]))
 		score_changed.emit(_from)
 		rank = _calc_game_rank()
-var life = null:
+var life: int = -1:
 	get:
 		return life
 	set(value):

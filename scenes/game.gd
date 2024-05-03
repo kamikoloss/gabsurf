@@ -36,10 +36,10 @@ const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # ダメージ時に何秒無敵にな�
 var _money_base = 1 # Money 取得時に加算される値
 var _gate_gap = 0 # ゲートの開き
 
-var _gate_counter_shop = 0 # ゲートを通るたびに 1 増加する 店が出現したら 0 に戻す
-var _gate_counter_shop_quota = 3 # ゲートを何回通るたびに店が出現するか
-var _gate_counter_difficult = 0 # ゲートを通るたびに 1 増加する 難易度が上昇したら 0 に戻す
-var _gate_counter_difficult_quota = 3 # ゲートを何回通るたびに難易度が上昇するか
+var _money_counter_shop = 0 # Money を取るたびに 1 増加する 店が出現したら 0 に戻す
+var _money_counter_shop_quota = 3 # Money を何回取るたびに店が出現するか
+var _money_counter_difficult = 0 # Money を取るたびに 1 増加する 難易度が上昇したら 0 に戻す
+var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
 var _shop_counter = 0 # 店を生成するたびに 1 増加する
 
 var _is_spawn_gate = false # ゲートを生成するか
@@ -157,28 +157,29 @@ func _on_hero_damged():
 
 func _on_hero_got_level():
 	Global.level += LEVEL_BASE
-	_gate_counter_shop += 1
-	_gate_counter_difficult += 1
-
-	# 難易度上昇の規定回数に達した場合
-	if _gate_counter_difficult_quota <= _gate_counter_difficult:
-		_gate_counter_difficult = 0
-		_gate_gap -= GATE_GAP_STEP
-		print("current gate gap: {0}".format([_gate_gap]))
-
-	# 店生成の規定回数に達した場合
-	# 店の看板で難易度を表示するので難易度の処理よりあとに書く
-	if _gate_counter_shop_quota <= _gate_counter_shop:
-		_gate_counter_shop = 0
-		_shop_counter += 1
-		_is_spawn_gate = false
-		_is_spawn_enemy = false
-		_spawn_shop()
 
 
 func _on_hero_got_money():
 	Global.money += _money_base
 	_play_se(MONEY_SOUND)
+
+	_money_counter_shop += 1
+	_money_counter_difficult += 1
+
+	# 難易度上昇の規定回数に達した場合
+	if _money_counter_difficult_quota <= _money_counter_difficult:
+		_money_counter_difficult = 0
+		_gate_gap -= GATE_GAP_STEP
+		print("current gate gap: {0}".format([_gate_gap]))
+
+	# 店生成の規定回数に達した場合
+	# 店の看板で難易度を表示するので難易度の処理よりあとに書く
+	if _money_counter_shop_quota <= _money_counter_shop:
+		_money_counter_shop = 0
+		_shop_counter += 1
+		_is_spawn_gate = false
+		_is_spawn_enemy = false
+		_spawn_shop()
 
 
 func _on_hero_got_gear(gear):
@@ -187,8 +188,9 @@ func _on_hero_got_gear(gear):
 	_play_se(GEAR_SOUND)
 
 	# ギアの効果を発動する
-	# EME: _on_hero_kills_enemy()
-	# MSB: hero._on_hero_got_gear
+	# ATD, EME: _on_hero_kills_enemy()
+	# GTM: _process_spawn_gate()
+	# MSB: hero._on_hero_got_gear()
 	match gear:
 		Gear.GearType.EMP:
 			_enemy_spawn_height_max = 0
@@ -203,7 +205,7 @@ func _on_hero_got_gear(gear):
 		Gear.GearType.LFP:
 			Global.life += 1
 		Gear.GearType.LFM:
-			if Global.life < 2:
+			if Global.life <= 1:
 				print("NO LIFE!!")
 			else:
 				Global.life -= 1
@@ -235,7 +237,7 @@ func _on_hero_kills_enemy():
 	if Gear.my_gears.has(Gear.GearType.ATD):
 		var _atd = [0, 1, 2, 3]
 		var _atd_count = Gear.my_gears.count(Gear.GearType.ATD)
-		_enter_anti_damage(_atd)
+		_enter_anti_damage(_atd[_atd_count])
 
 	# EME
 	if Gear.my_gears.has(Gear.GearType.EME):
@@ -296,12 +298,13 @@ func _enter_anti_damage(duration):
 
 
 # ゲートを生成する
-func _spawn_gate():
+func _spawn_gate(height_diff, x_diff, set_money):
 	var _gate = GATE_SCENE.instantiate()
-	_gate.position.x += (_hero.position.x + 360)
+	_gate.position.x += (_hero.position.x + 360 + x_diff)
 	_gate.position.y += 320
 	_gate.gap_diff = _gate_gap
-	_gate.height_diff += _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
+	_gate.height_diff += height_diff
+	_gate.set_money = set_money
 	get_tree().root.get_node("Main").add_child(_gate)
 	#print("Gate is spawned.")
 
@@ -312,7 +315,13 @@ func _process_spawn_gate(delta):
 		_gate_spawn_timer += delta
 
 	if _gate_spawn_cooltime < _gate_spawn_timer:
-		_spawn_gate()
+		var _gtm = [1, 2, 3, 5]
+		var _gtm_count = Gear.my_gears.count(Gear.GearType.GTM)
+		var _height_diff = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
+		var _x_diff = 0
+		for g in _gtm[_gtm_count]:
+			_spawn_gate(_height_diff, _x_diff, g == 0)
+			_x_diff += 40
 		_gate_spawn_timer = 0
 
 
