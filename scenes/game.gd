@@ -22,7 +22,7 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 
 # Constants
 const SLOW_DURATION_SHOP = 1.0 # 入店時に何秒かけてスローになるか
-const SLOW_SPEED_SHOP = 0.8 # Shop 入店時に何倍速のスローになるか
+const SLOW_SPEED_SHOP = 0.6 # Shop 入店時に何倍速のスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_HEIGHT_MIN = 80
