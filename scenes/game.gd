@@ -30,6 +30,7 @@ const GATE_HEIGHT_MAX = 80
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
 const ENEMY_SPAWN_COOLTIME_BASE = 3.0
+const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # ダメージ時に何秒無敵になるか
 
 # Variables
 var _money_base = 1 # Money 取得時に加算される値
@@ -151,7 +152,7 @@ func _on_hero_damged():
 	# まだ残機がある場合: 無敵状態に突入する
 	if !Global.is_hero_anti_damage:
 		_play_se(DAMAGE_SOUND)
-		_enter_anti_damage()
+		_enter_anti_damage(DAMAGED_ANTI_DAMAGE_DURATION)
 
 
 func _on_hero_got_level():
@@ -202,8 +203,11 @@ func _on_hero_got_gear(gear):
 		Gear.GearType.LFP:
 			Global.life += 1
 		Gear.GearType.LFM:
-			Global.life -= 1
-			Global.extra *= 2
+			if Global.life < 2:
+				print("NO LIFE!!")
+			else:
+				Global.life -= 1
+				Global.money += 20
 		Gear.GearType.LOT:
 			var _lot = _rng.randf_range(0, 5)
 			Global.money += _lot
@@ -227,10 +231,17 @@ func _on_hero_exited_shop():
 func _on_hero_kills_enemy():
 	_play_se(DAMAGE_SOUND)
 
+	# ATD
+	if Gear.my_gears.has(Gear.GearType.ATD):
+		var _atd = [0, 1, 2, 3]
+		var _atd_count = Gear.my_gears.count(Gear.GearType.ATD)
+		_enter_anti_damage(_atd)
+
 	# EME
-	var _eme = [0, 1, 2, 3]
-	var _eme_count = Gear.my_gears.count(Gear.GearType.EME)
-	Global.extra += _eme[_eme_count]
+	if Gear.my_gears.has(Gear.GearType.EME):
+		var _eme = [0, 1, 2, 3]
+		var _eme_count = Gear.my_gears.count(Gear.GearType.EME)
+		Global.extra += _eme[_eme_count]
 
 
 # スロー用の Tween を取得する
@@ -271,15 +282,14 @@ func _get_anti_damage_tween():
 
 
 # 無敵状態に突入する
-func _enter_anti_damage():
+func _enter_anti_damage(duration):
 	Global.is_hero_anti_damage = true
 
 	var _tween = _get_anti_damage_tween()
-	var _duration = 1.0 # TODO: 引数にする
 	_hero_anti_damage_bar.visible = true
 	_hero_anti_damage_bar.value = 100
 
-	_tween.tween_property(_hero_anti_damage_bar, "value", 0, _duration)
+	_tween.tween_property(_hero_anti_damage_bar, "value", 0, duration)
 	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
 	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
 	#_tween.tween_callback(func(): print("Anti-damage is finished."))

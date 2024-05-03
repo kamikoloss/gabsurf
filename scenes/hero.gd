@@ -104,6 +104,7 @@ func _on_hero_got_gear(gear):
 			_jump_counter_weapon_quota = _msb[_msb_count]
 
 
+# TODO: UI に移動
 func _on_life_changed(from):
 	var _life_text = ""
 	for n in Global.life:
@@ -133,16 +134,17 @@ func _on_body_area_entered(area):
 		Global.hero_damged.emit()
 
 	if area.is_in_group("Enemy"):
-		if area.is_dead or Global.is_hero_anti_damage:
+		if area.is_dead:
 			return
-		if Gear.my_gears.has(Gear.GearType.BDA):
-			area.die() # area = enemy
-			print("Hero kills enemy.")
-			Global.hero_kills_enemy.emit()
-			return
-
-		print("Hero is damged by enemy.")
-		Global.hero_damged.emit()
+		if Global.is_hero_anti_damage:
+			# ボディーアーマー: 無敵状態のとき敵を倒せる
+			if Gear.my_gears.has(Gear.GearType.BDA):
+				area.die() # area = enemy
+				print("Hero kills enemy.")
+				Global.hero_kills_enemy.emit()
+		else:
+			print("Hero is damged by enemy.")
+			Global.hero_damged.emit()
 
 	if area.is_in_group("Level"):
 		print("Hero got level.")

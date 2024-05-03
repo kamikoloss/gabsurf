@@ -3,7 +3,7 @@ extends Node
 
 # ギアの種類
 enum GearType {
-	BDA, COL,
+	ATD, BDA, COL,
 	EME, EMP, EMS,
 	EXT,
 	GTG, GTM,
@@ -32,11 +32,12 @@ const ITEM_SPRITES = [
 ]
 
 # ギアの情報
-# "c": コスト, "m": 最大何個買えるか (0 は制限なし), "i": ITEM_SPRITES の index,
+# "c": コスト, "m": 最大何個買えるか, "i": ITEM_SPRITES の index,
 # "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
 const GEAR_INFO = {
-	GearType.BDA: { "c": 5, "m": 1, "i": 1, "t": "ボディーアーマー", "d": "敵を体当たりで\n倒せるようになる", "f": null  },
-	GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
+	GearType.ATD: { "c": 5, "m": 3, "i": 3, "t": "プロテイン", "d": "敵を倒すたびに\n{0}秒無敵になる", "f": [1, 2, 3] },
+	GearType.BDA: { "c": 5, "m": 1, "i": 1, "t": "ボディーアーマー", "d": "無敵時に敵を体当たりで\n倒せるようになる", "f": null  },
+	#GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
 	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
 	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "音響装置", "d": "敵が下半分にだけ\n出現するようになる", "f": null },
 	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
@@ -64,6 +65,7 @@ const GEAR_RANK = {
 		GearType.SHO,
 	],
 	Global.Rank.BLUE: [
+		GearType.ATD,
 		GearType.EMP,
 		GearType.LOT,
 	],
