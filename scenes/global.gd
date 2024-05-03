@@ -139,14 +139,6 @@ func initialize():
 	life = 1
 
 
-# 現在の Score を計算する
-func _calc_score():
-	if level == null or money == null or extra == null:
-		return
-
-	return level * money * extra
-
-
 # 現在の GameRank を計算する
 func _calc_game_rank():
 	if score < 1000:
@@ -159,3 +151,11 @@ func _calc_game_rank():
 		return Rank.RED
 	elif score < 1000000:
 		return Rank.GOLD
+
+
+# 現在の Score を計算する
+func _calc_score():
+	if level == null or money == null or extra == null:
+		return
+
+	return level * money * extra

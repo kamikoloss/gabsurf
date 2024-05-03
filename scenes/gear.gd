@@ -71,10 +71,10 @@ const GEAR_RANK = {
 		GearType.LOT,
 	],
 	Global.Rank.GREEN: [
-		#GearType.EMS,
-		#GearType.GTG,
-		#GearType.LFP,
-		#GearType.SCL,
+		GearType.EMS,
+		GearType.GTG,
+		GearType.LFP,
+		GearType.SCL,
 	],
 	Global.Rank.RED: [
 		GearType.BDA,

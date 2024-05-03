@@ -2,6 +2,7 @@ extends Control
 
 
 # Nodes
+@onready var _bg = $ParallaxBackground
 @onready var _label_level = $CanvasLayer/Header/Level/VBoxContainer/Label2
 @onready var _label_money = $CanvasLayer/Header/Money/VBoxContainer/Label2
 @onready var _label_extra = $CanvasLayer/Header/Extra/VBoxContainer/Label2
@@ -13,8 +14,8 @@ extends Control
 @onready var _footer_jump = $CanvasLayer/Footer/Jump
 @onready var _footer_retry = $CanvasLayer/Footer/Retry
 
-
 # Constants
+const BG_DURATION = 1.0 # (s)
 const LABEL_DURATION = 0.5 # (s)
 
 # Variables
@@ -23,6 +24,7 @@ var _money_from = 0
 var _extra_from = 1
 var _score_from = 0
 
+var _bg_tween = null
 var _level_tween = null
 var _money_tween = null
 var _extra_tween = null
@@ -32,6 +34,7 @@ var _score_tween = null
 func _ready():
 	Global.game_initialized.connect(_on_game_initialized)
 	Global.game_ended.connect(_on_game_ended)
+	Global.rank_changed.connect(_on_rank_changed)
 	Global.level_changed.connect(_on_level_changed)
 	Global.money_changed.connect(_on_money_changed)
 	Global.extra_changed.connect(_on_extra_changed)
@@ -99,6 +102,22 @@ func _on_game_ended():
 	_refresh_label_gear()
 
 
+func _on_rank_changed(from):
+	var _rank_y_positions = {
+		Global.Rank.WHITE: -320,
+		Global.Rank.BLUE: -240,
+		Global.Rank.GREEN: -160,
+		Global.Rank.RED: -80,
+		Global.Rank.GOLD: 0
+	}
+	var _position = Vector2(0, _rank_y_positions[Global.rank])
+	print(_position)
+
+	var _tween = _get_bg_tween()
+	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	_tween.tween_property(_bg, "offset", _position, BG_DURATION)
+
+
 func _on_level_changed(from):
 	var _tween = _get_level_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
@@ -125,18 +144,23 @@ func _on_score_changed(from):
 
 func _refresh_label_gear():
 	var _gears = "Gears: {"
-	for g in Gear.my_gears:
-		_gears += Gear.GEAR_INFO[g]["t"]
+	for gear in Gear.my_gears:
+		_gears += Gear.GEAR_INFO[gear]["t"]
 		_gears += ","
 	_gears += "}"
 	_label_gears.text = _gears
 
 
+func _get_bg_tween():
+	if _bg_tween:
+		_bg_tween.kill()
+	_bg_tween = create_tween()
+	return _bg_tween
+
 func _get_level_tween():
 	if _level_tween:
 		_level_tween.kill()
 	_level_tween = create_tween()
-	_level_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	return _level_tween
 
 
@@ -144,7 +168,6 @@ func _get_money_tween():
 	if _money_tween:
 		_money_tween.kill()
 	_money_tween = create_tween()
-	_money_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	return _money_tween
 
 
@@ -152,7 +175,6 @@ func _get_extra_tween():
 	if _extra_tween:
 		_extra_tween.kill()
 	_extra_tween = create_tween()
-	_extra_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	return _extra_tween
 
 
@@ -160,5 +182,4 @@ func _get_score_tween():
 	if _score_tween:
 		_score_tween.kill()
 	_score_tween = create_tween()
-	_score_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
 	return _score_tween
