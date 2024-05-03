@@ -318,6 +318,9 @@ func _spawn_enemy():
 
 # 敵を生成しつづける (_process 内で呼ぶ)
 func _process_spawn_enemy(delta):
+	if Gear.my_gears.has(Gear.GearType.NOE):
+		return
+
 	if _is_spawn_enemy:
 		_enemy_spawn_timer += delta
 
@@ -328,6 +331,9 @@ func _process_spawn_enemy(delta):
 
 # 店を生成する
 func _spawn_shop():
+	if Gear.my_gears.has(Gear.GearType.NOS):
+		return
+
 	var _shop = SHOP_SCENE.instantiate()
 	_shop.position.x += (_hero.position.x + 720)
 	_shop.position.y += 320

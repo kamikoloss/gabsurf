@@ -10,6 +10,7 @@ enum GearType {
 	LFP, LFM,
 	LOT,
 	MSB, MSM, MSW,
+	NOE, NOS,
 	SCL, SHO,
 }
 
@@ -37,17 +38,19 @@ const GEAR_INFO = {
 	GearType.BDA: { "c": 5, "m": 1, "i": 1, "t": "ボディーアーマー", "d": "敵を体当たりで\n倒せるようになる", "f": null  },
 	GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
 	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
-	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "音響装置", "d": "敵が下半分にだけ\n出てくるようになる", "f": [2, 3, 5] },
+	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "音響装置", "d": "敵が下半分にだけ\n出現するようになる", "f": null },
 	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
 	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
 	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
 	#GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "", "d": "ゲートが{0}個ずつ\n出てくるようになる", "f": [2, 3, 5] },
 	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
-	GearType.LFM: { "c": 5, "m": 5, "i": 12, "t": "臓器売買", "d": "残機 -1\nEXTRA x2", "f": null },
+	GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +20", "f": null },
 	GearType.LOT: { "c": 2, "m": 5, "i": 5, "t": "宝くじ", "d": "MONEY +0 ~ +5", "f": null},
 	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },
 	#GearType.MSM: { "c": 2, "m": 3, "i": 6, "t": "マルチミサイル", "d": "ミサイルを{0}\n方向に発射する", "f": [2, 3, 5] },
-	#GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "超ミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
+	#GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "スーパーミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
+	GearType.NOE: { "c": 10, "m": 1, "i": 1, "t": "安全運転", "d": "敵が出現しなくなる\n EXTRA x2", "f": null},
+	GearType.NOS: { "c": 10, "m": 1, "i": 1, "t": "ミニマリスト", "d": "ショップが出現しなくなる\nEXTRA x2", "f": null },
 	GearType.SCL: { "c": 5, "m": 1, "i": 9, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
 	GearType.SHO: { "c": 2, "m": 1, "i": 7, "t": "安全靴", "d": "敵を踏んで\n倒せるようになる", "f": null },
 }
@@ -74,7 +77,10 @@ const GEAR_RANK = {
 		GearType.BDA,
 		GearType.LFM,
 	],
-	Global.Rank.GOLD: [],
+	Global.Rank.GOLD: [
+		GearType.NOE,
+		GearType.NOS,
+	],
 }
 
 
