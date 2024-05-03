@@ -95,6 +95,8 @@ var my_gears = [] # 所持しているギアのリスト
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
 	my_gears = []
+	#my_gears = [GearType.ATD, GearType.ATD, GearType.ATD, GearType.BDA, GearType.SHO] # 無敵デバッグ
+	#my_gears = [GearType.NOE, GearType.NOS] # 出現しなくなるデバッグ
 
 
 # ランダムなギアを取得する

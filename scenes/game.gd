@@ -25,8 +25,8 @@ const SLOW_DURATION_SHOP = 1.0 # 入店時に何秒かけてスローになる�
 const SLOW_SPEED_SHOP = 0.8 # Shop 入店時に何倍速のスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
-const GATE_HEIGHT_MIN = -80
-const GATE_HEIGHT_MAX = 80
+const GATE_HEIGHT_MIN = 80
+const GATE_HEIGHT_MAX = -80
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
 const ENEMY_SPAWN_COOLTIME_BASE = 3.0
@@ -177,9 +177,10 @@ func _on_hero_got_money():
 	if _money_counter_shop_quota <= _money_counter_shop:
 		_money_counter_shop = 0
 		_shop_counter += 1
-		_is_spawn_gate = false
-		_is_spawn_enemy = false
-		_spawn_shop()
+		if !Gear.my_gears.has(Gear.GearType.NOS):
+			_is_spawn_gate = false
+			_is_spawn_enemy = false
+			_spawn_shop()
 
 
 func _on_hero_got_gear(gear):
@@ -350,9 +351,6 @@ func _process_spawn_enemy(delta):
 
 # 店を生成する
 func _spawn_shop():
-	if Gear.my_gears.has(Gear.GearType.NOS):
-		return
-
 	var _shop = SHOP_SCENE.instantiate()
 	_shop.position.x += (_hero.position.x + 720)
 	_shop.position.y += 320

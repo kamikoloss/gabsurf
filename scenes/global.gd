@@ -143,13 +143,13 @@ func initialize():
 func _calc_game_rank():
 	if score < 1000:
 		return Rank.WHITE
-	elif 1000 < score and score < 10000:
+	elif 1000 <= score and score < 10000:
 		return Rank.BLUE
-	elif 10000 < score and score < 100000:
+	elif 10000 <= score and score < 100000:
 		return Rank.GREEN
-	elif 100000 < score and score < 1000000:
+	elif 100000 <= score and score < 1000000:
 		return Rank.RED
-	elif score < 1000000:
+	else:
 		return Rank.GOLD
 
 
