@@ -6,8 +6,8 @@ extends Area2D
 
 
 # Variables
-var is_active = false
-var is_dead = false
+var is_active = false # 倒される対象として有効かどうか
+var is_dead = false # もう倒されたあとかどうか
 var speed = 50 # 飛行速度 (px/s)
 
 var _dead_velocity = Vector2.ZERO # 死んだときの落下速度

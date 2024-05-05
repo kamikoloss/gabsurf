@@ -42,17 +42,18 @@ enum Rank {
 	GOLD,
 }
 
+
 # Constants
 const LIFE_MAX = 3 # 残機の最大数
+const GATE_GAP_BASE = 256 # Gate の開きのデフォルト値 (px)
 
 
 # Variables
-var gate_gap_diff = 0 # Gate の開きの差 (px)
-var is_hero_anti_damage = false # Hero が無敵状態かどうか
-var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
+var gate_gap_diff: int = 0 # Gate の開きの差 (px)
+var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
+var hero_move_velocity: int = 200 # Hero の横移動の速度 (px/s)
 
-
-var state = null:
+var state: State = State.TITLE:
 	get:
 		return state
 	set(value):
@@ -62,7 +63,8 @@ var state = null:
 		state = value
 		print("[Global] state is changed. ({0} -> {1})".format([_from, value]))
 		state_changed.emit(_from)
-var rank = null:
+
+var rank: Rank = Rank.WHITE:
 	get:
 		return rank
 	set(value):
@@ -84,6 +86,7 @@ var level: int = -1:
 		#print("[Global] level is changed. ({0} -> {1})".format([_from, value]))
 		level_changed.emit(_from)
 		score = _calc_score()
+
 var money: int = -1:
 	get:
 		return money
@@ -95,6 +98,7 @@ var money: int = -1:
 		#print("[Global] money is changed. ({0} -> {1})".format([_from, value]))
 		money_changed.emit(_from)
 		score = _calc_score()
+
 var extra: int = -1:
 	get:
 		return extra
@@ -106,6 +110,7 @@ var extra: int = -1:
 		#print("[Global] extra is changed. ({0} -> {1})".format([_from, value]))
 		extra_changed.emit(_from)
 		score = _calc_score()
+
 var score: int = -1:
 	get:
 		return score
@@ -117,6 +122,7 @@ var score: int = -1:
 		#print("[Global] score is changed. ({0} -> {1})".format([_from, value]))
 		score_changed.emit(_from)
 		rank = _calc_game_rank()
+
 var life: int = -1:
 	get:
 		return life

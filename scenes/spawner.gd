@@ -141,6 +141,5 @@ func _spawn_shop():
 	_shop.global_position.x += (get_viewport().get_camera_2d().global_position.x + 1000)
 	_shop.global_position.y += 320
 	_shop.number = _shop_counter
-	_shop.gate_gap = Global.gate_gap_diff
 	self.add_child(_shop)
 	print("[Spawner] spawned a shop.")

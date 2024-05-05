@@ -3,16 +3,19 @@ extends CharacterBody2D
 # Scenes
 const WEAPON_SCENE = preload("res://scenes/weapon.tscn")
 
+
 # Nodes
 @onready var _hero_sprite = $AnimatedSprite2D
 @onready var _collision_circle = $CollisionCircle
 @onready var _jump_label = $UI/Jump
 @onready var _life_label = $UI/Life
 
+
 # Variables
 var _jump_timer = 0
 var _jump_counter_weapon = 0
 var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
+
 
 # Constants
 const JUMP_COOLTIME = 0.05 # (s)
@@ -165,7 +168,7 @@ func _on_body_area_entered(area):
 		var _cost = Gear.GEAR_INFO[_gear]["c"]
 		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
-			print("[Hero] try get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
+			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
 			area.get_node("../Image").queue_free()
 			area.queue_free()

@@ -8,22 +8,22 @@ extends Node2D
 
 
 # Variables
-var gap_diff = 0 # ゲートがデフォルトから何 px 開くか
-var height_diff = 0 # ゲートがデフォルトから何 px 上下に移動するか
-var set_money = true # ゲートの真ん中に Money を配置するか
+var gap_diff = 0 # Gate がデフォルトから何 px 開くか
+var height_diff = 0 # Gate がデフォルトから何 px 上下に移動するか
+var set_money = true # Gate の真ん中に Money を配置するか
 
 
 func _ready():
-	# ゲートの開き
+	# Gate を開く
 	_gate_top.position.y -= gap_diff / 2
 	_gate_bottom.position.y += gap_diff / 2
 
-	# ゲートの座標
+	# Gate の Y 座標を移動する
 	_gate_top.position.y += height_diff
 	_gate_bottom.position.y += height_diff
 	_money.position.y += height_diff
 
-	# Money 配置
+	# Money を配置する
 	if !set_money:
 		_money.queue_free()
 

@@ -30,13 +30,12 @@ const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
 
 # Variables
 var number = 0
-var gate_gap = 0 # TODO: 難易度なので Global においてもいい？
 var gear = { "a": null, "b": null }
 
 
 func _ready():
 	_enter_label.text = str(number)
-	_exit_label.text = str(gate_gap)
+	_exit_label.text = str(Global.GATE_GAP_BASE + Global.gate_gap_diff)
 
 	# 店に並べるギアを2つ抽選する
 	gear["a"] = Gear.get_random_gear()

@@ -1,37 +1,28 @@
 extends Node
 
+# Gear に関連する処理
 
-# ギアの種類
+# Gear の効果をどこに実装するか
+# 基本: game._on_hero_got_gear()
+# ATD, EME: game._on_hero_kills_enemy()
+# GTM: game._process_spawn_gate()
+# MSB: hero._on_hero_got_gear()
+# EMP, EMS: spawner._on_hero_got_gear()
+
+
+# Gear の種類
 enum GearType {
 	ATD, BDA, COL,
-	EME, EMP, EMS,
-	EXT,
+	EME, EMP, EMS, EXT,
 	GTG, GTM,
-	LFP, LFM,
-	LOT,
+	LFP, LFM, LOT,
 	MSB, MSM, MSW,
 	NOE, NOS,
 	SCL, SHO,
 }
 
-# Resources
-const ITEM_SPRITES = [
-	preload("res://images/circle.png"), # Debug
-	preload("res://images/item1.png"),
-	preload("res://images/item2.png"),
-	preload("res://images/item3.png"),
-	preload("res://images/item4.png"),
-	preload("res://images/item5.png"),
-	preload("res://images/item6.png"),
-	preload("res://images/item7.png"),
-	preload("res://images/item8.png"),
-	preload("res://images/item9.png"),
-	preload("res://images/item10.png"),
-	preload("res://images/item11.png"),
-	preload("res://images/item12.png"),
-]
 
-# ギアの情報
+# Gear の情報
 # "c": コスト, "m": 最大何個買えるか, "i": ITEM_SPRITES の index,
 # "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
 const GEAR_INFO = {
@@ -86,9 +77,26 @@ const GEAR_RANK = {
 	],
 }
 
+# ギアの画像
+const ITEM_SPRITES = [
+	preload("res://images/circle.png"), # Debug
+	preload("res://images/item1.png"),
+	preload("res://images/item2.png"),
+	preload("res://images/item3.png"),
+	preload("res://images/item4.png"),
+	preload("res://images/item5.png"),
+	preload("res://images/item6.png"),
+	preload("res://images/item7.png"),
+	preload("res://images/item8.png"),
+	preload("res://images/item9.png"),
+	preload("res://images/item10.png"),
+	preload("res://images/item11.png"),
+	preload("res://images/item12.png"),
+]
+
 
 # Variables
-var my_gears = [] # 所持しているギアのリスト
+var my_gears: Array[GearType] = [] # 所持しているギアのリスト
 
 
 # グローバル変数の初期化を行う
@@ -99,13 +107,13 @@ func initialize():
 	#my_gears = [GearType.NOE, GearType.NOS] # 出現しなくなるデバッグ
 
 
-# ランダムなギアを取得する
+# ランダムな Gear を取得する
 # 抽選に失敗した場合は null を返す
 func get_random_gear(ignore = null):
-	var _gear = null
-	var _gears_on_sale = []
+	var _gear = null # 最終的に取得される Gear
+	var _gears_on_sale = [] # 店頭に並ぶ Gear
 
-	# 現在のランクまでのギアを店頭に並べる
+	# 現在のランクまでの Gear を店頭に並べる
 	for r in Global.Rank.values():
 		if r <= Global.rank:
 			_gears_on_sale += GEAR_RANK[r]
@@ -115,14 +123,14 @@ func get_random_gear(ignore = null):
 	if Global.life == Global.LIFE_MAX and _gears_on_sale.has(GearType.LFP):
 		_gears_on_sale.remove_at(_gears_on_sale.find(GearType.LFP))
 
-	# ギアを抽選する
+	# Gear を抽選する
 	for n in 10:
 		if _gears_on_sale.size() == 0:
 			break
 
 		var _random = _gears_on_sale[randi() % _gears_on_sale.size()]
 
-		# 避けるギアが抽選された場合: NG 次のループへ
+		# 避ける Gear が抽選された場合: NG 次のループへ
 		if (_random == ignore):
 			continue
 
@@ -140,7 +148,7 @@ func get_random_gear(ignore = null):
 	return _gear
 
 
-# Shop UI 用のギア情報を取得する
+# Shop UI 用の Gear 情報を取得する
 func get_gear_ui(gear):
 	var _gear_info = GEAR_INFO[gear]
 	var _title = ""

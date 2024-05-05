@@ -20,13 +20,13 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 
 
 # Constants
-const SLOW_SPEED_SHOP = 0.6 # ショップ入店時に何倍速のスローになるか
-const SLOW_DURATION_SHOP = 1.0 # ショップ入店時に何秒かけてスローになるか
+const SLOW_SPEED_SHOP = 0.6 # Shop に入ったときに何倍速のスローになるか
+const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
-const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
-const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
-const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # ダメージ時に何秒無敵になるか
+const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっていくか
+const LEVEL_BASE = 10 # Gate 通過時に Level に加算される値
+const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
 
 
 # Variables
@@ -81,10 +81,12 @@ func _on_ui_jumped():
 		Engine.time_scale = 1.0
 		set_process(true)
 		set_physics_process(true)
+		Global.state = Global.State.ACTIVE
+
+		# BGM を再開する
 		if (_bgm_position != null):
 			_bgm_player.play(_bgm_position)
-		Global.state = Global.State.ACTIVE
-	
+
 	# ゲーム中
 	if Global.state == Global.State.ACTIVE:
 		# SE を鳴らす
@@ -98,9 +100,11 @@ func _on_ui_paused():
 		Engine.time_scale = 0.0
 		set_process(false)
 		set_physics_process(false)
+		Global.state = Global.State.PAUSED
+
+		# BGM の再開位置を保持して止める
 		_bgm_position = _bgm_player.get_playback_position()
 		_bgm_player.stop()
-		Global.state = Global.State.PAUSED
 
 
 func _on_ui_retried():
@@ -126,7 +130,7 @@ func _on_hero_damged():
 		Global.game_ended.emit()
 		return
 
-	# まだ残機がある場合: 無敵状態に突入する
+	# まだ残機がある and 無敵状態ではない: 無敵状態に突入する
 	if !Global.is_hero_anti_damage:
 		_play_se(DAMAGE_SOUND)
 		_enter_anti_damage(DAMAGED_ANTI_DAMAGE_DURATION)
@@ -154,10 +158,6 @@ func _on_hero_got_gear(gear):
 	_play_se(GEAR_SOUND)
 
 	# ギアの効果を発動する
-	# ATD, EME: _on_hero_kills_enemy()
-	# GTM: _process_spawn_gate()
-	# MSB: hero
-	# EMP, EMS: spawner
 	match gear:
 		Gear.GearType.EXT:
 			Global.extra += 5
@@ -167,7 +167,7 @@ func _on_hero_got_gear(gear):
 			Global.life += 1
 		Gear.GearType.LFM:
 			if Global.life <= 1:
-				print("[Game] try get gear LFM, but no life!!")
+				print("[Game] try to get gear LFM, but no life!!")
 			else:
 				Global.life -= 1
 				Global.money += 10
@@ -210,10 +210,8 @@ func _on_hero_kills_enemy():
 func _get_slow_tween():
 	if _slow_tween:
 		_slow_tween.kill()
-
 	_slow_tween = create_tween()
-	_slow_tween.set_trans(Tween.TRANS_QUINT)
-	_slow_tween.set_ease(Tween.EASE_OUT)
+	_slow_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
 	return _slow_tween
 
 
