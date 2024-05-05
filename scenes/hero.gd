@@ -12,7 +12,7 @@ const WEAPON_SCENE = preload("res://scenes/weapon.tscn")
 # Variables
 var _jump_timer = 0
 var _jump_counter_weapon = 0
-var _jump_counter_weapon_quota = 99 # Gear 取得時に変更
+var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
 
 # Constants
 const JUMP_COOLTIME = 0.05 # (s)
@@ -104,7 +104,6 @@ func _on_hero_got_gear(gear):
 			_jump_counter_weapon_quota = _msb[_msb_count]
 
 
-# TODO: UI に移動
 func _on_life_changed(from):
 	var _life_text = ""
 	for n in Global.life:
@@ -130,7 +129,7 @@ func _on_body_area_entered(area):
 	if area.is_in_group("Wall"):
 		if Global.is_hero_anti_damage:
 			return
-		print("Hero is damged by wall.")
+		print("[Hero] damged by wall.")
 		Global.hero_damged.emit()
 
 	if area.is_in_group("Enemy"):
@@ -147,16 +146,16 @@ func _on_body_area_entered(area):
 			Global.hero_damged.emit()
 
 	if area.is_in_group("Level"):
-		print("Hero got level.")
+		print("[Hero] got level.")
 		Global.hero_got_level.emit()
 
 	if area.is_in_group("Money"):
-		print("Hero got money.")
+		print("[Hero] got money.")
 		area.queue_free()
 		Global.hero_got_money.emit()
 
 	if area.is_in_group("Shop"):
-		print("Hero entered shop.")
+		print("[Hero] entered shop.")
 		Global.hero_entered_shop.emit()
 
 	if area.is_in_group("Gear"):
@@ -166,11 +165,11 @@ func _on_body_area_entered(area):
 		var _cost = Gear.GEAR_INFO[_gear]["c"]
 		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
-			print("No money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
+			print("[Hero] no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
 			area.get_node("../Image").queue_free()
 			area.queue_free()
-			print("Hero got gear {0}. (cost: {1})".format([Gear.GEAR_INFO[_gear]["t"], _cost]))
+			print("[Hero] got gear {0}. (cost: {1})".format([Gear.GEAR_INFO[_gear]["t"], _cost]))
 			Global.hero_got_gear.emit(_gear)
 
 
@@ -180,11 +179,11 @@ func _on_body_area_exited(area):
 
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
 	if area.is_in_group("ScreenOut"):
-		print("Hero exited screen.")
+		print("[Hero] exited screen.")
 		Global.game_ended.emit()
 
 	if area.is_in_group("Shop"):
-		print("Hero exited shop.")
+		print("[Hero] exited shop.")
 		Global.hero_exited_shop.emit()
 
 
@@ -196,6 +195,6 @@ func _on_shoes_area_entered(area):
 		if area.is_dead:
 			return
 		if Gear.my_gears.has(Gear.GearType.SHO):
-			print("Hero kills enemy.")
+			print("[Hero] kills a enemy.")
 			area.die() # area = enemy
 			Global.hero_kills_enemy.emit()

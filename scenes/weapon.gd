@@ -4,6 +4,7 @@ extends Area2D
 # Variables
 var speed = 0 # 飛行速度 (px/s)
 
+
 # Constants
 const SPEED_FROM = 200
 const SPEED_TO = 800
@@ -24,7 +25,7 @@ func _on_area_entered(area):
 	if area.is_in_group("Enemy"):
 		if area.is_active && !area.is_dead:
 			area.die() # area = enemy
-			print("Weapon kills enemy.")
+			print("[Weapon] kills a enemy.")
 			Global.hero_kills_enemy.emit()
 
 

@@ -171,7 +171,7 @@ func get_gear_ui(gear):
 	else:
 		_desc = _gear_info["d"]
 
-	# "<買ったら何個目になるか> / <最大購入可能数>"
+	# "<買ったら何個目になるか>/<最大何個買えるか>"
 	var _count = my_gears.count(gear)
 	_max = "{0}/{1}".format([_count + 1, _gear_info["m"]])
 

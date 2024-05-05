@@ -4,12 +4,14 @@ extends Area2D
 #Nodes
 @onready var _sprite = $AnimatedSprite2D
 
+
 # Variables
 var is_active = false
 var is_dead = false
 var speed = 50 # 飛行速度 (px/s)
 
 var _dead_velocity = Vector2.ZERO # 死んだときの落下速度
+
 
 # Constants
 const FALL_VELOCITY = Vector2(0, 800) # 落下速度
@@ -40,5 +42,5 @@ func _on_area_entered(area):
 
 func _on_area_exited(area):
 	if area.is_in_group("ScreenOut"):
-		#print("Enemy is destroyed.")
+		#print("[Enemy] destroyed.")
 		queue_free()

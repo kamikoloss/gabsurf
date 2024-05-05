@@ -1,5 +1,6 @@
 extends Node2D
 
+
 # Nodes
 @onready var _enter_label = $Enter/VBoxContainer/Label2
 @onready var _exit_label = $Exit/VBoxContainer/Label2
@@ -22,8 +23,10 @@ extends Node2D
 	},
 }
 
+
 # Constants
 const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
+
 
 # Variables
 var number = 0
@@ -38,7 +41,7 @@ func _ready():
 	# 店に並べるギアを2つ抽選する
 	gear["a"] = Gear.get_random_gear()
 	gear["b"] = Gear.get_random_gear(gear["a"])
-	print("Shop Gears are {0} and {1}.".format([gear["a"], gear["b"]]))
+	print("[Shop] gears are {0} and {1}.".format([gear["a"], gear["b"]]))
 
 	# 店にギアを並べる
 	for k in ["a", "b"]:
@@ -58,5 +61,5 @@ func _ready():
 # 指定秒数後に自身を破壊する
 func _destroy():
 	await get_tree().create_timer(DESTROY_TIME).timeout
-	#print("Shop is destroyed.")
+	#print("[Shop] destroyed.")
 	queue_free()

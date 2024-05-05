@@ -45,9 +45,12 @@ enum Rank {
 # Constants
 const LIFE_MAX = 3 # 残機の最大数
 
+
 # Variables
-var is_hero_anti_damage = false # 無敵状態かどうか
+var gate_gap_diff = 0 # Gate の開きの差 (px)
+var is_hero_anti_damage = false # Hero が無敵状態かどうか
 var hero_move_velocity = 200 # Hero の横移動の速度 (px/s)
+
 
 var state = null:
 	get:
@@ -57,7 +60,7 @@ var state = null:
 			return
 		var _from = state
 		state = value
-		print("state is changed. ({0} -> {1})".format([_from, value]))
+		print("[Global] state is changed. ({0} -> {1})".format([_from, value]))
 		state_changed.emit(_from)
 var rank = null:
 	get:
@@ -67,7 +70,7 @@ var rank = null:
 			return
 		var _from = rank
 		rank = value
-		print("rank is changed. ({0} -> {1})".format([_from, value]))
+		print("[Global] rank is changed. ({0} -> {1})".format([_from, value]))
 		rank_changed.emit(_from)
 
 var level: int = -1:
@@ -78,7 +81,7 @@ var level: int = -1:
 			return
 		var _from = level
 		level = value
-		#print("level is changed. ({0} -> {1})".format([_from, value]))
+		#print("[Global] level is changed. ({0} -> {1})".format([_from, value]))
 		level_changed.emit(_from)
 		score = _calc_score()
 var money: int = -1:
@@ -89,7 +92,7 @@ var money: int = -1:
 			return
 		var _from = money
 		money = value
-		#print("money is changed. ({0} -> {1})".format([_from, value]))
+		#print("[Global] money is changed. ({0} -> {1})".format([_from, value]))
 		money_changed.emit(_from)
 		score = _calc_score()
 var extra: int = -1:
@@ -100,7 +103,7 @@ var extra: int = -1:
 			return
 		var _from = extra
 		extra = value
-		#print("extra is changed. ({0} -> {1})".format([_from, value]))
+		#print("[Global] extra is changed. ({0} -> {1})".format([_from, value]))
 		extra_changed.emit(_from)
 		score = _calc_score()
 var score: int = -1:
@@ -111,7 +114,7 @@ var score: int = -1:
 			return
 		var _from = score
 		score = value
-		#print("score is changed. ({0} -> {1})".format([_from, value]))
+		#print("[Global] score is changed. ({0} -> {1})".format([_from, value]))
 		score_changed.emit(_from)
 		rank = _calc_game_rank()
 var life: int = -1:
@@ -122,13 +125,14 @@ var life: int = -1:
 			return
 		var _from = life
 		life = value
-		print("life is changed. ({0} -> {1})".format([_from, value]))
+		print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
 		life_changed.emit(_from)
 
 
 # グローバル変数の初期化を行う
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
+	gate_gap_diff = 0
 	is_hero_anti_damage = false
 	hero_move_velocity = 200
 

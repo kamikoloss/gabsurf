@@ -1,9 +1,5 @@
 extends Node2D
 
-# Scenes
-const GATE_SCENE = preload("res://scenes/gate.tscn")
-const ENEMY_SCENE = preload("res://scenes/enemy.tscn")
-const SHOP_SCENE = preload("res://scenes/shop.tscn")
 
 # Resources
 const JUMP_SOUND = preload("res://sounds/パパッ.mp3")
@@ -13,50 +9,35 @@ const DAMAGE_SOUND = preload("res://sounds/ビシッとツッコミ2.mp3")
 const GAMEOVER_SOUND = preload("res://sounds/お寺の鐘.mp3")
 const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 
+
 # Nodes
 @onready var _hero = $Hero
+@onready var _screen = $Screen
 @onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
 @onready var _bgm_player = $Hero/AudioPlayers/BGM
 @onready var _se_player = $Hero/AudioPlayers/SE
 @onready var _se_player_ui = $Hero/AudioPlayers/SE2
+
 
 # Constants
 const SLOW_SPEED_SHOP = 0.6 # ショップ入店時に何倍速のスローになるか
 const SLOW_DURATION_SHOP = 1.0 # ショップ入店時に何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
-const GATE_HEIGHT_MIN = 80
-const GATE_HEIGHT_MAX = -80 # マイナスが上であることに注意する
 const GATE_GAP_STEP = 16 # ゲートが難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 10 # ゲート通過時に Level に加算される値
-const ENEMY_SPAWN_COOLTIME_BASE = 3.0 # 敵が何秒ごとに出現するかの基準値
 const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # ダメージ時に何秒無敵になるか
+
 
 # Variables
 var _money_base = 1 # Money 取得時に加算される値
-var _gate_gap = 0 # ゲートの開き
-
-var _money_counter_shop = 0 # Money を取るたびに 1 増加する 店が出現したら 0 に戻す
-var _money_counter_shop_quota = 3 # Money を何回取るたびに店が出現するか
 var _money_counter_difficult = 0 # Money を取るたびに 1 増加する 難易度が上昇したら 0 に戻す
 var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
-var _shop_counter = 0 # 店を生成するたびに 1 増加する
-
-var _is_spawn_gate = false # ゲートを生成するか
-var _gate_spawn_cooltime = 2.0 # 何秒ごとにゲートを生成するか
-var _gate_spawn_timer = 0.0
-var _is_spawn_enemy = false # 敵を生成するか
-var _enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_BASE # 何秒ごとに敵を生成するか
-var _enemy_spawn_timer = 0.0
-var _enemy_spawn_height_min = GATE_HEIGHT_MIN
-var _enemy_spawn_height_max = GATE_HEIGHT_MAX
 
 var _slow_tween = null
 var _anti_damage_tween = null
 
 var _bgm_position = null
-
-var _rng = RandomNumberGenerator.new()
 
 
 func _ready():
@@ -75,8 +56,7 @@ func _ready():
 
 
 func _process(delta):
-	_process_spawn_gate(delta)
-	_process_spawn_enemy(delta)
+	_screen.position.x = _hero.position.x
 
 
 # ゲームを初期化 + 一時停止する
@@ -88,9 +68,6 @@ func _initialize_game():
 
 	Global.initialize()
 	Gear.initialize()
-
-	_is_spawn_gate = true
-	_is_spawn_enemy = true
 
 	_hero_anti_damage_bar.visible = false
 
@@ -162,25 +139,13 @@ func _on_hero_got_level():
 func _on_hero_got_money():
 	Global.money += _money_base
 	_play_se(MONEY_SOUND)
-
-	_money_counter_shop += 1
 	_money_counter_difficult += 1
 
 	# 難易度上昇の規定回数に達した場合
 	if _money_counter_difficult_quota <= _money_counter_difficult:
 		_money_counter_difficult = 0
-		_gate_gap -= GATE_GAP_STEP
-		print("current gate gap: {0}".format([_gate_gap]))
-
-	# 店生成の規定回数に達した場合
-	# 店の看板で難易度を表示するので難易度の処理よりあとに書く
-	if _money_counter_shop_quota <= _money_counter_shop:
-		_money_counter_shop = 0
-		_shop_counter += 1
-		if !Gear.my_gears.has(Gear.GearType.NOS):
-			_is_spawn_gate = false
-			_is_spawn_enemy = false
-			_spawn_shop()
+		Global.gate_gap_diff -= GATE_GAP_STEP
+		print("[Game] current gate gap diff is {0}".format([Global.gate_gap_diff]))
 
 
 func _on_hero_got_gear(gear):
@@ -191,18 +156,13 @@ func _on_hero_got_gear(gear):
 	# ギアの効果を発動する
 	# ATD, EME: _on_hero_kills_enemy()
 	# GTM: _process_spawn_gate()
-	# MSB: hero._on_hero_got_gear()
+	# MSB: hero
+	# EMP, EMS: spawner
 	match gear:
-		Gear.GearType.EMP:
-			_enemy_spawn_height_max = 0
-		Gear.GearType.EMS:
-			var _ems = [2, 3, 5]
-			var _ems_count = Gear.my_gears.count(Gear.GearType.EMS)
-			_enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_BASE / _ems[_ems_count]
 		Gear.GearType.EXT:
 			Global.extra += 5
 		Gear.GearType.GTG:
-			_gate_gap += 64
+			Global.gate_gap += 64
 		Gear.GearType.LFP:
 			Global.life += 1
 		Gear.GearType.LFM:
@@ -212,6 +172,7 @@ func _on_hero_got_gear(gear):
 				Global.life -= 1
 				Global.money += 10
 		Gear.GearType.LOT:
+			var _rng = RandomNumberGenerator.new()
 			var _lot = _rng.randf_range(0, 5)
 			Global.money += _lot
 		Gear.GearType.SCL:
@@ -227,8 +188,6 @@ func _on_hero_entered_shop():
 func _on_hero_exited_shop():
 	if Global.state == Global.State.ACTIVE:
 		_exit_slow(SLOW_DURATION_SHOP)
-		_is_spawn_gate = true
-		_is_spawn_enemy = true
 
 
 func _on_hero_kills_enemy():
@@ -296,68 +255,6 @@ func _enter_anti_damage(duration):
 	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
 	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
 	#_tween.tween_callback(func(): print("Anti-damage is finished."))
-
-
-# ゲートを生成する
-func _spawn_gate(height_diff, x_diff, set_money):
-	var _gate = GATE_SCENE.instantiate()
-	_gate.position.x += (_hero.position.x + 360 + x_diff)
-	_gate.position.y += 320
-	_gate.gap_diff = _gate_gap
-	_gate.height_diff += height_diff
-	_gate.set_money = set_money
-	get_tree().root.get_node("Main").add_child(_gate)
-	#print("Gate is spawned.")
-
-
-# ゲートを生成しつづける (_process 内で呼ぶ)
-func _process_spawn_gate(delta):
-	if _is_spawn_gate:
-		_gate_spawn_timer += delta
-
-	if _gate_spawn_cooltime < _gate_spawn_timer:
-		var _gtm = [1, 2, 3, 5]
-		var _gtm_count = Gear.my_gears.count(Gear.GearType.GTM)
-		var _height_diff = _rng.randf_range(GATE_HEIGHT_MIN, GATE_HEIGHT_MAX)
-		var _x_diff = 0
-		for g in _gtm[_gtm_count]:
-			_spawn_gate(_height_diff, _x_diff, g == 0)
-			_x_diff += 40
-		_gate_spawn_timer = 0
-
-
-# 敵を生成する
-func _spawn_enemy():
-	var _enemy = ENEMY_SCENE.instantiate()
-	var _height_diff = _rng.randf_range(_enemy_spawn_height_min, _enemy_spawn_height_max)
-	_enemy.position.x += (_hero.position.x + 360)
-	_enemy.position.y += (_height_diff + 320)
-	get_tree().root.get_node("Main").add_child(_enemy)
-	#print("Enemy is spawned.")
-
-
-# 敵を生成しつづける (_process 内で呼ぶ)
-func _process_spawn_enemy(delta):
-	if Gear.my_gears.has(Gear.GearType.NOE):
-		return
-
-	if _is_spawn_enemy:
-		_enemy_spawn_timer += delta
-
-	if _enemy_spawn_cooltime < _enemy_spawn_timer:
-		_spawn_enemy()
-		_enemy_spawn_timer = 0
-
-
-# 店を生成する
-func _spawn_shop():
-	var _shop = SHOP_SCENE.instantiate()
-	_shop.position.x += (_hero.position.x + 720)
-	_shop.position.y += 320
-	_shop.number = _shop_counter
-	_shop.gate_gap = 256 + _gate_gap
-	get_tree().root.get_node("Main").add_child(_shop)
-	#print("Shop is spawned.")
 
 
 # SE を鳴らす

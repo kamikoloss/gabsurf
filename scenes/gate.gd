@@ -6,6 +6,7 @@ extends Node2D
 @onready var _gate_bottom = $Mask/Gates/GateBottom
 @onready var _money = $Mask/Gates/Money
 
+
 # Variables
 var gap_diff = 0 # ゲートがデフォルトから何 px 開くか
 var height_diff = 0 # ゲートがデフォルトから何 px 上下に移動するか
@@ -29,5 +30,5 @@ func _ready():
 
 func _on_area_2d_area_exited(area):
 	if area.is_in_group("ScreenOut"):
-		#print("Wall is destroyed.")
+		#print("[Gate] destroyed.")
 		queue_free()
