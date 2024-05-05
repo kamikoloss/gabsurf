@@ -15,15 +15,10 @@ extends Control
 @onready var _footer_retry = $CanvasLayer/Footer/Retry
 
 # Constants
-const BG_DURATION = 2.0 # (s)
-const LABEL_DURATION = 0.5 # (s)
+const BG_DURATION = 2.0 # BG が何秒かけて上昇するか
+const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 # Variables
-var _level_from = 0
-var _money_from = 0
-var _extra_from = 1
-var _score_from = 0
-
 var _bg_tween = null
 var _level_tween = null
 var _money_tween = null
@@ -111,7 +106,6 @@ func _on_rank_changed(from):
 		Global.Rank.GOLD: 0
 	}
 	var _position = Vector2(0, _rank_y_positions[Global.rank])
-	print(_position)
 
 	var _tween = _get_bg_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)

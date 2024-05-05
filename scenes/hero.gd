@@ -129,7 +129,7 @@ func _on_body_area_entered(area):
 	if area.is_in_group("Wall"):
 		if Global.is_hero_anti_damage:
 			return
-		print("[Hero] damged by wall.")
+		print("[Hero] damged by walls.")
 		Global.hero_damged.emit()
 
 	if area.is_in_group("Enemy"):
@@ -139,10 +139,10 @@ func _on_body_area_entered(area):
 			# ボディーアーマー: 無敵状態のとき敵を倒せる
 			if Gear.my_gears.has(Gear.GearType.BDA):
 				area.die() # area = enemy
-				print("Hero kills enemy.")
+				print("[Hero] kills a enemy.")
 				Global.hero_kills_enemy.emit()
 		else:
-			print("Hero is damged by enemy.")
+			print("[Hero] damged by a enemy.")
 			Global.hero_damged.emit()
 
 	if area.is_in_group("Level"):
@@ -165,7 +165,7 @@ func _on_body_area_entered(area):
 		var _cost = Gear.GEAR_INFO[_gear]["c"]
 		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
-			print("[Hero] no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
+			print("[Hero] try get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
 			area.get_node("../Image").queue_free()
 			area.queue_free()

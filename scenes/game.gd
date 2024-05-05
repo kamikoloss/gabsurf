@@ -61,7 +61,7 @@ func _process(delta):
 
 # ゲームを初期化 + 一時停止する
 func _initialize_game():
-	print("Waiting start...")
+	print("---------------- Game Start ----------------")
 	Engine.time_scale = 1.0
 	set_process(false)
 	set_physics_process(false)
@@ -167,7 +167,7 @@ func _on_hero_got_gear(gear):
 			Global.life += 1
 		Gear.GearType.LFM:
 			if Global.life <= 1:
-				print("No Life!!")
+				print("[Game] try get gear LFM, but no life!!")
 			else:
 				Global.life -= 1
 				Global.money += 10
@@ -254,7 +254,7 @@ func _enter_anti_damage(duration):
 	_tween.tween_property(_hero_anti_damage_bar, "value", 0, duration)
 	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
 	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
-	#_tween.tween_callback(func(): print("Anti-damage is finished."))
+	#_tween.tween_callback(func(): print("[Game] anti-damage is finished."))
 
 
 # SE を鳴らす

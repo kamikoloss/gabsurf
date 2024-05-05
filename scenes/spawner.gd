@@ -34,9 +34,10 @@ func _ready():
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
+	Global.state_changed.connect(_on_state_changed)
 
-	_is_spawn_gate = true
-	_is_spawn_enemy = true
+	_is_spawn_gate = false
+	_is_spawn_enemy = false
 
 
 func _process(delta):
@@ -75,6 +76,12 @@ func _on_hero_exited_shop():
 		_is_spawn_enemy = true
 
 
+func _on_state_changed(from):
+	var _is_active = Global.state == Global.State.ACTIVE
+	_is_spawn_gate = _is_active
+	_is_spawn_enemy = _is_active
+
+
 # ゲートを生成しつづける (_process 内で呼ぶ)
 func _process_spawn_gate(delta):
 	if _is_spawn_gate:
@@ -95,7 +102,7 @@ func _process_spawn_gate(delta):
 # ゲートを生成する
 func _spawn_gate(height_diff, x_diff, set_money):
 	var _gate = GATE_SCENE.instantiate()
-	_gate.global_position.x += (get_viewport().get_camera_2d().global_position.x + 720 + x_diff)
+	_gate.global_position.x += (get_viewport().get_camera_2d().global_position.x + 400 + x_diff)
 	_gate.global_position.y += 320
 	_gate.gap_diff = Global.gate_gap_diff
 	_gate.height_diff += height_diff
@@ -122,7 +129,7 @@ func _spawn_enemy():
 	var _enemy = ENEMY_SCENE.instantiate()
 	var _rng = RandomNumberGenerator.new()
 	var _height_diff = _rng.randf_range(_enemy_spawn_height_min, _enemy_spawn_height_max)
-	_enemy.global_position.x += (get_viewport().get_camera_2d().global_position.x + 720)
+	_enemy.global_position.x += (get_viewport().get_camera_2d().global_position.x + 400)
 	_enemy.global_position.y += (_height_diff + 320)
 	self.add_child(_enemy)
 	print("[Spawner] spawned a enemy.")
@@ -131,7 +138,7 @@ func _spawn_enemy():
 # 店を生成する
 func _spawn_shop():
 	var _shop = SHOP_SCENE.instantiate()
-	_shop.global_position.x += (get_viewport().get_camera_2d().global_position.x + 1440)
+	_shop.global_position.x += (get_viewport().get_camera_2d().global_position.x + 1000)
 	_shop.global_position.y += 320
 	_shop.number = _shop_counter
 	_shop.gate_gap = Global.gate_gap_diff

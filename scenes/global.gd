@@ -29,8 +29,8 @@ signal life_changed
 # Enums
 enum State {
 	TITLE, # タイトル
-	PAUSED, # ポーズ中
 	ACTIVE, # ゲーム中
+	PAUSED, # ポーズ中
 	GAMEOVER, # ゲームオーバー
 }
 
