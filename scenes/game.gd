@@ -207,10 +207,10 @@ func _on_hero_got_gear(gear):
 			Global.life += 1
 		Gear.GearType.LFM:
 			if Global.life <= 1:
-				print("NO LIFE!!")
+				print("No Life!!")
 			else:
 				Global.life -= 1
-				Global.money += 20
+				Global.money += 10
 		Gear.GearType.LOT:
 			var _lot = _rng.randf_range(0, 5)
 			Global.money += _lot
