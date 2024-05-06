@@ -62,14 +62,14 @@ func _on_state_changed(from):
 
 
 func _on_ui_jumped():
-	# ゲーム中
-	if Global.state == Global.State.ACTIVE:
+	# タイトル or ゲーム中 or ポーズ中: ジャンプ音を鳴らす
+	if Global.state != Global.State.GAMEOVER:
 		_play_se_ui(JUMP_SOUND)
 
 
 func _on_hero_damaged():
-	# ゲーム中　and 残機がある and 無敵状態でない: コケる
-	if  Global.state == Global.State.ACTIVE and 0<= Global.life and !Global.is_hero_anti_damage:
+	# ゲーム中　and 残機がある: ダメージ音を鳴らす
+	if  Global.state == Global.State.ACTIVE and 0<= Global.life:
 		_play_se(DAMAGE_SOUND)
 
 

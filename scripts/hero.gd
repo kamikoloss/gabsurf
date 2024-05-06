@@ -72,7 +72,7 @@ func _on_ui_jumped():
 		return
 
 	# クールタイム中: 何もしない
-	if Global.state == Global.State.ACTIVE && _jump_timer < JUMP_COOLTIME:
+	if Global.state == Global.State.ACTIVE and _jump_timer < JUMP_COOLTIME:
 		return
 
 	# ゲーム中 or タイトル or ポーズ中: 再開と同時にジャンプする
@@ -116,7 +116,7 @@ func _on_life_changed(from):
 	_life_label.text = _life_text
 
 	# ダメージを受けたがまだ残機がある場合: コケる
-	if Global.state == Global.State.ACTIVE && Global.life < from:
+	if Global.state == Global.State.ACTIVE and Global.life < from:
 		_hero_sprite.stop()
 		_hero_sprite.play("die")
 		await get_tree().create_timer(0.5).timeout

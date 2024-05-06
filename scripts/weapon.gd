@@ -23,7 +23,7 @@ func _process(delta):
 
 func _on_area_entered(area):
 	if area.is_in_group("Enemy"):
-		if area.is_active && !area.is_dead:
+		if area.is_active and !area.is_dead:
 			area.die() # area = enemy
 			print("[Weapon] kills a enemy.")
 			Global.hero_kills_enemy.emit()

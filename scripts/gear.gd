@@ -129,7 +129,7 @@ func get_random_gear(ignore = null):
 		# すでに持っている場合
 		if my_gears.has(_random):
 			# まだ最大数に達していない場合: OK
-			if 0 < GEAR_INFO[_random]["m"] && my_gears.count(_random) < GEAR_INFO[_random]["m"]:
+			if 0 < GEAR_INFO[_random]["m"] and my_gears.count(_random) < GEAR_INFO[_random]["m"]:
 				_gear = _random
 				break
 		# まだ持っていない場合: OK
