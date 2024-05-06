@@ -13,6 +13,7 @@ const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するか�
 
 
 # Variables
+var _is_exit_shop = true # Shop を出たかどうか
 var _money_counter_shop = 0 # Money を取得するたびに 1 増加する Shop が出現したら 0 に戻す
 var _money_counter_shop_quota = 3 # Money を何回取るたびに Shop が出現するか
 var _shop_counter = 0 # Shop を生成するたびに 1 増加する
@@ -34,10 +35,8 @@ func _ready():
 	Global.state_changed.connect(_on_state_changed)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
+	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
-
-	_is_spawn_gate = false
-	_is_spawn_enemy = false
 
 
 func _process(delta):
@@ -46,9 +45,10 @@ func _process(delta):
 
 
 func _on_state_changed(from):
-	var _is_active = Global.state == Global.State.ACTIVE
-	_is_spawn_gate = _is_active
-	_is_spawn_enemy = _is_active
+	# ポーズから再開したとき用
+	# Shop を出た場合: Gate と Enemy を生成する
+	_is_spawn_gate = _is_exit_shop
+	_is_spawn_enemy = _is_exit_shop
 
 
 func _on_hero_got_money():
@@ -62,6 +62,7 @@ func _on_hero_got_money():
 			return
 		_is_spawn_gate = false
 		_is_spawn_enemy = false
+		_is_exit_shop = false
 		_shop_counter += 1
 		_spawn_shop()
 
@@ -76,10 +77,16 @@ func _on_hero_got_gear(gear):
 			_enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_DEFAULT / _ems[_ems_count]
 
 
+func _on_hero_entered_shop():
+	_is_exit_shop = false
+	_is_spawn_gate = false
+	_is_spawn_enemy = false
+
+
 func _on_hero_exited_shop():
-	if Global.state == Global.State.ACTIVE:
-		_is_spawn_gate = true
-		_is_spawn_enemy = true
+	_is_exit_shop = true
+	_is_spawn_gate = true
+	_is_spawn_enemy = true
 
 
 # ゲートを生成しつづける (_process 内で呼ぶ)

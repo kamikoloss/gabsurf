@@ -185,6 +185,7 @@ func _on_body_area_exited(area):
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
 	if area.is_in_group("ScreenOut"):
 		print("[Hero] exited screen.")
+		Global.life = 0
 		Global.state = Global.State.GAMEOVER
 
 	if area.is_in_group("Shop"):

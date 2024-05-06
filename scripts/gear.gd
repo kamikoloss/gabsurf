@@ -107,7 +107,7 @@ func get_random_gear(ignore = null):
 
 	# 現在のランクまでの Gear を店頭に並べる
 	for r in Global.Rank.values():
-		if r <= Global.rank:
+		if r != Global.Rank.NONE and r <= Global.rank:
 			_gears_on_sale += GEAR_RANK[r]
 
 	# 特殊条件
