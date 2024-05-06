@@ -135,7 +135,7 @@ func _on_body_area_entered(area):
 		if Global.is_hero_anti_damage:
 			return
 		print("[Hero] damged by walls.")
-		Global.hero_damged.emit()
+		Global.hero_damaged.emit()
 
 	if area.is_in_group("Enemy"):
 		if area.is_dead:
@@ -148,7 +148,7 @@ func _on_body_area_entered(area):
 				Global.hero_kills_enemy.emit()
 		else:
 			print("[Hero] damged by a enemy.")
-			Global.hero_damged.emit()
+			Global.hero_damaged.emit()
 
 	if area.is_in_group("Level"):
 		print("[Hero] got level.")
