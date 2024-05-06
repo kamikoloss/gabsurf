@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://c57jb1v48egfo"]
 
-[ext_resource type="Script" path="res://scenes/weapon.gd" id="1_66fqe"]
 [ext_resource type="Texture2D" uid="uid://dibvk5mowgqyo" path="res://images/missile.png" id="1_uuijb"]
+[ext_resource type="Script" path="res://scripts/weapon.gd" id="1_y16mp"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pwl85"]
 size = Vector2(256, 64)
@@ -9,7 +9,7 @@ size = Vector2(256, 64)
 [node name="Weapon" type="Area2D" groups=["Weapon"]]
 z_index = 16
 scale = Vector2(0.4, 0.4)
-script = ExtResource("1_66fqe")
+script = ExtResource("1_y16mp")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_pwl85")

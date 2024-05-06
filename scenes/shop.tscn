@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://cwxachiyntvge"]
 
-[ext_resource type="Script" path="res://scenes/shop.gd" id="1_t1qse"]
+[ext_resource type="Script" path="res://scripts/shop.gd" id="1_14w86"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_bu7gq"]
 [ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="3_4ajlw"]
 
@@ -58,7 +58,7 @@ radius = 48.0
 
 [node name="Shop" type="Node2D"]
 z_index = 10
-script = ExtResource("1_t1qse")
+script = ExtResource("1_14w86")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Shop"]]
 

@@ -1,10 +1,10 @@
 [gd_scene load_steps=27 format=3 uid="uid://d5mnddj5uoeu"]
 
-[ext_resource type="Script" path="res://scenes/game.gd" id="1_sqtl6"]
-[ext_resource type="Script" path="res://scenes/ui.gd" id="1_twex4"]
+[ext_resource type="Script" path="res://scripts/game.gd" id="1_sqtl6"]
+[ext_resource type="Script" path="res://scripts/ui.gd" id="1_twex4"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="1_vc8gg"]
 [ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="3_fq3iy"]
-[ext_resource type="Script" path="res://scenes/hero.gd" id="3_ksiqv"]
+[ext_resource type="Script" path="res://scripts/hero.gd" id="3_ksiqv"]
 [ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="4_h180i"]
 [ext_resource type="Texture2D" uid="uid://l64wd2ekf1f5" path="res://images/gab3.png" id="6_ef2be"]
 [ext_resource type="Texture2D" uid="uid://drbkcow3gp5xb" path="res://images/gab1.png" id="7_hqmna"]
@@ -14,7 +14,7 @@
 [ext_resource type="Texture2D" uid="uid://d05bnbjcevyb" path="res://images/bg2.png" id="11_tgw8p"]
 [ext_resource type="Texture2D" uid="uid://dgc5bj44x21n2" path="res://images/bg1.png" id="12_tgrh1"]
 [ext_resource type="AudioStream" uid="uid://f848jtf71m04" path="res://sounds/Cassette_Tape_Dream_2.mp3" id="14_fbbs1"]
-[ext_resource type="Script" path="res://scenes/spawner.gd" id="15_y3gqg"]
+[ext_resource type="Script" path="res://scripts/spawner.gd" id="15_y3gqg"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_iejyb"]
 bg_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
@@ -621,9 +621,6 @@ debug_color = Color(0, 0, 0, 0)
 position = Vector2(180, 320)
 shape = SubResource("RectangleShape2D_d24ya")
 debug_color = Color(0, 0, 0, 0)
-
-[node name="Circle" type="Sprite2D" parent="Game/Screen"]
-texture = ExtResource("4_h180i")
 
 [node name="Walls" type="Node2D" parent="Game"]
 z_index = 20

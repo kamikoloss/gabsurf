@@ -14,9 +14,11 @@ extends Control
 @onready var _footer_jump = $CanvasLayer/Footer/Jump
 @onready var _footer_retry = $CanvasLayer/Footer/Retry
 
+
 # Constants
 const BG_DURATION = 2.0 # BG が何秒かけて上昇するか
 const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
+
 
 # Variables
 var _bg_tween = null
@@ -148,6 +150,7 @@ func _get_bg_tween():
 		_bg_tween.kill()
 	_bg_tween = create_tween()
 	return _bg_tween
+
 
 func _get_level_tween():
 	if _level_tween:

@@ -1,7 +1,7 @@
 [gd_scene load_steps=15 format=3 uid="uid://cxqj3ync58bdc"]
 
+[ext_resource type="Script" path="res://scripts/gate.gd" id="1_7s2va"]
 [ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="1_qsvs6"]
-[ext_resource type="Script" path="res://scenes/gate.gd" id="1_ukssn"]
 [ext_resource type="Texture2D" uid="uid://cnbh2c77bdduw" path="res://images/coin.png" id="3_el8yj"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
@@ -68,7 +68,7 @@ size = Vector2(80, 80)
 
 [node name="Gate" type="Node2D"]
 z_index = 20
-script = ExtResource("1_ukssn")
+script = ExtResource("1_7s2va")
 
 [node name="Mask" type="Sprite2D" parent="."]
 clip_children = 1

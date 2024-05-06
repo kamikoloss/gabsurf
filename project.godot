@@ -17,8 +17,8 @@ config/icon="res://icon.svg"
 
 [autoload]
 
-Global="*res://scenes/global.gd"
-Gear="*res://scenes/gear.gd"
+Global="*res://scripts/global.gd"
+Gear="*res://scripts/gear.gd"
 
 [display]
 
