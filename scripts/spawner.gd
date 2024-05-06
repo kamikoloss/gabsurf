@@ -145,6 +145,7 @@ func _spawn_enemy():
 
 # 店を生成する
 func _spawn_shop():
+	_is_exit_shop = false
 	_is_spawn_gate = false
 	_is_spawn_enemy = false
 	_shop_counter += 1
