@@ -50,7 +50,6 @@ func _on_state_changed(from):
 	# Shop を出た場合: Gate と Enemy を生成する
 	_is_spawn_gate = _is_exit_shop
 	_is_spawn_enemy = _is_exit_shop
-	print(_is_exit_shop)
 
 
 func _on_hero_got_money():

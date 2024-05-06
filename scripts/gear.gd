@@ -7,6 +7,7 @@ enum GearType {
 	EME, EMP, EMS, # Enemy 系
 	EXT,
 	GTG, GTM, # Gate 系
+	JMA, JMV, # ジャンプ系
 	LFP, LFM, # Life 系
 	LOT,
 	MSB, MSM, MSW, # ミサイル系
@@ -29,6 +30,8 @@ const GEAR_INFO = {
 	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
 	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
 	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "ビール", "d": "ゲートが{0}個ずつ\n出現するようになる", "f": [2, 3, 5] },
+	GearType.JMA: { "c": 2, "m": 3, "i": 7, "t": "ボード", "d": "ジャンプ時に\n加速する ({0})", "f": ["小", "中", "大"] },
+	GearType.JMV: { "c": 2, "m": 3, "i": 7, "t": "ソフトウィール", "d": "ジャンプの高さが\n低くなる ({0})", "f": ["小", "中", "大"] },
 	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
 	GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +10", "f": null },
 	GearType.LOT: { "c": 2, "m": 5, "i": 5, "t": "宝くじ", "d": "MONEY +0 ~ +5", "f": null},
@@ -56,6 +59,8 @@ const GEAR_RANK = {
 		GearType.ATD,
 		GearType.EMP,
 		GearType.GTM,
+		GearType.JMA,
+		GearType.JMV,
 		GearType.LOT,
 		GearType.SPR,
 		GearType.SPT,
@@ -102,9 +107,9 @@ var my_gears: Array[GearType] = [] # 所持しているギアのリスト
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
 	my_gears = []
-	#my_gears = [GearType.ATD, GearType.ATD, GearType.ATD, GearType.BDA, GearType.SHO, GearType.NOS] # 無敵ループデバッグ
-	#my_gears = [GearType.NOE, GearType.NOS] # 出現しなくなるデバッグ
-	my_gears = [GearType.SPR, GearType.SPT]
+	#my_gears = [GearType.ATD, GearType.ATD, GearType.ATD, GearType.BDA, GearType.SHO, GearType.NOS] # 無敵ループ系 Debug
+	#my_gears = [GearType.NOE, GearType.NOS] # 出現しなくなる系 Debug
+	#my_gears = [GearType.SPR, GearType.SPT] # Shop スルー系 Debug
 
 
 # ランダムな Gear を取得する

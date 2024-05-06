@@ -22,6 +22,7 @@ const JUMP_COOLTIME = 0.05 # (s)
 const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
 const FALL_VELOCITY_MAX = 300 # 終端速度 (px/s)
+const MOVE_ACCELARATE_DULATION = 1.0 # 加速が終わる時間 (s)
 const DEAD_VELOCITY = Vector2(200, -800) # 死んだときに吹き飛ぶベクトル
 const DEAD_ROTATION = -20 # 死んだときに回転する速度
 
@@ -37,7 +38,7 @@ func _ready():
 
 func _physics_process(delta):
 	_jump_timer += delta
-	
+
 	# ゲーム中 or ゲームオーバー:
 	# 終端速度に達するまで加速する
 	var states = [Global.State.ACTIVE, Global.State.GAMEOVER]
@@ -70,13 +71,25 @@ func _on_ui_jumped():
 	# ゲームオーバー: 何もしない
 	if Global.state == Global.State.GAMEOVER:
 		return
-
 	# クールタイム中: 何もしない
 	if Global.state == Global.State.ACTIVE and _jump_timer < JUMP_COOLTIME:
 		return
-
 	# ゲーム中 or タイトル or ポーズ中: 再開と同時にジャンプする
-	velocity.y = JUMP_VELOCITY
+
+	# ジャンプ (縦方向)
+	var _jump_velocity_y = JUMP_VELOCITY
+	if Gear.my_gears.has(Gear.GearType.JMV):
+		var _jmv = [null, 0.9, 0.8, 0.7]
+		var _jmv_count = Gear.my_gears.count(Gear.GearType.JMV)
+		_jump_velocity_y *= _jmv[_jmv_count]
+	velocity.y = _jump_velocity_y
+
+	# 加速 (横方向)
+	if Gear.my_gears.has(Gear.GearType.JMA):
+		var _jma = [null, 400, 600, 800]
+		var _jma_count = Gear.my_gears.count(Gear.GearType.JMA)
+		Global.accelerate_hero_move(_jma[_jma_count], MOVE_ACCELARATE_DULATION)
+
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
 	_jump_timer = 0
@@ -173,7 +186,7 @@ func _on_body_area_entered(area):
 			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
 			area.get_node("../Buy").queue_free()
-			#area.queue_free()
+			area.queue_free()
 			print("[Hero] got gear {0}. (cost: {1})".format([Gear.GEAR_INFO[_gear]["t"], _cost]))
 			Global.hero_got_gear.emit(_gear)
 

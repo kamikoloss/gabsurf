@@ -98,6 +98,7 @@ func _on_hero_damaged():
 	if Global.state != Global.State.ACTIVE:
 		return
 
+	# 残機を減らす
 	Global.life -= 1
 
 	# Hero の残機が 0 になった場合: ゲームオーバー

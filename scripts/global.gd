@@ -44,7 +44,9 @@ enum Rank {
 
 # Constants
 const LIFE_MAX = 3 # 残機の最大数
+const HERO_MOVE_VELOCITY_DEFAULT = 200 # Hero の移動速度のデフォルト値 (px/s)
 const GATE_GAP_BASE = 256 # Gate の開きのデフォルト値 (px)
+
 
 
 # Variables
@@ -132,7 +134,9 @@ var life: int = -1:
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか
 var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
-var hero_move_velocity: int = 200 # Hero の横移動の速度 (px/s)
+var hero_move_velocity: int = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
+
+var _accelerate_tween = null
 
 
 # グローバル変数の初期化を行う
@@ -150,6 +154,21 @@ func initialize():
 	shop_through_count = 0
 	is_hero_anti_damage = false
 	hero_move_velocity = 200
+
+
+# Hero の横移動の加速用の Tween を取得する
+func _get_accelerate_tween():
+	if _accelerate_tween:
+		_accelerate_tween.kill()
+	_accelerate_tween = create_tween()
+	_accelerate_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	return _accelerate_tween
+
+
+# Hero の横移動の速度を一時的に加速する
+func accelerate_hero_move(speed, duration):
+	var _tween = _get_accelerate_tween()
+	_tween.tween_method(func(v): hero_move_velocity = v, speed, HERO_MOVE_VELOCITY_DEFAULT, duration)
 
 
 # 現在の GameRank を計算する
