@@ -1,14 +1,5 @@
 extends Node
 
-# Gear に関連する処理
-
-# Gear の効果をどこに実装するか
-# 基本: game._on_hero_got_gear()
-# ATD, EME: game._on_hero_kills_enemy()
-# GTM: game._process_spawn_gate()
-# MSB: hero._on_hero_got_gear()
-# EMP, EMS: spawner._on_hero_got_gear()
-
 
 # Gear の種類
 enum GearType {
@@ -39,8 +30,9 @@ const GEAR_INFO = {
 	GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +10", "f": null },
 	GearType.LOT: { "c": 2, "m": 5, "i": 5, "t": "宝くじ", "d": "MONEY +0 ~ +5", "f": null},
 	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },
+	#GearType.MSH: { "c": 2, "m": 3, "i": 6, "t": "追尾ミサイル", "d": "ミサイルが敵を追いかける\n (追尾強度: {0})", "f": ["小", "中", "大"] }, 
 	#GearType.MSM: { "c": 2, "m": 3, "i": 6, "t": "マルチミサイル", "d": "ミサイルを{0}\n方向に発射する", "f": [2, 3, 5] },
-	#GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "スーパーミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
+	#GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "巨大ミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
 	GearType.NOE: { "c": 10, "m": 1, "i": 1, "t": "安全運転", "d": "敵が出現しなくなる\n EXTRA x2", "f": null},
 	GearType.NOS: { "c": 10, "m": 1, "i": 1, "t": "ミニマリスト", "d": "ショップが出現しなくなる\nEXTRA x2", "f": null },
 	GearType.SCL: { "c": 5, "m": 1, "i": 9, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
@@ -131,7 +123,7 @@ func get_random_gear(ignore = null):
 		var _random = _gears_on_sale[randi() % _gears_on_sale.size()]
 
 		# 避ける Gear が抽選された場合: NG 次のループへ
-		if (_random == ignore):
+		if _random == ignore:
 			continue
 
 		# すでに持っている場合
@@ -157,9 +149,9 @@ func get_gear_ui(gear):
 
 	# ギア名をランクの色にする
 	var _rank_color = null
-	for _key in GEAR_RANK:
-		if (GEAR_RANK[_key].has(gear)):
-			_rank_color = _key
+	for key in GEAR_RANK:
+		if GEAR_RANK[key].has(gear):
+			_rank_color = key
 	match _rank_color:
 		Global.Rank.WHITE:
 			_title = _gear_info["t"]

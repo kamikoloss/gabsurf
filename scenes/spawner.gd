@@ -31,10 +31,10 @@ var _enemy_spawn_height_max = SPAWN_HEIGHT_MAX_DEFAULT
 
 
 func _ready():
+	Global.state_changed.connect(_on_state_changed)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
-	Global.state_changed.connect(_on_state_changed)
 
 	_is_spawn_gate = false
 	_is_spawn_enemy = false
@@ -43,6 +43,12 @@ func _ready():
 func _process(delta):
 	_process_spawn_gate(delta)
 	_process_spawn_enemy(delta)
+
+
+func _on_state_changed(from):
+	var _is_active = Global.state == Global.State.ACTIVE
+	_is_spawn_gate = _is_active
+	_is_spawn_enemy = _is_active
 
 
 func _on_hero_got_money():
@@ -74,12 +80,6 @@ func _on_hero_exited_shop():
 	if Global.state == Global.State.ACTIVE:
 		_is_spawn_gate = true
 		_is_spawn_enemy = true
-
-
-func _on_state_changed(from):
-	var _is_active = Global.state == Global.State.ACTIVE
-	_is_spawn_gate = _is_active
-	_is_spawn_enemy = _is_active
 
 
 # ゲートを生成しつづける (_process 内で呼ぶ)

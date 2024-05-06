@@ -11,7 +11,6 @@ const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
 
 
 # Nodes
-@onready var _hero = $Hero
 @onready var _screen = $Screen
 @onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
 @onready var _bgm_player = $Hero/AudioPlayers/BGM
@@ -41,51 +40,63 @@ var _bgm_position = null
 
 
 func _ready():
+	Global.state_changed.connect(_on_state_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.ui_paused.connect(_on_ui_paused)
 	Global.ui_retried.connect(_on_ui_retried)
 	Global.hero_damged.connect(_on_hero_damged)
 	Global.hero_got_level.connect(_on_hero_got_level)
 	Global.hero_got_money.connect(_on_hero_got_money)
+	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
-	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_kills_enemy.connect(_on_hero_kills_enemy)
-
-	_initialize_game()
-
-
-func _process(delta):
-	_screen.position.x = _hero.position.x
-
-
-# ゲームを初期化 + 一時停止する
-func _initialize_game():
-	print("---------------- Game Start ----------------")
-	Engine.time_scale = 1.0
-	set_process(false)
-	set_physics_process(false)
 
 	Global.initialize()
 	Gear.initialize()
 
-	_hero_anti_damage_bar.visible = false
 
-	Global.game_initialized.emit()
+func _process(delta):
+	_screen.global_position.x = get_viewport().get_camera_2d().global_position.x
+
+
+func _on_state_changed(from):
+	match Global.state:
+		# タイトル画面
+		Global.State.TITLE:
+			print("---------------- TITLE ----------------")
+			Engine.time_scale = 1.0
+			set_process(false)
+			set_physics_process(false)
+			_hero_anti_damage_bar.visible = false
+		# ゲーム中
+		Global.State.ACTIVE:
+			Engine.time_scale = 1.0
+			set_process(true)
+			set_physics_process(true)
+			# BGM を再開する
+			if _bgm_position != null:
+				_bgm_player.play(_bgm_position)
+		# ポーズ中
+		Global.State.PAUSED:
+			Engine.time_scale = 0.0
+			set_process(false)
+			set_physics_process(false)
+			# BGM の再開位置を保持して止める
+			_bgm_position = _bgm_player.get_playback_position()
+			_bgm_player.stop()
+		# ゲームオーバー
+		Global.State.GAMEOVER:
+			print("---------------- GAMEOVER ----------------")
+			_play_se(GAMEOVER_SOUND)
+			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
 func _on_ui_jumped():
 	# タイトル or ポーズ中 -> ゲーム中
 	var states = [Global.State.TITLE, Global.State.PAUSED]
 	if states.has(Global.state):
-		Engine.time_scale = 1.0
-		set_process(true)
-		set_physics_process(true)
 		Global.state = Global.State.ACTIVE
-
-		# BGM を再開する
-		if (_bgm_position != null):
-			_bgm_player.play(_bgm_position)
 
 	# ゲーム中
 	if Global.state == Global.State.ACTIVE:
@@ -93,18 +104,10 @@ func _on_ui_jumped():
 		_play_se_ui(JUMP_SOUND)
 
 
-
 func _on_ui_paused():
 	# ゲーム中 -> ポーズ中
 	if Global.state == Global.State.ACTIVE:
-		Engine.time_scale = 0.0
-		set_process(false)
-		set_physics_process(false)
 		Global.state = Global.State.PAUSED
-
-		# BGM の再開位置を保持して止める
-		_bgm_position = _bgm_player.get_playback_position()
-		_bgm_player.stop()
 
 
 func _on_ui_retried():
@@ -124,10 +127,6 @@ func _on_hero_damged():
 	# Hero の残機が 0 になった場合: ゲームオーバー
 	if Global.life <= 0:
 		Global.state = Global.State.GAMEOVER
-		_play_se(GAMEOVER_SOUND)
-		_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
-		print("Game is ended.")
-		Global.game_ended.emit()
 		return
 
 	# まだ残機がある and 無敵状態ではない: 無敵状態に突入する
@@ -219,7 +218,7 @@ func _get_slow_tween():
 func _enter_slow(speed, duration):
 	var _bgm_speed = (1.0 + speed) / 2 # BGM は弱めのスロー
 	var _tween = _get_slow_tween()
-	_tween.set_parallel(true)	
+	_tween.set_parallel(true)
 	_tween.tween_property(Engine, "time_scale", speed, duration)
 	_tween.tween_property(_bgm_player, "pitch_scale", _bgm_speed, duration)
 
@@ -245,10 +244,10 @@ func _get_anti_damage_tween():
 func _enter_anti_damage(duration):
 	Global.is_hero_anti_damage = true
 
-	var _tween = _get_anti_damage_tween()
 	_hero_anti_damage_bar.visible = true
 	_hero_anti_damage_bar.value = 100
 
+	var _tween = _get_anti_damage_tween()
 	_tween.tween_property(_hero_anti_damage_bar, "value", 0, duration)
 	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
 	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)

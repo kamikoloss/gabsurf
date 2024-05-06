@@ -27,8 +27,7 @@ var _score_tween = null
 
 
 func _ready():
-	Global.game_initialized.connect(_on_game_initialized)
-	Global.game_ended.connect(_on_game_ended)
+	Global.state_changed.connect(_on_state_changed)
 	Global.rank_changed.connect(_on_rank_changed)
 	Global.level_changed.connect(_on_level_changed)
 	Global.money_changed.connect(_on_money_changed)
@@ -79,21 +78,20 @@ func _on_retry_button_down():
 	Global.ui_retried.emit()
 
 
-func _on_game_initialized():
-	_panel_body.visible = true
-	_label_title.text = "GABSURF"
-	_footer_pause.visible = true
-	_footer_jump.visible = true
-	_footer_retry.visible = false
-	_refresh_label_gear()
-
-
-func _on_game_ended():
-	_panel_body.visible = true
-	_label_title.text = "GAME OVER"
-	_footer_pause.visible = false
-	_footer_jump.visible = false
-	_footer_retry.visible = true
+func _on_state_changed(from):
+	match Global.state:
+		Global.State.TITLE:
+			_panel_body.visible = true
+			_label_title.text = "GABSURF"
+			_footer_pause.visible = true
+			_footer_jump.visible = true
+			_footer_retry.visible = false
+		Global.State.GAMEOVER:
+			_panel_body.visible = true
+			_label_title.text = "GAME OVER"
+			_footer_pause.visible = false
+			_footer_jump.visible = false
+			_footer_retry.visible = true
 	_refresh_label_gear()
 
 

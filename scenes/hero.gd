@@ -27,7 +27,7 @@ const DEAD_ROTATION = -20 # 死んだときに回転する速度
 
 
 func _ready():
-	Global.game_ended.connect(_on_game_ended)
+	Global.state_changed.connect(_on_state_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.life_changed.connect(_on_life_changed)
@@ -51,17 +51,19 @@ func _physics_process(delta):
 		move_and_slide()
 
 	# ゲームオーバー: 回転する + 落下する
-	# 吹き飛ぶ処理は _on_game_ended() 内でやる
+	# 吹き飛ぶ処理は _on_state_changed() 内でやる
 	if Global.state == Global.State.GAMEOVER:
 		_hero_sprite.rotation += DEAD_ROTATION * delta
 		move_and_slide()
 
 
-func _on_game_ended():
-	# 吹き飛ぶ
-	velocity = DEAD_VELOCITY
-	_hero_sprite.stop()
-	_hero_sprite.play("die")
+func _on_state_changed(from):
+	match Global.state:
+		Global.State.GAMEOVER:
+			# 吹き飛ぶ
+			velocity = DEAD_VELOCITY
+			_hero_sprite.stop()
+			_hero_sprite.play("die")
 
 
 func _on_ui_jumped():
@@ -183,7 +185,7 @@ func _on_body_area_exited(area):
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
 	if area.is_in_group("ScreenOut"):
 		print("[Hero] exited screen.")
-		Global.game_ended.emit()
+		Global.state = Global.State.GAMEOVER
 
 	if area.is_in_group("Shop"):
 		print("[Hero] exited shop.")

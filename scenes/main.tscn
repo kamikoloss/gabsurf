@@ -622,6 +622,9 @@ position = Vector2(180, 320)
 shape = SubResource("RectangleShape2D_d24ya")
 debug_color = Color(0, 0, 0, 0)
 
+[node name="Circle" type="Sprite2D" parent="Game/Screen"]
+texture = ExtResource("4_h180i")
+
 [node name="Walls" type="Node2D" parent="Game"]
 z_index = 20
 

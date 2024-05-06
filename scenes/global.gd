@@ -2,8 +2,13 @@ extends Node
 
 
 # Signals
-signal game_initialized # ゲームが初期化されたとき
-signal game_ended # ゲームが終了したとき
+signal state_changed
+signal rank_changed
+signal level_changed
+signal money_changed
+signal extra_changed
+signal score_changed
+signal life_changed
 
 signal ui_jumped # ジャンプボタンを押したとき
 signal ui_paused # ポーズボタンを押したとき
@@ -17,17 +22,10 @@ signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき
 signal hero_kills_enemy # Enemy を倒したとき
 
-signal state_changed
-signal rank_changed
-signal level_changed
-signal money_changed
-signal extra_changed
-signal score_changed
-signal life_changed
-
 
 # Enums
 enum State {
+	NONE, # 初期値
 	TITLE, # タイトル
 	ACTIVE, # ゲーム中
 	PAUSED, # ポーズ中
@@ -35,6 +33,7 @@ enum State {
 }
 
 enum Rank {
+	NONE, # 初期値
 	WHITE,
 	BLUE,
 	GREEN,
@@ -53,7 +52,7 @@ var gate_gap_diff: int = 0 # Gate の開きの差 (px)
 var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
 var hero_move_velocity: int = 200 # Hero の横移動の速度 (px/s)
 
-var state: State = State.TITLE:
+var state: State = State.NONE:
 	get:
 		return state
 	set(value):
@@ -64,7 +63,7 @@ var state: State = State.TITLE:
 		print("[Global] state is changed. ({0} -> {1})".format([_from, value]))
 		state_changed.emit(_from)
 
-var rank: Rank = Rank.WHITE:
+var rank: Rank = Rank.NONE:
 	get:
 		return rank
 	set(value):
