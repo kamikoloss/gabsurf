@@ -6,20 +6,20 @@ extends Node2D
 @onready var _exit_label = $Exit/VBoxContainer/Label2
 @onready var _gear_ui = {
 	"a": {
-		"parent": $GearA,
-		"title": $GearA/Text/MarginContainer/VBoxContainer/Title,
-		"desc": $GearA/Text/MarginContainer/VBoxContainer/Description,
+		"root": $GearA,
+		"title": $GearA/Gear/MarginContainer/HBoxContainer/VBoxContainer/Title,
+		"desc": $GearA/Gear/MarginContainer/HBoxContainer/VBoxContainer/Description,
+		"icon": $GearA/Gear/MarginContainer/HBoxContainer/TextureRect,
 		"cost": $GearA/Cost/Label,
 		"max": $GearA/Max/Label,
-		"icon": $GearA/Image, 
 	},
 	"b": {
-		"parent": $GearB,
-		"title": $GearB/Text/MarginContainer/VBoxContainer/Title,
-		"desc": $GearB/Text/MarginContainer/VBoxContainer/Description,
+		"root": $GearB,
+		"title": $GearB/Gear/MarginContainer/HBoxContainer/VBoxContainer/Title,
+		"desc": $GearB/Gear/MarginContainer/HBoxContainer/VBoxContainer/Description,
+		"icon": $GearB/Gear/MarginContainer/HBoxContainer/TextureRect,
 		"cost": $GearB/Cost/Label,
 		"max": $GearB/Max/Label,
-		"icon": $GearB/Image, 
 	},
 }
 
@@ -35,7 +35,7 @@ var gear = { "a": null, "b": null }
 
 func _ready():
 	_enter_label.text = str(number)
-	_exit_label.text = str(Global.GATE_GAP_BASE + Global.gate_gap_diff)
+	#_exit_label.text = str(Global.GATE_GAP_BASE + Global.gate_gap_diff)
 
 	# 店に並べるギアを2つ抽選する
 	gear["a"] = Gear.get_random_gear()
@@ -45,7 +45,7 @@ func _ready():
 	# 店にギアを並べる
 	for k in ["a", "b"]:
 		if gear[k] == null:
-			_gear_ui[k]["parent"].queue_free()
+			_gear_ui[k]["root"].queue_free()
 		else:
 			var _gear_info = Gear.get_gear_ui(gear[k])
 			_gear_ui[k]["title"].text = _gear_info["title"]
