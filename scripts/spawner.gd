@@ -14,9 +14,10 @@ const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するか�
 
 # Variables
 var _is_exit_shop = true # Shop を出たかどうか
-var _money_counter_shop = 0 # Money を取得するたびに 1 増加する Shop が出現したら 0 に戻す
+var _is_shop_respawnable = false # Shop を再出現させたかどうか
+var _shop_counter = 0 # Shop が何回出現したか
+var _money_counter_shop = 0 # Money を取得するたびに 1 増加する (Shop が出現したら 0 に戻す)
 var _money_counter_shop_quota = 3 # Money を何回取るたびに Shop が出現するか
-var _shop_counter = 0 # Shop を生成するたびに 1 増加する
 
 var _is_spawn_gate = false # Gate を生成するか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとに Gate を生成するか
@@ -49,6 +50,7 @@ func _on_state_changed(from):
 	# Shop を出た場合: Gate と Enemy を生成する
 	_is_spawn_gate = _is_exit_shop
 	_is_spawn_enemy = _is_exit_shop
+	print(_is_exit_shop)
 
 
 func _on_hero_got_money():
@@ -58,13 +60,8 @@ func _on_hero_got_money():
 	if _money_counter_shop_quota <= _money_counter_shop:
 		_money_counter_shop = 0
 
-		if Gear.my_gears.has(Gear.GearType.NOS):
-			return
-		_is_spawn_gate = false
-		_is_spawn_enemy = false
-		_is_exit_shop = false
-		_shop_counter += 1
-		_spawn_shop()
+		if !Gear.my_gears.has(Gear.GearType.NOS):
+			_spawn_shop()
 
 
 func _on_hero_got_gear(gear):
@@ -78,15 +75,20 @@ func _on_hero_got_gear(gear):
 
 
 func _on_hero_entered_shop():
-	_is_exit_shop = false
-	_is_spawn_gate = false
-	_is_spawn_enemy = false
+	# SPR: ショップをはじめてスルーしたとき Shop 再出現フラグを有効にする
+	if Gear.my_gears.has(Gear.GearType.SPR) and Global.shop_through_count == 0:
+		_is_shop_respawnable = true
 
 
 func _on_hero_exited_shop():
 	_is_exit_shop = true
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
+
+	# Shop を再出現させる
+	if _is_shop_respawnable:
+		_is_shop_respawnable = false
+		_spawn_shop()
 
 
 # ゲートを生成しつづける (_process 内で呼ぶ)
@@ -144,6 +146,10 @@ func _spawn_enemy():
 
 # 店を生成する
 func _spawn_shop():
+	_is_spawn_gate = false
+	_is_spawn_enemy = false
+	_shop_counter += 1
+
 	var _shop = SHOP_SCENE.instantiate()
 	_shop.global_position.x += (get_viewport().get_camera_2d().global_position.x + 1000)
 	_shop.global_position.y += 320

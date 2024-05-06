@@ -57,11 +57,13 @@ func _on_state_changed(from):
 			_hero_anti_damage_bar.visible = false
 		# ゲーム中
 		Global.State.ACTIVE:
+			print("---------------- ACTIVE ----------------")
 			Engine.time_scale = 1.0
 			set_process(true)
 			set_physics_process(true)
 		# ポーズ中
 		Global.State.PAUSED:
+			print("---------------- PAUSED ----------------")
 			Engine.time_scale = 0.0
 			set_process(false)
 			set_physics_process(false)
@@ -125,6 +127,7 @@ func _on_hero_got_money():
 
 func _on_hero_got_gear(gear):
 	Global.money -= Gear.GEAR_INFO[gear]["c"]
+	Global.shop_through_count = 0
 	Gear.my_gears += [gear]
 
 	match gear:
@@ -151,11 +154,18 @@ func _on_hero_got_gear(gear):
 
 func _on_hero_entered_shop():
 	if Global.state == Global.State.ACTIVE:
+		if Gear.my_gears.has(Gear.GearType.SPT):
+			Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
+
 		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
 
 
 func _on_hero_exited_shop():
 	if Global.state == Global.State.ACTIVE:
+		if Gear.my_gears.has(Gear.GearType.SPT) and 0 < Global.shop_through_count:
+			# TODO: メッセージ表示
+			Global.money += Global.shop_through_count
+
 		_exit_slow(SLOW_DURATION_SHOP)
 
 

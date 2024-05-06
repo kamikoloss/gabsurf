@@ -48,10 +48,6 @@ const GATE_GAP_BASE = 256 # Gate の開きのデフォルト値 (px)
 
 
 # Variables
-var gate_gap_diff: int = 0 # Gate の開きの差 (px)
-var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
-var hero_move_velocity: int = 200 # Hero の横移動の速度 (px/s)
-
 var state: State = State.NONE:
 	get:
 		return state
@@ -133,14 +129,15 @@ var life: int = -1:
 		print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
 		life_changed.emit(_from)
 
+var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
+var shop_through_count: int = 0 # Shop を連続何回スルーしたか
+var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
+var hero_move_velocity: int = 200 # Hero の横移動の速度 (px/s)
+
 
 # グローバル変数の初期化を行う
 # シーン読み込み後に必ず呼ぶこと
 func initialize():
-	gate_gap_diff = 0
-	is_hero_anti_damage = false
-	hero_move_velocity = 200
-
 	state = State.TITLE
 	rank = Rank.WHITE
 	level = 0
@@ -148,6 +145,11 @@ func initialize():
 	extra = 1
 	score = 0
 	life = LIFE_MAX
+
+	gate_gap_diff = 0
+	shop_through_count = 0
+	is_hero_anti_damage = false
+	hero_move_velocity = 200
 
 
 # 現在の GameRank を計算する

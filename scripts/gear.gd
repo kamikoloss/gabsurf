@@ -4,12 +4,15 @@ extends Node
 # Gear の種類
 enum GearType {
 	ATD, BDA, COL,
-	EME, EMP, EMS, EXT,
-	GTG, GTM,
-	LFP, LFM, LOT,
-	MSB, MSM, MSW,
-	NOE, NOS,
+	EME, EMP, EMS, # Enemy 系
+	EXT,
+	GTG, GTM, # Gate 系
+	LFP, LFM, # Life 系
+	LOT,
+	MSB, MSM, MSW, # ミサイル系
+	NOE, NOS, # 出現しなくなる系
 	SCL, SHO,
+	SPR, SPT, # Shop 系
 }
 
 
@@ -37,6 +40,8 @@ const GEAR_INFO = {
 	GearType.NOS: { "c": 10, "m": 1, "i": 1, "t": "ミニマリスト", "d": "ショップが出現しなくなる\nEXTRA x2", "f": null },
 	GearType.SCL: { "c": 5, "m": 1, "i": 9, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
 	GearType.SHO: { "c": 2, "m": 1, "i": 7, "t": "安全靴", "d": "敵を踏んで\n倒せるようになる", "f": null },
+	GearType.SPR: { "c": 5, "m": 1, "i": 12, "t": "買い物袋", "d": "ショップをスルーすると\n1度だけショップが\n再出現する", "f": null },
+	GearType.SPT: { "c": 5, "m": 1, "i": 12, "t": "貯金箱", "d": "ショップをn連続\nスルーするごとに\nMONEY +n", "f": null },
 }
 
 # ランクごとに店に並ぶギアのリスト
@@ -52,6 +57,8 @@ const GEAR_RANK = {
 		GearType.EMP,
 		GearType.GTM,
 		GearType.LOT,
+		GearType.SPR,
+		GearType.SPT,
 	],
 	Global.Rank.GREEN: [
 		GearType.EMS,
@@ -97,6 +104,7 @@ func initialize():
 	my_gears = []
 	#my_gears = [GearType.ATD, GearType.ATD, GearType.ATD, GearType.BDA, GearType.SHO, GearType.NOS] # 無敵ループデバッグ
 	#my_gears = [GearType.NOE, GearType.NOS] # 出現しなくなるデバッグ
+	my_gears = [GearType.SPR, GearType.SPT]
 
 
 # ランダムな Gear を取得する
@@ -117,16 +125,15 @@ func get_random_gear(ignore = null):
 
 	# Gear を抽選する
 	for n in 10:
+		# 店頭に並んでいる Gear が存在しない場合: 中止
 		if _gears_on_sale.size() == 0:
 			break
-
+		# 抽選する
 		var _random = _gears_on_sale[randi() % _gears_on_sale.size()]
-
 		# 避ける Gear が抽選された場合: NG 次のループへ
 		if _random == ignore:
 			continue
-
-		# すでに持っている場合
+		# すでに持っている Gear が抽選された場合
 		if my_gears.has(_random):
 			# まだ最大数に達していない場合: OK
 			if 0 < GEAR_INFO[_random]["m"] and my_gears.count(_random) < GEAR_INFO[_random]["m"]:
@@ -147,7 +154,7 @@ func get_gear_ui(gear):
 	var _desc = ""
 	var _max = ""
 
-	# ギア名をランクの色にする
+	# 名称をランクの色にする
 	var _rank_color = null
 	for key in GEAR_RANK:
 		if GEAR_RANK[key].has(gear):
