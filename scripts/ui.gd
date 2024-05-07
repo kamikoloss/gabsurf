@@ -94,6 +94,7 @@ func _on_state_changed(from):
 			_footer_pause.visible = false
 			_footer_jump.visible = false
 			_footer_retry.visible = true
+
 	_refresh_label_gear()
 
 

@@ -8,25 +8,25 @@ const SHOP_SCENE = preload("res://scenes/shop.tscn")
 
 # Constants
 const SPAWN_HEIGHT_MIN_DEFAULT = 80
-const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上であることに注意する
+const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上方向であることに注意する
 const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するかの基準値
 
 
 # Variables
-var _is_exit_shop = true # Shop を出たかどうか
-var _is_shop_respawned = false # # Shop を再出現させたかどうか
-var _shop_counter = 0 # Shop が何回出現したか
+var _is_shop_spawned = false # 現在 Shop が出現しているかどうか
+var _is_shop_respawned = false # 直近で Shop が再出現したかどうか
+var _shop_counter = 0 # Shop がトータルで何回出現したか
 var _money_counter_shop = 0 # Money を取得するたびに 1 増加する (Shop が出現したら 0 に戻す)
 var _money_counter_shop_quota = 3 # Money を何回取るたびに Shop が出現するか
 
-var _is_spawn_gate = false # Gate を生成するか
-var _gate_spawn_cooltime = 2.0 # 何秒ごとに Gate を生成するか
+var _is_spawn_gate = false # Gate が出現するかどうか
+var _gate_spawn_cooltime = 2.0 # 何秒ごとに Gate が出現するか
 var _gate_spawn_timer = 0.0
 var _gate_spawn_height_min = SPAWN_HEIGHT_MIN_DEFAULT
 var _gate_spawn_height_max = SPAWN_HEIGHT_MAX_DEFAULT
 
-var _is_spawn_enemy = false # Enemy を生成するか
-var _enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_DEFAULT # 何秒ごとに Enemy を生成するか
+var _is_spawn_enemy = false # Enemy が出現するかどうか
+var _enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_DEFAULT # 何秒ごとに Enemy が出現するか
 var _enemy_spawn_timer = 0.0
 var _enemy_spawn_height_min = SPAWN_HEIGHT_MIN_DEFAULT
 var _enemy_spawn_height_max = SPAWN_HEIGHT_MAX_DEFAULT
@@ -46,10 +46,10 @@ func _process(delta):
 
 func _on_state_changed(from):
 	# ACTIVE (ポーズから再開したとき)
-	# Shop を出ているなら Gate と Enemy を生成する
+	# Shop が出現していないなら Gate と Enemy を出現させる
 	if Global.state == Global.State.ACTIVE:
-		_is_spawn_gate = _is_exit_shop
-		_is_spawn_enemy = _is_exit_shop
+		_is_spawn_gate = !_is_shop_spawned
+		_is_spawn_enemy = !_is_shop_spawned
 	# ACTIVE 以外
 	# Gate と Enemy を生成しない
 	else:
@@ -60,7 +60,7 @@ func _on_state_changed(from):
 func _on_hero_got_money():
 	_money_counter_shop += 1
 
-	# Money の取得回数が Shop 生成の規定回数に達した場合
+	# Money の取得回数が Shop 出現の規定回数に達した場合
 	if _money_counter_shop_quota <= _money_counter_shop:
 		_money_counter_shop = 0
 
@@ -79,11 +79,11 @@ func _on_hero_got_gear(gear):
 
 
 func _on_hero_exited_shop():
-	_is_exit_shop = true
+	_is_shop_spawned = false # 厳密にはまだ存在するがもう存在しない扱いとする
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
 
-	# SPR 所持 and ショップをスルーした and 連続再出現ではない 場合: Shop を再出現させる
+	# SPR 所持 and ショップをスルーした and 再出現ではない 場合: Shop が再出現する
 	if Gear.my_gears.has(Gear.GearType.SPR) and 0 < Global.shop_through_count and !_is_shop_respawned:
 		_spawn_shop()
 		_is_shop_respawned = true
@@ -147,7 +147,7 @@ func _spawn_enemy():
 
 # 店を生成する
 func _spawn_shop():
-	_is_exit_shop = false
+	_is_shop_spawned = true
 	_is_spawn_gate = false
 	_is_spawn_enemy = false
 	_shop_counter += 1
