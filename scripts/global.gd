@@ -166,9 +166,11 @@ func _get_accelerate_tween():
 
 
 # Hero の横移動の速度を一時的に加速する
-func accelerate_hero_move(speed, duration):
+func accelerate_hero_move(speed_diff, duration):
 	var _tween = _get_accelerate_tween()
-	_tween.tween_method(func(v): hero_move_velocity = v, speed, HERO_MOVE_VELOCITY_DEFAULT, duration)
+	var _from = HERO_MOVE_VELOCITY_DEFAULT + speed_diff
+	var _to = HERO_MOVE_VELOCITY_DEFAULT
+	_tween.tween_method(func(v): hero_move_velocity = v, _from, _to, duration)
 
 
 # 現在の GameRank を計算する

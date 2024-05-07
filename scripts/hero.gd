@@ -86,7 +86,7 @@ func _on_ui_jumped():
 
 	# 加速 (横方向)
 	if Gear.my_gears.has(Gear.GearType.JMA):
-		var _jma = [null, 400, 600, 800]
+		var _jma = [null, 200, 400, 600]
 		var _jma_count = Gear.my_gears.count(Gear.GearType.JMA)
 		Global.accelerate_hero_move(_jma[_jma_count], MOVE_ACCELARATE_DULATION)
 
