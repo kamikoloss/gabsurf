@@ -66,9 +66,12 @@ size = Vector2(256, 256)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_6y2dd"]
 size = Vector2(80, 80)
 
-[node name="Gate" type="Node2D"]
+[node name="Gate" type="Node2D" node_paths=PackedStringArray("_gate_top", "_gate_bottom", "_money")]
 z_index = 20
 script = ExtResource("1_7s2va")
+_gate_top = NodePath("Mask/Gates/GateTop")
+_gate_bottom = NodePath("Mask/Gates/GateBottom")
+_money = NodePath("Mask/Gates/Money")
 
 [node name="Mask" type="Sprite2D" parent="."]
 clip_children = 1

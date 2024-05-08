@@ -58,9 +58,22 @@ corner_radius_bottom_left = 4
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duswt"]
 size = Vector2(80, 40)
 
-[node name="Shop" type="Node2D"]
+[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label", "_a_root", "_a_icon", "_a_title_label", "_a_desc_label", "_a_cost_label", "_a_max_label", "_b_root", "_b_icon", "_b_title_label", "_b_desc_label", "_b_cost_label", "_b_max_label")]
 z_index = 10
 script = ExtResource("1_14w86")
+_enter_label = NodePath("Enter/VBoxContainer/Label2")
+_a_root = NodePath("GearA")
+_a_icon = NodePath("GearA/Gear/MarginContainer/HBoxContainer/TextureRect")
+_a_title_label = NodePath("GearA/Gear/MarginContainer/HBoxContainer/VBoxContainer/Title")
+_a_desc_label = NodePath("GearA/Gear/MarginContainer/HBoxContainer/VBoxContainer/Description")
+_a_cost_label = NodePath("GearA/Cost/Label")
+_a_max_label = NodePath("GearA/Max/Label")
+_b_root = NodePath("GearB")
+_b_icon = NodePath("GearB/Gear/MarginContainer/HBoxContainer/TextureRect")
+_b_title_label = NodePath("GearB/Gear/MarginContainer/HBoxContainer/VBoxContainer/Title")
+_b_desc_label = NodePath("GearB/Gear/MarginContainer/HBoxContainer/VBoxContainer/Description")
+_b_cost_label = NodePath("GearB/Cost/Label")
+_b_max_label = NodePath("GearB/Max/Label")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Shop"]]
 

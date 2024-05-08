@@ -1,10 +1,10 @@
 extends Node2D
 
 
-# Nodes
-@onready var _gate_top = $Mask/Gates/GateTop
-@onready var _gate_bottom = $Mask/Gates/GateBottom
-@onready var _money = $Mask/Gates/Money
+# Exports
+@export var _gate_top: Node
+@export var _gate_bottom: Node
+@export var _money: Node
 
 
 # Variables

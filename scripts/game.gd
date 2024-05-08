@@ -1,9 +1,9 @@
 extends Node2D
 
 
-# Nodes
-@onready var _screen = $Screen
-@onready var _hero_anti_damage_bar = $Hero/UI/TextureProgressBar
+# Exports
+@export var _screen: Node
+@export var _hero_anti_damage_bar: Node
 
 
 # Constants

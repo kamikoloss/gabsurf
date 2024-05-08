@@ -1,22 +1,22 @@
 extends Control
 
 
-# Nodes
-@onready var _bg = $ParallaxBackground
-@onready var _label_level = $CanvasLayer/Header/Level/VBoxContainer/Label2
-@onready var _label_money = $CanvasLayer/Header/Money/VBoxContainer/Label2
-@onready var _label_extra = $CanvasLayer/Header/Extra/VBoxContainer/Label2
-@onready var _label_score = $CanvasLayer/Header/Score/VBoxContainer/Label2
-@onready var _panel_body = $CanvasLayer/Layout/Body/Panel
-@onready var _label_title = $CanvasLayer/Layout/Body/Panel/Labels/Title
-@onready var _label_gears = $CanvasLayer/Layout/Body/Panel/Labels/Gears # Debug
-@onready var _footer_pause = $CanvasLayer/Footer/Pause
-@onready var _footer_jump = $CanvasLayer/Footer/Jump
-@onready var _footer_retry = $CanvasLayer/Footer/Retry
+# Exports
+@export var _bg: Node
+@export var _header_level_label: Node
+@export var _header_money_label: Node
+@export var _header_extra_label: Node
+@export var _header_score_label: Node
+@export var _footer_pause_label: Node
+@export var _footer_jump_label: Node
+@export var _footer_retry_label: Node
+@export var _body_panel: Node
+@export var _title_label: Node
+@export var _gears_label: Node
 
 
 # Constants
-const BG_DURATION = 2.0 # BG が何秒かけて上昇するか
+const BG_DURATION = 2.0 # BG が何秒かけて移動するか
 const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 
@@ -35,6 +35,15 @@ func _ready():
 	Global.money_changed.connect(_on_money_changed)
 	Global.extra_changed.connect(_on_extra_changed)
 	Global.score_changed.connect(_on_score_changed)
+
+	# _on_state_changed() の TITLE と同じ処理
+	# _ready() 内で 初期 state が変わるので connect() が追い付かない
+	_body_panel.visible = true
+	_title_label.text = "GABSURF"
+	_footer_pause_label.visible = true
+	_footer_jump_label.visible = true
+	_footer_retry_label.visible = false
+	_refresh_label_gear()
 
 
 # 入力制御
@@ -55,10 +64,10 @@ func _on_jump_button_down():
 	# タイトル or ポーズ中: Body を非表示にする
 	var states = [Global.State.TITLE, Global.State.PAUSED]
 	if states.has(Global.state):
-		_panel_body.visible = false
-		_footer_pause.visible = false
-		_footer_jump.visible = false
-		_footer_retry.visible = false
+		_body_panel.visible = false
+		_footer_pause_label.visible = false
+		_footer_jump_label.visible = false
+		_footer_retry_label.visible = false
 
 	Global.ui_jumped.emit()
 
@@ -66,11 +75,11 @@ func _on_jump_button_down():
 func _on_pause_button_down():
 	# ゲーム中: Body (画面中央 UI) を表示する
 	if Global.state == Global.State.ACTIVE:
-		_panel_body.visible = true
-		_label_title.text = "PAUSED"
-		_footer_pause.visible = false
-		_footer_jump.visible = true
-		_footer_retry.visible = true
+		_body_panel.visible = true
+		_title_label.text = "PAUSED"
+		_footer_pause_label.visible = false
+		_footer_jump_label.visible = true
+		_footer_retry_label.visible = true
 		_refresh_label_gear()
 
 	Global.ui_paused.emit()
@@ -83,17 +92,17 @@ func _on_retry_button_down():
 func _on_state_changed(from):
 	match Global.state:
 		Global.State.TITLE:
-			_panel_body.visible = true
-			_label_title.text = "GABSURF"
-			_footer_pause.visible = true
-			_footer_jump.visible = true
-			_footer_retry.visible = false
+			_body_panel.visible = true
+			_title_label.text = "GABSURF"
+			_footer_pause_label.visible = true
+			_footer_jump_label.visible = true
+			_footer_retry_label.visible = false
 		Global.State.GAMEOVER:
-			_panel_body.visible = true
-			_label_title.text = "GAME OVER"
-			_footer_pause.visible = false
-			_footer_jump.visible = false
-			_footer_retry.visible = true
+			_body_panel.visible = true
+			_title_label.text = "GAME OVER"
+			_footer_pause_label.visible = false
+			_footer_jump_label.visible = false
+			_footer_retry_label.visible = true
 
 	_refresh_label_gear()
 
@@ -116,25 +125,25 @@ func _on_rank_changed(from):
 func _on_level_changed(from):
 	var _tween = _get_level_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _label_level.text = str(v), from, Global.level, LABEL_DURATION)
+	_tween.tween_method(func(v): _header_level_label.text = str(v), from, Global.level, LABEL_DURATION)
 
 
 func _on_money_changed(from):
 	var _tween = _get_money_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _label_money.text = str(v), from, Global.money, LABEL_DURATION)
+	_tween.tween_method(func(v): _header_money_label.text = str(v), from, Global.money, LABEL_DURATION)
 
 
 func _on_extra_changed(from):
 	var _tween = _get_extra_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _label_extra.text = str(v), from, Global.extra, LABEL_DURATION)
+	_tween.tween_method(func(v): _header_extra_label.text = str(v), from, Global.extra, LABEL_DURATION)
 
 
 func _on_score_changed(from):
 	var _tween = _get_score_tween()
 	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _label_score.text = str(v), from, Global.score, LABEL_DURATION)
+	_tween.tween_method(func(v): _header_score_label.text = str(v), from, Global.score, LABEL_DURATION)
 
 
 func _refresh_label_gear():
@@ -143,7 +152,7 @@ func _refresh_label_gear():
 		_gears += Gear.GEAR_INFO[gear]["t"]
 		_gears += ","
 	_gears += "}"
-	_label_gears.text = _gears
+	_gears_label.text = _gears
 
 
 func _get_bg_tween():

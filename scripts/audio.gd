@@ -1,19 +1,19 @@
 extends Node2D
 
 
-# Resources
-const JUMP_SOUND = preload("res://sounds/パパッ.mp3")
-const MONEY_SOUND = preload("res://sounds/金額表示.mp3")
-const GEAR_SOUND = preload("res://sounds/きらーん1.mp3")
-const DAMAGE_SOUND = preload("res://sounds/ビシッとツッコミ2.mp3")
-const GAMEOVER_SOUND = preload("res://sounds/お寺の鐘.mp3")
-const RETRY_SOUND = preload("res://sounds/DJのスクラッチ1.mp3")
+# Exports
+@export_group("Nodes")
+@export var _bgm_player: Node
+@export var _se_player: Node
+@export var _se_player_ui: Node
 
-
-# Nodes
-@onready var _bgm_player = $BGM
-@onready var _se_player = $SE
-@onready var _se_player_ui = $SE2
+@export_group("Sounds")
+@export var _jump_sound: AudioStream
+@export var _money_sound: AudioStream
+@export var _gear_sound: AudioStream
+@export var _damage_sound: AudioStream
+@export var _gameover_sound: AudioStream
+@export var _retry_sound: AudioStream
 
 
 # Constants
@@ -57,32 +57,32 @@ func _on_state_changed(from):
 			_bgm_player.stop()
 		# ゲームオーバー
 		Global.State.GAMEOVER:
-			_play_se(GAMEOVER_SOUND)
+			_play_se(_gameover_sound)
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
 func _on_ui_jumped():
 	# タイトル or ゲーム中 or ポーズ中: ジャンプ音を鳴らす
 	if Global.state != Global.State.GAMEOVER:
-		_play_se_ui(JUMP_SOUND)
+		_play_se_ui(_jump_sound)
 
 
 func _on_hero_damaged():
 	# ゲーム中　and 残機がある: ダメージ音を鳴らす
 	if  Global.state == Global.State.ACTIVE and 0<= Global.life:
-		_play_se(DAMAGE_SOUND)
+		_play_se(_damage_sound)
 
 
 func _on_hero_got_money():
-	_play_se(MONEY_SOUND)
+	_play_se(_money_sound)
 
 
 func _on_hero_got_gear(gear):
-	_play_se(GEAR_SOUND)
+	_play_se(_gear_sound)
 
 
 func _on_hero_kills_enemy():
-	_play_se(DAMAGE_SOUND)
+	_play_se(_damage_sound)
 
 
 func _on_hero_entered_shop():

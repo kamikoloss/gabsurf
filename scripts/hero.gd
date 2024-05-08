@@ -1,14 +1,10 @@
 extends CharacterBody2D
 
 # Scenes
-const WEAPON_SCENE = preload("res://scenes/weapon.tscn")
-
-
-# Nodes
-@onready var _hero_sprite = $AnimatedSprite2D
-@onready var _collision_circle = $CollisionCircle
-@onready var _jump_label = $UI/Jump
-@onready var _life_label = $UI/Life
+@export var _weapon_scene: PackedScene
+@export var _hero_sprite: Node
+@export var _jump_label: Node
+@export var _life_label: Node
 
 
 # Variables
@@ -108,7 +104,7 @@ func _on_ui_jumped():
 		if _jump_counter_weapon_quota <= _jump_counter_weapon:
 			_jump_counter_weapon = 0
 			# ミサイルを発射する
-			var _weapon = WEAPON_SCENE.instantiate()
+			var _weapon = _weapon_scene.instantiate()
 			_weapon.position = position
 			get_tree().root.get_node("Main").add_child(_weapon)
 
@@ -180,12 +176,13 @@ func _on_body_area_entered(area):
 		var _shop = area.get_node("../../")
 		var _is_gear_a = area.get_node("../").position.y < 0
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
+		# TODO: 以下は Game の責任
 		var _cost = Gear.GEAR_INFO[_gear]["c"]
 		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
 			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
-			area.get_node("../Buy").queue_free()
+			area.get_node("../Buy").queue_free() # TODO: Shop の責任
 			area.queue_free()
 			print("[Hero] got gear {0}. (cost: {1})".format([Gear.GEAR_INFO[_gear]["t"], _cost]))
 			Global.hero_got_gear.emit(_gear)
