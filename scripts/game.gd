@@ -12,12 +12,11 @@ const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスロ
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっていくか
-const LEVEL_BASE = 10 # Gate 通過時に Level に加算される値
+const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
 const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
 
 
 # Variables
-var _money_base = 1 # Money 取得時に加算される値
 var _money_counter_difficult = 0 # Money を取るたびに 1 増加する 難易度が上昇したら 0 に戻す
 var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
 
@@ -116,7 +115,7 @@ func _on_hero_got_level():
 
 
 func _on_hero_got_money():
-	Global.money += _money_base
+	Global.money += Global.MONEY_RATIO
 	_money_counter_difficult += 1
 
 	# 難易度上昇の規定回数に達した場合
@@ -127,7 +126,7 @@ func _on_hero_got_money():
 
 
 func _on_hero_got_gear(gear):
-	Global.money -= Gear.GEAR_INFO[gear]["c"]
+	Global.money -= Gear.GEAR_INFO[gear]["c"] * Global.MONEY_RATIO
 	Global.shop_through_count = 0
 	Gear.my_gears += [gear]
 
@@ -143,11 +142,11 @@ func _on_hero_got_gear(gear):
 				print("[Game] try to get gear LFM, but no life!!")
 			else:
 				Global.life -= 1
-				Global.money += 10
+				Global.money += 10 * Global.MONEY_RATIO
 		Gear.GearType.LOT:
 			var _rng = RandomNumberGenerator.new()
 			var _lot = _rng.randf_range(0, 5)
-			Global.money += _lot
+			Global.money += _lot * Global.MONEY_RATIO
 		Gear.GearType.SCL:
 			Global.hero_move_velocity *= 1.25
 			Global.extra *= 2
@@ -165,7 +164,7 @@ func _on_hero_exited_shop():
 	if Global.state == Global.State.ACTIVE:
 		if Gear.my_gears.has(Gear.GearType.SPT) and 0 < Global.shop_through_count:
 			# TODO: メッセージ表示
-			Global.money += Global.shop_through_count
+			Global.money += Global.shop_through_count * Global.MONEY_RATIO
 
 		_exit_slow(SLOW_DURATION_SHOP)
 

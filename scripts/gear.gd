@@ -190,7 +190,7 @@ func get_gear_ui(gear):
 	return {
 		"title": _title,
 		"desc": _desc,
-		"cost": "$" + str(_gear_info["c"]),
+		"cost": "$" + str(_gear_info["c"] * Global.MONEY_RATIO),
 		"max": _max,
 		"icon": ITEM_SPRITES[_gear_info["i"]],
 	}

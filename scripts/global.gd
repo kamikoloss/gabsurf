@@ -43,7 +43,8 @@ enum Rank {
 
 
 # Constants
-const LIFE_MAX = 3 # 残機の最大数
+const MONEY_RATIO = 5 # Money の係数
+const LIFE_MAX = 3 # Life の最大数
 const HERO_MOVE_VELOCITY_DEFAULT = 200 # Hero の移動速度のデフォルト値 (px/s)
 const GATE_GAP_BASE = 256 # Gate の開きのデフォルト値 (px)
 
@@ -153,7 +154,7 @@ func initialize():
 	gate_gap_diff = 0
 	shop_through_count = 0
 	is_hero_anti_damage = false
-	hero_move_velocity = 200
+	hero_move_velocity = HERO_MOVE_VELOCITY_DEFAULT
 
 
 # Hero の横移動の加速用の Tween を取得する

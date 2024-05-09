@@ -1,8 +1,8 @@
 extends Area2D
 
 
-#Nodes
-@onready var _sprite = $AnimatedSprite2D
+# Exports
+@export var _sprite: Node
 
 
 # Variables

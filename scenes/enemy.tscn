@@ -22,10 +22,11 @@ animations = [{
 "speed": 4.0
 }]
 
-[node name="Enemy" type="Area2D" groups=["Enemy"]]
+[node name="Enemy" type="Area2D" node_paths=PackedStringArray("_sprite") groups=["Enemy"]]
 z_index = 14
 scale = Vector2(0.2, 0.2)
 script = ExtResource("1_8q5bn")
+_sprite = NodePath("AnimatedSprite2D")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_h7ter")
