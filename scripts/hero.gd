@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-# Scenes
+# Exports
 @export var _weapon_scene: PackedScene
 @export var _hero_sprite: Node
 @export var _jump_label: Node
@@ -151,10 +151,7 @@ func _on_body_area_entered(area):
 			return
 		if Global.is_hero_anti_damage:
 			# ボディーアーマー: 無敵状態のとき敵を倒せる
-			if Gear.my_gears.has(Gear.GearType.BDA):
-				area.die() # area = enemy
-				print("[Hero] kills a enemy.")
-				Global.hero_kills_enemy.emit()
+			pass
 		else:
 			print("[Hero] damged by a enemy.")
 			Global.hero_damaged.emit()
@@ -200,16 +197,3 @@ func _on_body_area_exited(area):
 	if area.is_in_group("Shop"):
 		print("[Hero] exited shop.")
 		Global.hero_exited_shop.emit()
-
-
-func _on_shoes_area_entered(area):
-	if Global.state != Global.State.ACTIVE:
-		return
-
-	if area.is_in_group("Enemy"):
-		if area.is_dead:
-			return
-		if Gear.my_gears.has(Gear.GearType.SHO):
-			print("[Hero] kills a enemy.")
-			area.die() # area = enemy
-			Global.hero_kills_enemy.emit()

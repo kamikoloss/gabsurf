@@ -151,7 +151,7 @@ limit_smoothed = true
 sprite_frames = SubResource("SpriteFrames_5tnh0")
 autoplay = "default"
 
-[node name="Body" type="Area2D" parent="Game/Hero"]
+[node name="Body" type="Area2D" parent="Game/Hero" groups=["Hero"]]
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Body"]
 shape = SubResource("CircleShape2D_oj05t")
@@ -162,7 +162,7 @@ self_modulate = Color(0, 1, 0, 0.25098)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_h180i")
 
-[node name="Shoes" type="Area2D" parent="Game/Hero"]
+[node name="Shoes" type="Area2D" parent="Game/Hero" groups=["Weapon"]]
 position = Vector2(0, 80)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Shoes"]

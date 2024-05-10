@@ -33,9 +33,9 @@ func _ready():
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_damaged.connect(_on_hero_damaged)
-	Global.hero_kills_enemy.connect(_on_hero_kills_enemy)
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
+	Global.enemy_dead.connect(_on_enemy_dead)
 
 	Global.initialize()
 	Gear.initialize()
@@ -169,7 +169,7 @@ func _on_hero_exited_shop():
 		_exit_slow(SLOW_DURATION_SHOP)
 
 
-func _on_hero_kills_enemy():
+func _on_enemy_dead():
 	# ATD
 	if Gear.my_gears.has(Gear.GearType.ATD):
 		var _atd = [0, 1, 2, 3]

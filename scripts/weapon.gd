@@ -21,15 +21,7 @@ func _process(delta):
 	position.x += speed * delta
 
 
-func _on_area_entered(area):
-	if area.is_in_group("Enemy"):
-		if area.is_active and !area.is_dead:
-			area.die() # area = enemy
-			print("[Weapon] kills a enemy.")
-			Global.hero_kills_enemy.emit()
-
-
 func _on_area_exited(area):
 	if area.is_in_group("ScreenOut"):
-		#print("Weaspon is destroyed.")
+		#print("[Weapon] destroyed.")
 		queue_free()

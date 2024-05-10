@@ -20,12 +20,6 @@ const DEAD_ROTATION = 20 # 死んだときに回転するスピード
 const DEAD_COLOR = Color(0, 0, 255) # 死んだときになる色
 
 
-func die():
-	is_dead = true
-	_dead_velocity = DEAD_VELOCITY
-	_sprite.modulate = DEAD_COLOR
-
-
 func _process(delta):
 	position.x -= speed * delta
 
@@ -39,8 +33,25 @@ func _on_area_entered(area):
 	if area.is_in_group("ScreenIn"):
 		is_active = true
 
+	if area.is_in_group("Hero"):
+		if Gear.my_gears.has(Gear.GearType.BDA):
+			_die()
+
+	if area.is_in_group("Weapon"):
+		if is_active and !is_dead:
+			_die()
+
 
 func _on_area_exited(area):
 	if area.is_in_group("ScreenOut"):
 		#print("[Enemy] destroyed.")
 		queue_free()
+
+
+func _die():
+	is_dead = true
+	_dead_velocity = DEAD_VELOCITY
+	_sprite.modulate = DEAD_COLOR
+	print("[Enemy] dead.")
+	Global.enemy_dead.emit()
+

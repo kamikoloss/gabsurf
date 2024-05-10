@@ -34,9 +34,9 @@ func _ready():
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_damaged.connect(_on_hero_damaged)
-	Global.hero_kills_enemy.connect(_on_hero_kills_enemy)
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
+	Global.enemy_dead.connect(_on_enemy_dead)
 
 
 func _process(delta):
@@ -81,10 +81,6 @@ func _on_hero_got_gear(gear):
 	_play_se(_gear_sound)
 
 
-func _on_hero_kills_enemy():
-	_play_se(_damage_sound)
-
-
 func _on_hero_entered_shop():
 	if Global.state == Global.State.ACTIVE:
 		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
@@ -93,6 +89,10 @@ func _on_hero_entered_shop():
 func _on_hero_exited_shop():
 	if Global.state == Global.State.ACTIVE:
 		_exit_slow(SLOW_DURATION_SHOP)
+
+
+func _on_enemy_dead():
+	_play_se(_damage_sound)
 
 
 # SE を鳴らす
