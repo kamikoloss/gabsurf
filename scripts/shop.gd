@@ -65,11 +65,11 @@ func _ready():
 			_ui[k]["max"].text = _gear_info["max"]
 			_ui[k]["icon"].texture = _gear_info["icon"]
 
-	_destroy()
+	_auto_destroy()
 
 
 # 指定秒数後に自身を破壊する
-func _destroy():
+func _auto_destroy():
 	await get_tree().create_timer(DESTROY_TIME).timeout
 	#print("[Shop] destroyed.")
 	queue_free()

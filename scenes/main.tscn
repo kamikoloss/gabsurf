@@ -129,12 +129,13 @@ script = ExtResource("1_sqtl6")
 _screen = NodePath("Screen")
 _hero_anti_damage_bar = NodePath("Hero/UI/TextureProgressBar")
 
-[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_hero_sprite", "_jump_label", "_life_label")]
+[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_label", "_life_label")]
 z_index = 30
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
 script = ExtResource("3_ksiqv")
 _weapon_scene = ExtResource("9_1dycg")
+_shoes = NodePath("Shoes")
 _hero_sprite = NodePath("AnimatedSprite2D")
 _jump_label = NodePath("UI/Jump")
 _life_label = NodePath("UI/Life")
@@ -162,7 +163,7 @@ self_modulate = Color(0, 1, 0, 0.25098)
 scale = Vector2(0.5, 0.5)
 texture = ExtResource("4_h180i")
 
-[node name="Shoes" type="Area2D" parent="Game/Hero" groups=["Weapon"]]
+[node name="Shoes" type="Area2D" parent="Game/Hero"]
 position = Vector2(0, 80)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Hero/Shoes"]
@@ -706,7 +707,6 @@ _shop_scene = ExtResource("25_t0vuc")
 
 [connection signal="area_entered" from="Game/Hero/Body" to="Game/Hero" method="_on_body_area_entered"]
 [connection signal="area_exited" from="Game/Hero/Body" to="Game/Hero" method="_on_body_area_exited"]
-[connection signal="area_entered" from="Game/Hero/Shoes" to="Game/Hero" method="_on_shoes_area_entered"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="UI" method="_on_pause_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Jump" to="UI" method="_on_jump_button_down"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Retry" to="UI" method="_on_retry_button_down"]

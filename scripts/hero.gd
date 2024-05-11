@@ -2,9 +2,10 @@ extends CharacterBody2D
 
 # Exports
 @export var _weapon_scene: PackedScene
-@export var _hero_sprite: Node
-@export var _jump_label: Node
-@export var _life_label: Node
+@export var _shoes: Area2D
+@export var _hero_sprite: AnimatedSprite2D
+@export var _jump_label: Label
+@export var _life_label: Label
 
 
 # Variables
@@ -29,6 +30,7 @@ func _ready():
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.life_changed.connect(_on_life_changed)
 
+	_shoes.remove_from_group("Weapon")
 	_jump_label.visible = false
 
 
@@ -116,6 +118,8 @@ func _on_hero_got_gear(gear):
 			var _msb = [5, 3, 2]
 			var _msb_count = Gear.my_gears.count(Gear.GearType.MSB) # 増える前の数
 			_jump_counter_weapon_quota = _msb[_msb_count]
+		Gear.GearType.SHO:
+			_shoes.add_to_group("Weapon")
 
 
 func _on_life_changed(from):
@@ -147,11 +151,10 @@ func _on_body_area_entered(area):
 		Global.hero_damaged.emit()
 
 	if area.is_in_group("Enemy"):
-		if area.is_dead:
+		if area.is_dead: # area = enemy
 			return
 		if Global.is_hero_anti_damage:
-			# ボディーアーマー: 無敵状態のとき敵を倒せる
-			pass
+			return
 		else:
 			print("[Hero] damged by a enemy.")
 			Global.hero_damaged.emit()
