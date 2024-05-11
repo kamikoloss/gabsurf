@@ -1,19 +1,19 @@
 extends Node2D
 
 
-@export var _enter_label: Node
+@export var _enter_label: Label
 @export var _a_root: Node
-@export var _a_icon: Node
-@export var _a_title_label: Node
-@export var _a_desc_label: Node
-@export var _a_cost_label: Node
-@export var _a_max_label: Node
+@export var _a_icon: TextureRect
+@export var _a_title_label: RichTextLabel
+@export var _a_desc_label: Label
+@export var _a_cost_label: Label
+@export var _a_max_label: Label
 @export var _b_root: Node
-@export var _b_icon: Node
-@export var _b_title_label: Node
-@export var _b_desc_label: Node
-@export var _b_cost_label: Node
-@export var _b_max_label: Node
+@export var _b_icon: TextureRect
+@export var _b_title_label: RichTextLabel
+@export var _b_desc_label: Label
+@export var _b_cost_label: Label
+@export var _b_max_label: Label
 
 
 const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか

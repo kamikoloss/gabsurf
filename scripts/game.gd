@@ -2,7 +2,7 @@ extends Node2D
 
 
 @export var _screen: Node
-@export var _hero_anti_damage_bar: Node
+@export var _hero_anti_damage_bar: TextureProgressBar
 
 
 const SLOW_SPEED_SHOP = 0.6 # Shop に入ったときに何倍速のスローになるか

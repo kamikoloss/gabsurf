@@ -1,17 +1,17 @@
 extends Control
 
 
-@export var _bg: Node
-@export var _header_level_label: Node
-@export var _header_money_label: Node
-@export var _header_extra_label: Node
-@export var _header_score_label: Node
-@export var _footer_pause_label: Node
-@export var _footer_jump_label: Node
-@export var _footer_retry_label: Node
-@export var _body_panel: Node
-@export var _title_label: Node
-@export var _gears_label: Node
+@export var _bg: ParallaxBackground
+@export var _header_level_label: Label
+@export var _header_money_label: Label
+@export var _header_extra_label: Label
+@export var _header_score_label: Label
+@export var _footer_pause_label: Label
+@export var _footer_jump_label: Label
+@export var _footer_retry_label: Label
+@export var _body_panel: Panel
+@export var _title_label: Label
+@export var _gears_label: Label
 
 
 const BG_DURATION = 2.0 # BG が何秒かけて移動するか

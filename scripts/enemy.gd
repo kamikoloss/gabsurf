@@ -1,7 +1,7 @@
 extends Area2D
 
 
-@export var _sprite: Node
+@export var _sprite: AnimatedSprite2D
 
 
 var is_dead = false # もう倒されたあとかどうか

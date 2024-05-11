@@ -2,9 +2,9 @@ extends Node2D
 
 
 @export_group("Nodes")
-@export var _bgm_player: Node
-@export var _se_player: Node
-@export var _se_player_ui: Node
+@export var _bgm_player: AudioStreamPlayer
+@export var _se_player: AudioStreamPlayer
+@export var _se_player_ui: AudioStreamPlayer
 
 @export_group("Sounds")
 @export var _jump_sound: AudioStream
@@ -34,10 +34,6 @@ func _ready():
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
 	Global.enemy_dead.connect(_on_enemy_dead)
-
-
-func _process(delta):
-	global_position.x = get_viewport().get_camera_2d().global_position.x
 
 
 func _on_state_changed(from):
