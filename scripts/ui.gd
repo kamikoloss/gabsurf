@@ -54,10 +54,14 @@ func _input(event):
 			match event.keycode:
 				KEY_SPACE:
 					_on_jump_button_down()
+					Global.can_hero_jump = false
 				KEY_ESCAPE:
 					_on_pause_button_down()
 				KEY_ENTER:
 					_on_retry_button_down()
+		# キーボードが離されたとき
+		else:
+			Global.can_hero_jump = true
 
 
 func _on_jump_button_down():

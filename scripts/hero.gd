@@ -9,7 +9,6 @@ extends CharacterBody2D
 
 
 # Variables
-var _jump_timer = 0
 var _jump_counter_weapon = 0
 var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
 
@@ -35,8 +34,6 @@ func _ready():
 
 
 func _physics_process(delta):
-	_jump_timer += delta
-
 	# ゲーム中 or ゲームオーバー:
 	# 終端速度に達するまで加速する
 	var states = [Global.State.ACTIVE, Global.State.GAMEOVER]
@@ -69,8 +66,8 @@ func _on_ui_jumped():
 	# ゲームオーバー: 何もしない
 	if Global.state == Global.State.GAMEOVER:
 		return
-	# クールタイム中: 何もしない
-	if Global.state == Global.State.ACTIVE and _jump_timer < JUMP_COOLTIME:
+	# ゲーム中 and ジャンプできない: 何もしない
+	if Global.state == Global.State.ACTIVE and !Global.can_hero_jump:
 		return
 	# ゲーム中 or タイトル or ポーズ中: 再開と同時にジャンプする
 
@@ -90,7 +87,6 @@ func _on_ui_jumped():
 
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
-	_jump_timer = 0
 
 	# MSB 所持中
 	if Gear.my_gears.has(Gear.GearType.MSB):

@@ -135,6 +135,7 @@ var life: int = -1:
 
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか
+var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
 var hero_move_velocity: int = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
 
