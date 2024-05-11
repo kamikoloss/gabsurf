@@ -3,6 +3,7 @@ extends Node
 
 signal state_changed
 signal rank_changed
+signal stage_changed
 signal level_changed
 signal money_changed
 signal extra_changed
@@ -40,6 +41,16 @@ enum Rank {
 	GOLD,
 }
 
+enum Stage {
+	NONE, # 初期値
+	A,
+	B,
+	C,
+	D,
+	E,
+	F,
+}
+
 
 const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数
@@ -68,6 +79,17 @@ var rank: Rank = Rank.NONE:
 		rank = value
 		print("[Global] rank is changed. ({0} -> {1})".format([_from, value]))
 		rank_changed.emit(_from)
+
+var stage: Stage = Stage.NONE:
+	get:
+		return stage
+	set(value):
+		if value == stage:
+			return
+		var _from = stage
+		stage = value
+		print("[Global] stage is changed. ({0} -> {1})".format([_from, value]))
+		stage_changed.emit(_from)
 
 var level: int = -1:
 	get:
@@ -128,11 +150,12 @@ var life: int = -1:
 		print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
 		life_changed.emit(_from)
 
-var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
-var shop_through_count: int = 0 # Shop を連続何回スルーしたか
+
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
 var hero_move_velocity: int = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
+var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
+var shop_through_count: int = 0 # Shop を連続何回スルーしたか
 
 var _accelerate_tween = null
 
@@ -142,33 +165,18 @@ var _accelerate_tween = null
 func initialize():
 	state = State.TITLE
 	rank = Rank.WHITE
+	stage = Stage.A
 	level = 0
 	money = 0
 	extra = 1
 	score = 0
 	life = LIFE_MAX
 
-	gate_gap_diff = 0
-	shop_through_count = 0
+	can_hero_jump = true
 	is_hero_anti_damage = false
 	hero_move_velocity = HERO_MOVE_VELOCITY_DEFAULT
-
-
-# Hero の横移動の加速用の Tween を取得する
-func _get_accelerate_tween():
-	if _accelerate_tween:
-		_accelerate_tween.kill()
-	_accelerate_tween = create_tween()
-	_accelerate_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	return _accelerate_tween
-
-
-# Hero の横移動の速度を一時的に加速する
-func accelerate_hero_move(speed_diff, duration):
-	var _tween = _get_accelerate_tween()
-	var _from = HERO_MOVE_VELOCITY_DEFAULT + speed_diff
-	var _to = HERO_MOVE_VELOCITY_DEFAULT
-	_tween.tween_method(func(v): hero_move_velocity = v, _from, _to, duration)
+	gate_gap_diff = 0
+	shop_through_count = 0
 
 
 # 現在の GameRank を計算する
@@ -191,3 +199,20 @@ func _calc_score():
 		return
 
 	return level * money * extra
+
+
+# Hero の横移動の加速用の Tween を取得する
+func _get_accelerate_tween():
+	if _accelerate_tween:
+		_accelerate_tween.kill()
+	_accelerate_tween = create_tween()
+	_accelerate_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	return _accelerate_tween
+
+
+# Hero の横移動の速度を一時的に加速する
+func accelerate_hero_move(speed_diff, duration):
+	var _tween = _get_accelerate_tween()
+	var _from = HERO_MOVE_VELOCITY_DEFAULT + speed_diff
+	var _to = HERO_MOVE_VELOCITY_DEFAULT
+	_tween.tween_method(func(v): hero_move_velocity = v, _from, _to, duration)
