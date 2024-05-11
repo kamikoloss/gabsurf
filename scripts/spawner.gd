@@ -1,19 +1,16 @@
 extends Node
 
 
-# Exports
 @export var _gate_scene: PackedScene
 @export var _enemy_scene: PackedScene
 @export var _shop_scene: PackedScene
 
 
-# Constants
 const SPAWN_HEIGHT_MIN_DEFAULT = 80
 const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上方向であることに注意する
 const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するかの基準値
 
 
-# Variables
 var _is_shop_spawned = false # 現在 Shop が出現しているかどうか
 var _is_shop_respawned = false # 直近で Shop が再出現したかどうか
 var _shop_counter = 0 # Shop がトータルで何回出現したか
@@ -99,15 +96,19 @@ func _process_spawn_gate(delta):
 		_gate_spawn_timer += delta
 
 	if _gate_spawn_cooltime < _gate_spawn_timer:
-		var _gtm = [1, 2, 3, 5]
-		var _gtm_count = Gear.my_gears.count(Gear.GearType.GTM)
 		var _rng = RandomNumberGenerator.new()
 		var _height_diff = _rng.randf_range(_gate_spawn_height_min, _gate_spawn_height_max)
 		var _x_diff = 0
-		for g in _gtm[_gtm_count]:
-			_spawn_gate(_height_diff, _x_diff, g == 0)
-			_x_diff += 40
 		_gate_spawn_timer = 0
+
+		if Gear.my_gears.has(Gear.GearType.GTM):
+			var _gtm = [2, 3, 5]
+			var _gtm_count = Gear.my_gears.count(Gear.GearType.GTM)
+			for g in _gtm[_gtm_count]:
+				_spawn_gate(_height_diff, _x_diff, g == 0)
+				_x_diff += 40
+		else:
+			_spawn_gate(_height_diff, _x_diff, true)
 
 
 # ゲートを生成する

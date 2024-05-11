@@ -1,14 +1,12 @@
 extends Area2D
 
 
-# Variables
-var speed = 0 # 飛行速度 (px/s)
-
-
-# Constants
 const SPEED_FROM = 200
 const SPEED_TO = 800
 const SPEED_DURATION = 1.0
+
+
+var speed = 0 # 飛行速度 (px/s)
 
 
 func _ready():

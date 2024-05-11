@@ -1,7 +1,6 @@
 extends Node
 
 
-# Signals
 signal state_changed
 signal rank_changed
 signal level_changed
@@ -24,7 +23,6 @@ signal hero_exited_shop # Shop を出たとき
 signal enemy_dead # 倒されたとき
 
 
-# Enums
 enum State {
 	NONE, # 初期値
 	TITLE, # タイトル
@@ -43,15 +41,12 @@ enum Rank {
 }
 
 
-# Constants
 const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数
 const HERO_MOVE_VELOCITY_DEFAULT = 200 # Hero の移動速度のデフォルト値 (px/s)
 const GATE_GAP_BASE = 256 # Gate の開きのデフォルト値 (px)
 
 
-
-# Variables
 var state: State = State.NONE:
 	get:
 		return state

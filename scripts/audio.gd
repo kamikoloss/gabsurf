@@ -1,7 +1,6 @@
 extends Node2D
 
 
-# Exports
 @export_group("Nodes")
 @export var _bgm_player: Node
 @export var _se_player: Node
@@ -16,14 +15,12 @@ extends Node2D
 @export var _retry_sound: AudioStream
 
 
-# Constants
 const SLOW_SPEED_SHOP = 0.8 # Shop に入ったときに何倍速のスローになるか
 const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.6 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 
 
-# Variables
 var _slow_tween = null
 var _bgm_position = null
 

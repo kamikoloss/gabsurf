@@ -1,7 +1,6 @@
 extends Node2D
 
 
-# Exports
 @export var _enter_label: Node
 @export var _a_root: Node
 @export var _a_icon: Node
@@ -17,11 +16,9 @@ extends Node2D
 @export var _b_max_label: Node
 
 
-# Constants
 const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
 
 
-# Variables
 var number = 0
 var gear = { "a": null, "b": null } # Gear.GearType
 

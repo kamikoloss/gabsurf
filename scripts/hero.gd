@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-# Exports
+
 @export var _weapon_scene: PackedScene
 @export var _shoes: Area2D
 @export var _hero_sprite: AnimatedSprite2D
@@ -8,12 +8,10 @@ extends CharacterBody2D
 @export var _life_label: Label
 
 
-# Variables
 var _jump_counter_weapon = 0
 var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
 
 
-# Constants
 const JUMP_COOLTIME = 0.05 # (s)
 const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
@@ -172,14 +170,14 @@ func _on_body_area_entered(area):
 		var _shop = area.get_node("../../")
 		var _is_gear_a = area.get_node("../").position.y < 0
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
-		var _cost = Gear.GEAR_INFO[_gear]["c"]
+		var _cost = Gear.gear_info[_gear]["c"]
 		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
 			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
 			area.get_node("../Buy").queue_free() # TODO: Shop の責任
 			area.queue_free()
-			print("[Hero] got gear {0}. (cost: {1})".format([Gear.GEAR_INFO[_gear]["t"], _cost]))
+			print("[Hero] got gear {0}. (cost: {1})".format([Gear.gear_info[_gear]["t"], _cost]))
 			Global.hero_got_gear.emit(_gear)
 
 

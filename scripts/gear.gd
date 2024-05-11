@@ -1,7 +1,6 @@
 extends Node
 
 
-# Gear の種類
 enum GearType {
 	ATD, BDA, COL,
 	EME, EMP, EMS, # Enemy 系
@@ -16,36 +15,6 @@ enum GearType {
 	SPR, SPT, # Shop 系
 }
 
-
-# Gear の情報
-# "c": コスト, "m": 最大何個買えるか, "i": ITEM_SPRITES の index,
-# "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
-const GEAR_INFO = {
-	GearType.ATD: { "c": 5, "m": 3, "i": 3, "t": "プロテイン", "d": "敵を倒すたびに\n{0}秒無敵になる", "f": [1, 2, 3] },
-	GearType.BDA: { "c": 5, "m": 1, "i": 4, "t": "ボディーアーマー", "d": "無敵時に敵を体当たりで\n倒せるようになる", "f": null  },
-	#GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
-	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
-	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "音響装置", "d": "敵が下半分にだけ\n出現するようになる", "f": null },
-	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
-	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
-	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
-	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "ビール", "d": "ゲートが{0}個ずつ\n出現するようになる", "f": [2, 3, 5] },
-	GearType.JMA: { "c": 2, "m": 3, "i": 7, "t": "ボード", "d": "ジャンプ時に\n加速する ({0})", "f": ["小", "中", "大"] },
-	GearType.JMV: { "c": 2, "m": 3, "i": 7, "t": "ソフトウィール", "d": "ジャンプの高さが\n低くなる ({0})", "f": ["小", "中", "大"] },
-	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
-	GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +10", "f": null },
-	GearType.LOT: { "c": 2, "m": 5, "i": 5, "t": "宝くじ", "d": "MONEY +0 ~ +5", "f": null},
-	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },
-	#GearType.MSH: { "c": 2, "m": 3, "i": 6, "t": "追尾ミサイル", "d": "ミサイルが敵を追いかける\n (追尾強度: {0})", "f": ["小", "中", "大"] }, 
-	#GearType.MSM: { "c": 2, "m": 3, "i": 6, "t": "マルチミサイル", "d": "ミサイルを{0}\n方向に発射する", "f": [2, 3, 5] },
-	#GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "巨大ミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
-	GearType.NOE: { "c": 10, "m": 1, "i": 1, "t": "安全運転", "d": "敵が出現しなくなる\n EXTRA x2", "f": null},
-	GearType.NOS: { "c": 10, "m": 1, "i": 1, "t": "ミニマリスト", "d": "ショップが出現しなくなる\nEXTRA x2", "f": null },
-	GearType.SCL: { "c": 5, "m": 1, "i": 9, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
-	GearType.SHO: { "c": 2, "m": 1, "i": 7, "t": "安全靴", "d": "敵を踏んで\n倒せるようになる", "f": null },
-	GearType.SPR: { "c": 5, "m": 1, "i": 12, "t": "買い物袋", "d": "ショップをスルーすると\n1度だけショップが\n再出現する", "f": null },
-	GearType.SPT: { "c": 5, "m": 1, "i": 12, "t": "貯金箱", "d": "ショップをn連続\nスルーするごとに\nMONEY +n", "f": null },
-}
 
 # ランクごとに店に並ぶギアのリスト
 const GEAR_RANK = {
@@ -99,7 +68,36 @@ const ITEM_SPRITES = [
 ]
 
 
-# Variables
+# Gear の情報
+# "c": コスト, "m": 最大何個買えるか, "i": ITEM_SPRITES の index,
+# "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
+var gear_info = {
+	GearType.ATD: { "c": 5, "m": 3, "i": 3, "t": "プロテイン", "d": "敵を倒すたびに\n{0}秒無敵になる", "f": [1, 2, 3] },
+	GearType.BDA: { "c": 5, "m": 1, "i": 4, "t": "ボディーアーマー", "d": "無敵時に敵を体当たりで\n倒せるようになる", "f": null },
+	#GearType.COL: { "c": 2, "m": 1, "i": 8, "t": "デコンパイラ", "d": "すべての当たり判定が\n見えるようになる", "f": null },
+	GearType.EME: { "c": 3, "m": 3, "i": 11, "t": "狩猟免許", "d": "敵を倒すたびに\nEXTRA +{0}", "f": [1, 2, 3] },
+	GearType.EMP: { "c": 5, "m": 1, "i": 8, "t": "音響装置", "d": "敵が下半分にだけ\n出現するようになる", "f": null },
+	GearType.EMS: { "c": 5, "m": 3, "i": 10, "t": "パンくず", "d": "敵の出現ペース\nx{0}", "f": [2, 3, 5] },
+	GearType.EXT: { "c": 1, "m": 5, "i": 2, "t": "エナジーフード", "d": "EXTRA +5", "f": null },
+	GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
+	GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "ビール", "d": "ゲートが{0}個ずつ\n出現するようになる", "f": [2, 3, 5] },
+	GearType.JMA: { "c": 2, "m": 3, "i": 7, "t": "ボード", "d": "ジャンプ時に\n加速する ({0})", "f": ["小", "中", "大"] },
+	GearType.JMV: { "c": 2, "m": 3, "i": 7, "t": "ソフトウィール", "d": "ジャンプの高さが\n低くなる ({0})", "f": ["小", "中", "大"] },
+	GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
+	GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +{0}".format([10 * Global.MONEY_RATIO]), "f": null },
+	GearType.LOT: { "c": 2, "m": 5, "i": 5, "t": "宝くじ", "d": "MONEY +0 ~ +{0}".format([5 * Global.MONEY_RATIO]), "f": null},
+	GearType.MSB: { "c": 2, "m": 3, "i": 6, "t": "ミサイル", "d": "ジャンプ{0}回ごとに\nミサイルを1発発射する", "f": [5, 3, 2] },
+	#GearType.MSH: { "c": 2, "m": 3, "i": 6, "t": "追尾ミサイル", "d": "ミサイルが敵を追いかける\n (追尾強度: {0})", "f": ["小", "中", "大"] }, 
+	#GearType.MSM: { "c": 2, "m": 3, "i": 6, "t": "マルチミサイル", "d": "ミサイルを{0}\n方向に発射する", "f": [2, 3, 5] },
+	#GearType.MSW: { "c": 2, "m": 3, "i": 6, "t": "巨大ミサイル", "d": "壁がミサイル{0}発で\n壊れるようになる", "f": [5, 3, 2] },
+	GearType.NOE: { "c": 10, "m": 1, "i": 1, "t": "安全運転", "d": "敵が出現しなくなる\n EXTRA x2", "f": null},
+	GearType.NOS: { "c": 10, "m": 1, "i": 1, "t": "ミニマリスト", "d": "ショップが出現しなくなる\nEXTRA x2", "f": null },
+	GearType.SCL: { "c": 5, "m": 1, "i": 9, "t": "ジェットエンジン", "d": "進行速度 x1.25\nEXTRA x2", "f": null },
+	GearType.SHO: { "c": 2, "m": 1, "i": 7, "t": "安全靴", "d": "敵を踏んで\n倒せるようになる", "f": null },
+	GearType.SPR: { "c": 5, "m": 1, "i": 12, "t": "買い物袋", "d": "ショップをスルーすると\n1度だけショップが\n再出現する", "f": null },
+	GearType.SPT: { "c": 5, "m": 1, "i": 12, "t": "貯金箱", "d": "ショップをn連続\nスルーするごとに\nMONEY +{0}n".format([Global.MONEY_RATIO]), "f": null },
+}
+
 var my_gears: Array[GearType] = [] # 所持しているギアのリスト
 
 
@@ -141,7 +139,7 @@ func get_random_gear(ignore = null):
 		# すでに持っている Gear が抽選された場合
 		if my_gears.has(_random):
 			# まだ最大数に達していない場合: OK
-			if 0 < GEAR_INFO[_random]["m"] and my_gears.count(_random) < GEAR_INFO[_random]["m"]:
+			if 0 < gear_info[_random]["m"] and my_gears.count(_random) < gear_info[_random]["m"]:
 				_gear = _random
 				break
 		# まだ持っていない場合: OK
@@ -154,7 +152,7 @@ func get_random_gear(ignore = null):
 
 # Shop UI 用の Gear 情報を取得する
 func get_gear_ui(gear):
-	var _gear_info = GEAR_INFO[gear]
+	var _gear_info = gear_info[gear]
 	var _title = ""
 	var _desc = ""
 	var _max = ""

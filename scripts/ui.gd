@@ -1,7 +1,6 @@
 extends Control
 
 
-# Exports
 @export var _bg: Node
 @export var _header_level_label: Node
 @export var _header_money_label: Node
@@ -15,12 +14,10 @@ extends Control
 @export var _gears_label: Node
 
 
-# Constants
 const BG_DURATION = 2.0 # BG が何秒かけて移動するか
 const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 
-# Variables
 var _bg_tween = null
 var _level_tween = null
 var _money_tween = null
@@ -153,7 +150,7 @@ func _on_score_changed(from):
 func _refresh_label_gear():
 	var _gears = "Gears: {"
 	for gear in Gear.my_gears:
-		_gears += Gear.GEAR_INFO[gear]["t"]
+		_gears += Gear.gear_info[gear]["t"]
 		_gears += ","
 	_gears += "}"
 	_gears_label.text = _gears

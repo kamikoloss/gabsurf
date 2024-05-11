@@ -1,13 +1,11 @@
 extends Node2D
 
 
-# Exports
 @export var _gate_top: Node
 @export var _gate_bottom: Node
 @export var _money: Node
 
 
-# Variables
 var gap_diff = 0 # Gate がデフォルトから何 px 開くか
 var height_diff = 0 # Gate がデフォルトから何 px 上下に移動するか
 var set_money = true # Gate の真ん中に Money を配置するか
