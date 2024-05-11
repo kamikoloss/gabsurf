@@ -168,13 +168,13 @@ func get_gear_ui(gear):
 		Global.Rank.WHITE:
 			_title = _gear_info["t"]
 		Global.Rank.BLUE:
-			_title = "[color=blue]{0}[/color]".format([_gear_info["t"]])
+			_title = "[color=#8080FF]{0}[/color]".format([_gear_info["t"]])
 		Global.Rank.GREEN:
-			_title = "[color=green]{0}[/color]".format([_gear_info["t"]])
+			_title = "[color=#80FF80]{0}[/color]".format([_gear_info["t"]])
 		Global.Rank.RED:
-			_title = "[color=red]{0}[/color]".format([_gear_info["t"]])
+			_title = "[color=#FF8080]{0}[/color]".format([_gear_info["t"]])
 		Global.Rank.GOLD:
-			_title = "[color=yellow]{0}[/color]".format([_gear_info["t"]])
+			_title = "[color=#FFFF80]{0}[/color]".format([_gear_info["t"]])
 
 	# 説明文を必要に応じてフォーマットする
 	if _gear_info["f"] != null:
