@@ -168,7 +168,7 @@ func _on_body_area_entered(area):
 
 	if area.is_in_group("Gear"):
 		var _shop = area.get_node("../../")
-		var _is_gear_a = area.get_node("../").position.y < 0
+		var _is_gear_a = area.get_node("../").position.y < 320
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
 		var _cost = Gear.gear_info[_gear]["c"]
 		if Global.money < _cost:

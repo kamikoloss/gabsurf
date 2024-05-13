@@ -1,19 +1,8 @@
 extends Node2D
 
 
+@export var _shop_panel_scene: PackedScene
 @export var _enter_label: Label
-@export var _a_root: Node
-@export var _a_icon: TextureRect
-@export var _a_title_label: RichTextLabel
-@export var _a_desc_label: Label
-@export var _a_cost_label: Label
-@export var _a_max_label: Label
-@export var _b_root: Node
-@export var _b_icon: TextureRect
-@export var _b_title_label: RichTextLabel
-@export var _b_desc_label: Label
-@export var _b_cost_label: Label
-@export var _b_max_label: Label
 
 
 const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
@@ -32,35 +21,14 @@ func _ready():
 	print("[Shop] gears are {0} and {1}.".format([gear["a"], gear["b"]]))
 
 	# 店にギアを並べる
-	var _ui = {
-		"a": {
-			"root": _a_root,
-			"icon": _a_icon,
-			"title": _a_title_label,
-			"desc": _a_desc_label,
-			"cost": _a_cost_label,
-			"max": _a_max_label,
-		},
-		"b": {
-			"root": _b_root,
-			"icon": _b_icon,
-			"title": _b_title_label,
-			"desc": _b_desc_label,
-			"cost": _b_cost_label,
-			"max": _b_max_label,
-		},
-	}
-
+	var _panel_position_y = { "a": 120, "b": 400 }
 	for k in ["a", "b"]:
-		if gear[k] == null:
-			_ui[k]["root"].queue_free()
-		else:
+		if gear[k] != null:
 			var _gear_info = Gear.get_gear_ui(gear[k])
-			_ui[k]["title"].text = _gear_info["title"]
-			_ui[k]["desc"].text = _gear_info["desc"]
-			_ui[k]["cost"].text = _gear_info["cost"]
-			_ui[k]["max"].text = _gear_info["max"]
-			_ui[k]["icon"].texture = _gear_info["icon"]
+			var _gear_panel = _shop_panel_scene.instantiate()
+			_gear_panel.set_gear_ui(_gear_info)
+			_gear_panel.position.y = _panel_position_y[k]
+			add_child(_gear_panel)
 
 	_auto_destroy()
 
