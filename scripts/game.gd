@@ -151,8 +151,7 @@ func _on_hero_got_gear(gear):
 
 func _on_hero_entered_shop():
 	if Global.state == Global.State.ACTIVE:
-		if Gear.my_gears.has(Gear.GearType.SPT):
-			Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
+		Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
 
 		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
 
