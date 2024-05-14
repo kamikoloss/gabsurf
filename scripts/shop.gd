@@ -28,6 +28,7 @@ func _ready():
 			var _gear_panel = _shop_panel_scene.instantiate()
 			_gear_panel.set_gear_ui(_gear_info)
 			_gear_panel.position.y = _panel_position_y[k]
+			_gear_panel.gear_type = gear[k]
 			add_child(_gear_panel)
 
 	_auto_destroy()

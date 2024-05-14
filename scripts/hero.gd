@@ -175,8 +175,6 @@ func _on_body_area_entered(area):
 			# 所持金が足りない場合: 買えない
 			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 		else:
-			area.get_node("../Buy").queue_free() # TODO: Shop の責任
-			area.queue_free()
 			print("[Hero] got gear {0}. (cost: {1})".format([Gear.gear_info[_gear]["t"], _cost]))
 			Global.hero_got_gear.emit(_gear)
 
