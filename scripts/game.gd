@@ -200,15 +200,6 @@ func _exit_slow(duration):
 	_tween.tween_property(Engine, "time_scale", 1.0, duration)
 
 
-# 無敵時間用の Tween を取得する
-func _get_anti_damage_tween():
-	if _anti_damage_tween:
-		_anti_damage_tween.kill()
-	_anti_damage_tween = create_tween()
-	_anti_damage_tween.set_trans(Tween.TRANS_LINEAR)
-	return _anti_damage_tween
-
-
 # 無敵状態に突入する
 func _enter_anti_damage(duration):
 	Global.is_hero_anti_damage = true
@@ -216,8 +207,11 @@ func _enter_anti_damage(duration):
 	_hero_anti_damage_bar.visible = true
 	_hero_anti_damage_bar.value = 100
 
-	var _tween = _get_anti_damage_tween()
-	_tween.tween_property(_hero_anti_damage_bar, "value", 0, duration)
-	_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
-	_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
+	if _anti_damage_tween:
+		_anti_damage_tween.kill()
+	_anti_damage_tween = create_tween()
+	_anti_damage_tween.set_trans(Tween.TRANS_LINEAR)
+	_anti_damage_tween.tween_property(_hero_anti_damage_bar, "value", 0, duration)
+	_anti_damage_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
+	_anti_damage_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
 	#_tween.tween_callback(func(): print("[Game] anti-damage is finished."))

@@ -135,7 +135,7 @@ var score: int = -1:
 			return
 		var _from = score
 		score = value
-		#print("[Global] score is changed. ({0} -> {1})".format([_from, value]))
+		print("[Global] score is changed. ({0} -> {1})".format([_from, value]))
 		score_changed.emit(_from)
 		rank = _calc_game_rank()
 
@@ -181,13 +181,13 @@ func initialize():
 
 # 現在の GameRank を計算する
 func _calc_game_rank():
-	if score < 1000:
+	if score < 1_000:
 		return Rank.WHITE
-	elif 1000 <= score and score < 10000:
+	elif 1_000 <= score and score < 10_000:
 		return Rank.BLUE
-	elif 10000 <= score and score < 100000:
+	elif 10_000 <= score and score < 100_000:
 		return Rank.GREEN
-	elif 100000 <= score and score < 1000000:
+	elif 100_000 <= score and score < 1_000_000:
 		return Rank.RED
 	else:
 		return Rank.GOLD
@@ -201,18 +201,13 @@ func _calc_score():
 	return level * money * extra
 
 
-# Hero の横移動の加速用の Tween を取得する
-func _get_accelerate_tween():
+# Hero の横移動の速度を一時的に加速する
+func accelerate_hero_move(speed_diff, duration):
+	var _from = HERO_MOVE_VELOCITY_DEFAULT + speed_diff
+	var _to = HERO_MOVE_VELOCITY_DEFAULT
+
 	if _accelerate_tween:
 		_accelerate_tween.kill()
 	_accelerate_tween = create_tween()
 	_accelerate_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	return _accelerate_tween
-
-
-# Hero の横移動の速度を一時的に加速する
-func accelerate_hero_move(speed_diff, duration):
-	var _tween = _get_accelerate_tween()
-	var _from = HERO_MOVE_VELOCITY_DEFAULT + speed_diff
-	var _to = HERO_MOVE_VELOCITY_DEFAULT
-	_tween.tween_method(func(v): hero_move_velocity = v, _from, _to, duration)
+	_accelerate_tween.tween_method(func(v): hero_move_velocity = v, _from, _to, duration)
