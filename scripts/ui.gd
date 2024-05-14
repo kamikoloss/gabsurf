@@ -12,6 +12,7 @@ extends Control
 @export var _body_panel: Panel
 @export var _title_label: Label
 @export var _gears_label: Label
+@export var _rank_meter: Control
 
 
 const BG_DURATION = 2.0 # BG が何秒かけて移動するか
@@ -109,6 +110,10 @@ func _on_state_changed(from):
 
 
 func _on_rank_changed(from):
+	if _bg_tween:
+		_bg_tween.kill()
+	_bg_tween = create_tween()
+
 	var _rank_y_positions = {
 		Global.Rank.WHITE: -320,
 		Global.Rank.BLUE: -240,
@@ -118,33 +123,46 @@ func _on_rank_changed(from):
 	}
 	var _position = Vector2(0, _rank_y_positions[Global.rank])
 
-	var _tween = _get_bg_tween()
-	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_tween.tween_property(_bg, "offset", _position, BG_DURATION)
+	_bg_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	_bg_tween.tween_property(_bg, "offset", _position, BG_DURATION)
 
 
 func _on_level_changed(from):
-	var _tween = _get_level_tween()
-	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _header_level_label.text = str(v), from, Global.level, LABEL_DURATION)
+	if _level_tween:
+		_level_tween.kill()
+	_level_tween = create_tween()
+
+	_level_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_level_tween.tween_method(func(v): _header_level_label.text = str(v), from, Global.level, LABEL_DURATION)
 
 
 func _on_money_changed(from):
-	var _tween = _get_money_tween()
-	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _header_money_label.text = str(v), from, Global.money, LABEL_DURATION)
+	if _money_tween:
+		_money_tween.kill()
+	_money_tween = create_tween()
+
+	_money_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_money_tween.tween_method(func(v): _header_money_label.text = str(v), from, Global.money, LABEL_DURATION)
 
 
 func _on_extra_changed(from):
-	var _tween = _get_extra_tween()
-	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _header_extra_label.text = str(v), from, Global.extra, LABEL_DURATION)
+	if _extra_tween:
+		_extra_tween.kill()
+	_extra_tween = create_tween()
+
+	_extra_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_extra_tween.tween_method(func(v): _header_extra_label.text = str(v), from, Global.extra, LABEL_DURATION)
 
 
 func _on_score_changed(from):
-	var _tween = _get_score_tween()
-	_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
-	_tween.tween_method(func(v): _header_score_label.text = str(v), from, Global.score, LABEL_DURATION)
+	if _score_tween:
+		_score_tween.kill()
+	_score_tween = create_tween()
+
+	_score_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_score_tween.set_parallel(true)
+	_score_tween.tween_method(func(v): _header_score_label.text = str(v), from, Global.score, LABEL_DURATION)
+	_score_tween.tween_property(_rank_meter, "position", Vector2(0, -1632 + log(Global.score) / log(10) * 256), LABEL_DURATION)
 
 
 func _refresh_label_gear():
@@ -154,38 +172,3 @@ func _refresh_label_gear():
 		_gears += ","
 	_gears += "}"
 	_gears_label.text = _gears
-
-
-func _get_bg_tween():
-	if _bg_tween:
-		_bg_tween.kill()
-	_bg_tween = create_tween()
-	return _bg_tween
-
-
-func _get_level_tween():
-	if _level_tween:
-		_level_tween.kill()
-	_level_tween = create_tween()
-	return _level_tween
-
-
-func _get_money_tween():
-	if _money_tween:
-		_money_tween.kill()
-	_money_tween = create_tween()
-	return _money_tween
-
-
-func _get_extra_tween():
-	if _extra_tween:
-		_extra_tween.kill()
-	_extra_tween = create_tween()
-	return _extra_tween
-
-
-func _get_score_tween():
-	if _score_tween:
-		_score_tween.kill()
-	_score_tween = create_tween()
-	return _score_tween

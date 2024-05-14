@@ -281,7 +281,7 @@ autoplay = true
 [node name="SE2" type="AudioStreamPlayer" parent="Game/Audio"]
 volume_db = -3.0
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("_bg", "_header_level_label", "_header_money_label", "_header_extra_label", "_header_score_label", "_footer_pause_label", "_footer_jump_label", "_footer_retry_label", "_body_panel", "_title_label", "_gears_label")]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("_bg", "_header_level_label", "_header_money_label", "_header_extra_label", "_header_score_label", "_footer_pause_label", "_footer_jump_label", "_footer_retry_label", "_body_panel", "_title_label", "_gears_label", "_rank_meter")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_twex4")
@@ -296,6 +296,7 @@ _footer_retry_label = NodePath("CanvasLayer/Footer/Retry")
 _body_panel = NodePath("CanvasLayer/Layout/Body/Panel")
 _title_label = NodePath("CanvasLayer/Layout/Body/Panel/Labels/Title")
 _gears_label = NodePath("CanvasLayer/Layout/Body/Panel/Labels/Gears")
+_rank_meter = NodePath("CanvasLayer/Rank/Mask/Meter")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
 
@@ -498,8 +499,6 @@ vertical_alignment = 1
 [node name="Footer" type="Control" parent="UI/CanvasLayer"]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
 
 [node name="Pause" type="Label" parent="UI/CanvasLayer/Footer"]
 custom_minimum_size = Vector2(120, 60)
@@ -546,8 +545,200 @@ vertical_alignment = 1
 layout_mode = 3
 anchors_preset = 0
 offset_top = 160.0
-offset_right = 40.0
-offset_bottom = 480.0
+offset_bottom = 160.0
+
+[node name="Mask" type="TextureRect" parent="UI/CanvasLayer/Rank"]
+clip_children = 1
+custom_minimum_size = Vector2(320, 320)
+layout_mode = 0
+offset_right = 320.0
+offset_bottom = 320.0
+texture = ExtResource("3_fq3iy")
+
+[node name="Meter" type="Control" parent="UI/CanvasLayer/Rank/Mask"]
+anchors_preset = 0
+offset_top = -1632.0
+offset_bottom = -1632.0
+
+[node name="Images" type="Control" parent="UI/CanvasLayer/Rank/Mask/Meter"]
+modulate = Color(1, 1, 1, 0.501961)
+anchors_preset = 0
+
+[node name="Gold" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(1, 1, 0, 1)
+layout_mode = 0
+offset_right = 256.0
+offset_bottom = 256.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="Red" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(1, 0, 0, 1)
+offset_top = 256.0
+offset_right = 256.0
+offset_bottom = 512.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="Green" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(0, 1, 0, 1)
+offset_top = 512.0
+offset_right = 256.0
+offset_bottom = 768.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="Blue" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(0, 0, 1, 1)
+offset_top = 768.0
+offset_right = 256.0
+offset_bottom = 1024.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="White3" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(0.25098, 0.25098, 0.25098, 1)
+offset_top = 1024.0
+offset_right = 256.0
+offset_bottom = 1280.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="White2" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(0.501961, 0.501961, 0.501961, 1)
+offset_top = 1280.0
+offset_right = 256.0
+offset_bottom = 1536.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="White1" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
+offset_top = 1536.0
+offset_right = 256.0
+offset_bottom = 1792.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="White0" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+offset_top = 1792.0
+offset_right = 256.0
+offset_bottom = 2048.0
+scale = Vector2(0.05, 1)
+texture = ExtResource("3_fq3iy")
+
+[node name="Labels" type="Control" parent="UI/CanvasLayer/Rank/Mask/Meter"]
+anchors_preset = 0
+
+[node name="10,000,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_right = 80.0
+offset_bottom = 20.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "10,000,000"
+
+[node name="1,000,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
+offset_top = 256.0
+offset_right = 80.0
+offset_bottom = 276.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "1,000,000"
+
+[node name="100,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_top = 512.0
+offset_right = 80.0
+offset_bottom = 532.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "100,000"
+
+[node name="10,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_top = 768.0
+offset_right = 80.0
+offset_bottom = 788.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "10,000"
+
+[node name="1,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_top = 1024.0
+offset_right = 80.0
+offset_bottom = 1044.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "1,000"
+
+[node name="100" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_top = 1280.0
+offset_right = 80.0
+offset_bottom = 1300.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "100"
+
+[node name="10" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_top = 1536.0
+offset_right = 80.0
+offset_bottom = 1556.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "10"
+
+[node name="0" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+offset_top = 1792.0
+offset_right = 80.0
+offset_bottom = 1812.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "0"
+
+[node name="Label" type="Label" parent="UI/CanvasLayer/Rank"]
+offset_left = 10.0
+offset_top = 150.0
+offset_right = 90.0
+offset_bottom = 170.0
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
+theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_constants/shadow_offset_x = 1
+theme_override_constants/shadow_offset_y = 1
+theme_override_fonts/font = ExtResource("1_vc8gg")
+theme_override_font_sizes/font_size = 12
+text = "◀"
+vertical_alignment = 1
 
 [node name="Layout" type="VBoxContainer" parent="UI/CanvasLayer"]
 custom_minimum_size = Vector2(360, 640)

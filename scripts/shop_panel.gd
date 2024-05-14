@@ -7,6 +7,7 @@ extends Node2D
 @export var _cost_label: Label
 @export var _max_label: Label
 @export var _color_panel: Panel
+@export var _touch_area: Area2D
 
 
 var gear_type = null # Gear.GearType
@@ -34,4 +35,5 @@ func _change_panel_color(color):
 
 func _on_hero_got_gear(gear):
 	if gear == gear_type:
+		_touch_area.queue_free()
 		_change_panel_color(Color(0.5, 0.25, 0.25))
