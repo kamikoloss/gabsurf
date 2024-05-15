@@ -102,15 +102,15 @@ func _on_ui_jumped():
 			# ミサイルを発射する
 			var _weapon = _weapon_scene.instantiate()
 			_weapon.position = position
-			get_tree().root.get_node("Main").add_child(_weapon)
+			get_tree().root.add_child(_weapon)
 
 
 func _on_hero_got_gear(gear):
 	match gear:
 		Gear.GearType.MSB:
 			_jump_label.visible = true
-			var _msb = [5, 3, 2]
-			var _msb_count = Gear.my_gears.count(Gear.GearType.MSB) # 増える前の数
+			var _msb = [null, 5, 3, 2]
+			var _msb_count = Gear.my_gears.count(Gear.GearType.MSB)
 			_jump_counter_weapon_quota = _msb[_msb_count]
 		Gear.GearType.SHO:
 			_shoes.add_to_group("Weapon")
@@ -167,16 +167,11 @@ func _on_body_area_entered(area):
 		Global.hero_entered_shop.emit()
 
 	if area.is_in_group("Gear"):
+		# TODO: get_node を滅ぼしたい
 		var _shop = area.get_node("../../")
-		var _is_gear_a = area.get_node("../").position.y < 320
+		var _is_gear_a = area.global_position.y < 320
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
-		var _cost = Gear.gear_info[_gear]["c"] * Global.MONEY_RATIO
-		if Global.money < _cost:
-			# 所持金が足りない場合: 買えない
-			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
-		else:
-			print("[Hero] got gear {0}. (cost: {1})".format([Gear.gear_info[_gear]["t"], _cost]))
-			Global.hero_got_gear.emit(_gear)
+		Global.hero_touched_gear.emit(_gear)
 
 
 func _on_body_area_exited(area):

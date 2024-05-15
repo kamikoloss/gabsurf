@@ -14,9 +14,10 @@ signal ui_jumped # ジャンプボタンを押したとき
 signal ui_paused # ポーズボタンを押したとき
 signal ui_retried # リトライボタンを押したとき
 
-signal hero_got_level # Level を取ったとき
-signal hero_got_money # Money を取ったとき
-signal hero_got_gear # Gear を取ったとき
+signal hero_got_level # Level に触れたとき
+signal hero_got_money # Money に触れたとき
+signal hero_touched_gear # Gear に触れたとき (まだ取得していない)
+signal hero_got_gear # Gear を取得したとき
 signal hero_damaged # ダメージを受けたとき
 signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき

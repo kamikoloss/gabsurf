@@ -61,7 +61,7 @@ func _on_ui_jumped():
 
 
 func _on_hero_damaged():
-	# ゲーム中　and 残機がある: ダメージ音を鳴らす
+	# ゲーム中 and 残機がある: ダメージ音を鳴らす
 	if  Global.state == Global.State.ACTIVE and 0<= Global.life:
 		_play_se(_damage_sound)
 
