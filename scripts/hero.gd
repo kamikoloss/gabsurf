@@ -170,7 +170,7 @@ func _on_body_area_entered(area):
 		var _shop = area.get_node("../../")
 		var _is_gear_a = area.get_node("../").position.y < 320
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
-		var _cost = Gear.gear_info[_gear]["c"]
+		var _cost = Gear.gear_info[_gear]["c"] * Global.MONEY_RATIO
 		if Global.money < _cost:
 			# 所持金が足りない場合: 買えない
 			print("[Hero] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))

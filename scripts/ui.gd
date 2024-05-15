@@ -165,6 +165,7 @@ func _on_score_changed(from):
 	_score_tween.tween_method(func(v): _header_score_label.text = str(v), from, Global.score, LABEL_DURATION)
 	_score_tween.tween_property(_rank_meter, "position", _meter_position, LABEL_DURATION)
 
+
 func _refresh_label_gear():
 	var _gears = "Gears: {"
 	for gear in Gear.my_gears:

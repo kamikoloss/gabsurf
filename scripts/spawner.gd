@@ -102,7 +102,7 @@ func _process_spawn_gate(delta):
 		_gate_spawn_timer = 0
 
 		if Gear.my_gears.has(Gear.GearType.GTM):
-			var _gtm = [2, 3, 5]
+			var _gtm = [null, 2, 3, 5]
 			var _gtm_count = Gear.my_gears.count(Gear.GearType.GTM)
 			for g in _gtm[_gtm_count]:
 				_spawn_gate(_height_diff, _x_diff, g == 0)
