@@ -2,6 +2,7 @@ extends Node
 
 
 enum GearType {
+	NONE,
 	ATD, BDA, COL,
 	EME, EMP, EMS, # Enemy 系
 	EXT,

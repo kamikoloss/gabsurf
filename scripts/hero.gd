@@ -102,7 +102,7 @@ func _on_ui_jumped():
 			# ミサイルを発射する
 			var _weapon = _weapon_scene.instantiate()
 			_weapon.position = position
-			get_tree().root.add_child(_weapon)
+			add_child(_weapon)
 
 
 func _on_hero_got_gear(gear):

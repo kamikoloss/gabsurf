@@ -43,11 +43,12 @@ corner_radius_bottom_left = 4
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_duswt"]
 size = Vector2(80, 40)
 
-[node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label", "_cost_label", "_max_label", "_color_panel", "_touch_area")]
+[node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label", "_desc2_label", "_cost_label", "_max_label", "_color_panel", "_touch_area")]
 script = ExtResource("1_g6kve")
 _icon = NodePath("Gear/MarginContainer/HBoxContainer/TextureRect")
 _title_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Title")
 _desc_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description")
+_desc2_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description2")
 _cost_label = NodePath("Cost/Label")
 _max_label = NodePath("Max/Label")
 _color_panel = NodePath("Buy")
@@ -93,8 +94,13 @@ layout_mode = 2
 theme_override_fonts/font = ExtResource("2_xode2")
 theme_override_font_sizes/font_size = 16
 text = "あいうえあいうえあいうえ
-あいうえあいうえあいうえ
 あいうえあいうえあいうえ"
+
+[node name="Description2" type="Label" parent="Gear/MarginContainer/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_xode2")
+theme_override_font_sizes/font_size = 12
+text = "あいうえあいうえあいうえあいうえ"
 
 [node name="Cost" type="Panel" parent="."]
 offset_left = 360.0
