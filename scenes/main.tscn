@@ -259,28 +259,6 @@ texture = ExtResource("3_fq3iy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="Audio" type="Node2D" parent="Game" node_paths=PackedStringArray("_bgm_player", "_se_player", "_se_player_ui")]
-script = ExtResource("15_h40bv")
-_bgm_player = NodePath("BGM")
-_se_player = NodePath("SE")
-_se_player_ui = NodePath("SE2")
-_jump_sound = ExtResource("15_hm4ky")
-_money_sound = ExtResource("16_nalia")
-_gear_sound = ExtResource("17_n53r3")
-_damage_sound = ExtResource("18_ejv3f")
-_gameover_sound = ExtResource("19_qmw2f")
-_retry_sound = ExtResource("20_6e0j0")
-
-[node name="BGM" type="AudioStreamPlayer" parent="Game/Audio"]
-stream = ExtResource("14_fbbs1")
-volume_db = -6.0
-autoplay = true
-
-[node name="SE" type="AudioStreamPlayer" parent="Game/Audio"]
-
-[node name="SE2" type="AudioStreamPlayer" parent="Game/Audio"]
-volume_db = -3.0
-
 [node name="UI" type="Control" parent="." node_paths=PackedStringArray("_bg", "_header_level_label", "_header_money_label", "_header_extra_label", "_header_score_label", "_footer_pause_label", "_footer_jump_label", "_footer_retry_label", "_body_panel", "_title_label", "_gears_label", "_rank_meter")]
 layout_mode = 3
 anchors_preset = 0
@@ -896,6 +874,28 @@ texture = ExtResource("3_fq3iy")
 centered = false
 
 [node name="Scripts" type="Node" parent="."]
+
+[node name="Audio" type="Node" parent="Scripts" node_paths=PackedStringArray("_bgm_player", "_se_player", "_se_player_ui")]
+script = ExtResource("15_h40bv")
+_bgm_player = NodePath("BGM")
+_se_player = NodePath("SE")
+_se_player_ui = NodePath("SE2")
+_jump_sound = ExtResource("15_hm4ky")
+_money_sound = ExtResource("16_nalia")
+_gear_sound = ExtResource("17_n53r3")
+_damage_sound = ExtResource("18_ejv3f")
+_gameover_sound = ExtResource("19_qmw2f")
+_retry_sound = ExtResource("20_6e0j0")
+
+[node name="BGM" type="AudioStreamPlayer" parent="Scripts/Audio"]
+stream = ExtResource("14_fbbs1")
+volume_db = -6.0
+autoplay = true
+
+[node name="SE" type="AudioStreamPlayer" parent="Scripts/Audio"]
+
+[node name="SE2" type="AudioStreamPlayer" parent="Scripts/Audio"]
+volume_db = -3.0
 
 [node name="Spawner" type="Node" parent="Scripts"]
 script = ExtResource("15_y3gqg")
