@@ -48,22 +48,16 @@ func _on_state_changed(from):
 		# タイトル画面
 		Global.State.TITLE:
 			print("---------------- TITLE ----------------")
-			Engine.time_scale = 1.0
-			set_process(false)
-			set_physics_process(false)
+			get_tree().paused = true
 			_hero_anti_damage_bar.visible = false
 		# ゲーム中
 		Global.State.ACTIVE:
 			print("---------------- ACTIVE ----------------")
-			Engine.time_scale = 1.0
-			set_process(true)
-			set_physics_process(true)
+			get_tree().paused = false
 		# ポーズ中
 		Global.State.PAUSED:
 			print("---------------- PAUSED ----------------")
-			Engine.time_scale = 0.0
-			set_process(false)
-			set_physics_process(false)
+			get_tree().paused = true
 		# ゲームオーバー
 		Global.State.GAMEOVER:
 			print("---------------- GAMEOVER ----------------")

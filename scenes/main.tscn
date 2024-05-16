@@ -552,6 +552,7 @@ texture = ExtResource("3_fq3iy")
 
 [node name="Red" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
 self_modulate = Color(1, 0, 0, 1)
+layout_mode = 0
 offset_top = 256.0
 offset_right = 256.0
 offset_bottom = 512.0
@@ -560,6 +561,7 @@ texture = ExtResource("3_fq3iy")
 
 [node name="Green" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
 self_modulate = Color(0, 1, 0, 1)
+layout_mode = 0
 offset_top = 512.0
 offset_right = 256.0
 offset_bottom = 768.0
@@ -568,6 +570,7 @@ texture = ExtResource("3_fq3iy")
 
 [node name="Blue" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
 self_modulate = Color(0, 0, 1, 1)
+layout_mode = 0
 offset_top = 768.0
 offset_right = 256.0
 offset_bottom = 1024.0
@@ -576,6 +579,7 @@ texture = ExtResource("3_fq3iy")
 
 [node name="White3" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
 self_modulate = Color(0.25098, 0.25098, 0.25098, 1)
+layout_mode = 0
 offset_top = 1024.0
 offset_right = 256.0
 offset_bottom = 1280.0
@@ -584,6 +588,7 @@ texture = ExtResource("3_fq3iy")
 
 [node name="White2" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
 self_modulate = Color(0.501961, 0.501961, 0.501961, 1)
+layout_mode = 0
 offset_top = 1280.0
 offset_right = 256.0
 offset_bottom = 1536.0
@@ -592,6 +597,7 @@ texture = ExtResource("3_fq3iy")
 
 [node name="White1" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
 self_modulate = Color(0.752941, 0.752941, 0.752941, 1)
+layout_mode = 0
 offset_top = 1536.0
 offset_right = 256.0
 offset_bottom = 1792.0
@@ -599,6 +605,7 @@ scale = Vector2(0.05, 1)
 texture = ExtResource("3_fq3iy")
 
 [node name="White0" type="TextureRect" parent="UI/CanvasLayer/Rank/Mask/Meter/Images"]
+layout_mode = 0
 offset_top = 1792.0
 offset_right = 256.0
 offset_bottom = 2048.0
@@ -609,6 +616,7 @@ texture = ExtResource("3_fq3iy")
 anchors_preset = 0
 
 [node name="10,000,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_right = 80.0
 offset_bottom = 20.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
@@ -633,6 +641,7 @@ theme_override_font_sizes/font_size = 12
 text = "1,000,000"
 
 [node name="100,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_top = 512.0
 offset_right = 80.0
 offset_bottom = 532.0
@@ -645,6 +654,7 @@ theme_override_font_sizes/font_size = 12
 text = "100,000"
 
 [node name="10,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_top = 768.0
 offset_right = 80.0
 offset_bottom = 788.0
@@ -657,6 +667,7 @@ theme_override_font_sizes/font_size = 12
 text = "10,000"
 
 [node name="1,000" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_top = 1024.0
 offset_right = 80.0
 offset_bottom = 1044.0
@@ -669,6 +680,7 @@ theme_override_font_sizes/font_size = 12
 text = "1,000"
 
 [node name="100" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_top = 1280.0
 offset_right = 80.0
 offset_bottom = 1300.0
@@ -681,6 +693,7 @@ theme_override_font_sizes/font_size = 12
 text = "100"
 
 [node name="10" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_top = 1536.0
 offset_right = 80.0
 offset_bottom = 1556.0
@@ -693,6 +706,7 @@ theme_override_font_sizes/font_size = 12
 text = "10"
 
 [node name="0" type="Label" parent="UI/CanvasLayer/Rank/Mask/Meter/Labels"]
+layout_mode = 0
 offset_top = 1792.0
 offset_right = 80.0
 offset_bottom = 1812.0
@@ -705,6 +719,7 @@ theme_override_font_sizes/font_size = 12
 text = "0"
 
 [node name="Label" type="Label" parent="UI/CanvasLayer/Rank"]
+layout_mode = 0
 offset_left = 10.0
 offset_top = 150.0
 offset_right = 90.0
@@ -804,6 +819,7 @@ theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 
 [node name="Buttons" type="HBoxContainer" parent="UI/CanvasLayer/Layout/Footer"]
+process_mode = 3
 layout_mode = 2
 theme_override_constants/separation = 8
 
