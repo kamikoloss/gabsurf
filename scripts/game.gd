@@ -5,10 +5,12 @@ extends Node2D
 @export var _hero_anti_damage_bar: TextureProgressBar
 
 
-const SLOW_SPEED_SHOP = 0.6 # Shop に入ったときに何倍速のスローになるか
-const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスローになるか
+const SLOW_SPEED_GEAR_SHOP = 0.6 # Gear Shop に入ったときに何倍速のスローになるか
+const SLOW_DURATION_GEAR_SHOP = 1.0 # Gear Shop に入ったときに何秒かけてスローになるか
+const SLOW_SPEED_STAGE_SHOP = 0.4 # Stage Shop に入ったときに何倍速のスローになるか
+const SLOW_DURATION_STAGE_SHOP = 2.0 # Stage Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
-const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
+const SLOW_DURATION_GAMEOVER = 3.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
 const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
@@ -23,6 +25,8 @@ var _anti_damage_tween = null
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
+	Global.rank_changed.connect(_on_rank_changed)
+	Global.stage_changed.connect(_on_stage_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.ui_paused.connect(_on_ui_paused)
 	Global.ui_retried.connect(_on_ui_retried)
@@ -53,6 +57,7 @@ func _on_state_changed(from):
 		# ゲーム中
 		Global.State.ACTIVE:
 			print("---------------- ACTIVE ----------------")
+			Engine.time_scale = 1.0
 			get_tree().paused = false
 		# ポーズ中
 		Global.State.PAUSED:
@@ -62,6 +67,15 @@ func _on_state_changed(from):
 		Global.State.GAMEOVER:
 			print("---------------- GAMEOVER ----------------")
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
+
+
+func _on_rank_changed(from):
+	pass
+
+
+func _on_stage_changed(from):
+	# TODO: 背景を変更する
+	pass
 
 
 func _on_ui_jumped():
@@ -119,9 +133,11 @@ func _on_hero_got_money():
 
 func _on_hero_touched_gear(gear):
 	var _cost = Gear.gear_info[gear]["c"] * Global.MONEY_RATIO
+
+	# 所持金が足りない場合: 買えない
 	if Global.money < _cost:
-		# 所持金が足りない場合: 買えない
 		print("[Game] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
+	# 所持金が足りる場合
 	else:
 		Global.money -= _cost
 		Global.shop_through_count = 0
@@ -157,7 +173,7 @@ func _on_hero_entered_shop():
 	if Global.state == Global.State.ACTIVE:
 		Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
 
-		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
+		_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
 
 
 func _on_hero_exited_shop():
@@ -166,7 +182,7 @@ func _on_hero_exited_shop():
 			# TODO: メッセージ表示
 			Global.money += Global.shop_through_count * Global.MONEY_RATIO
 
-		_exit_slow(SLOW_DURATION_SHOP)
+		_exit_slow(SLOW_DURATION_GEAR_SHOP)
 
 
 func _on_enemy_dead():

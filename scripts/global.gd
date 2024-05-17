@@ -14,8 +14,9 @@ signal ui_jumped # ジャンプボタンを押したとき
 signal ui_paused # ポーズボタンを押したとき
 signal ui_retried # リトライボタンを押したとき
 
-signal hero_got_level # Level に触れたとき
-signal hero_got_money # Money に触れたとき
+signal hero_got_stage # Stage を取得したとき
+signal hero_got_level # Level を取得したとき
+signal hero_got_money # Money を取得したとき
 signal hero_touched_gear # Gear に触れたとき (まだ取得していない)
 signal hero_got_gear # Gear を取得したとき
 signal hero_damaged # ダメージを受けたとき
@@ -53,10 +54,16 @@ enum Stage {
 }
 
 
+const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
+	null,
+	Global.Rank.GREEN, # Stage 1
+	Global.Rank.RED, # Stage 2
+	Global.Rank.GOLD, # Stage 3
+]
+
 const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数
 const HERO_MOVE_VELOCITY_DEFAULT = 200 # Hero の移動速度のデフォルト値 (px/s)
-const GATE_GAP_BASE = 256 # Gate の開きのデフォルト値 (px)
 
 
 var state: State = State.NONE:
@@ -91,6 +98,7 @@ var stage: Stage = Stage.NONE:
 		stage = value
 		print("[Global] stage is changed. ({0} -> {1})".format([_from, value]))
 		stage_changed.emit(_from)
+var stage_number: int = -1
 
 var level: int = -1:
 	get:
@@ -136,9 +144,9 @@ var score: int = -1:
 			return
 		var _from = score
 		score = value
-		print("[Global] score is changed. ({0} -> {1})".format([_from, value]))
+		#print("[Global] score is changed. ({0} -> {1})".format([_from, value]))
 		score_changed.emit(_from)
-		rank = _calc_game_rank()
+		rank = _calc_rank()
 
 var life: int = -1:
 	get:
@@ -148,13 +156,13 @@ var life: int = -1:
 			return
 		var _from = life
 		life = value
-		print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
+		#print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
 		life_changed.emit(_from)
-
 
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
 var hero_move_velocity: int = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
+
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか
 
@@ -167,6 +175,7 @@ func initialize():
 	state = State.TITLE
 	rank = Rank.WHITE
 	stage = Stage.A
+	stage_number = 1
 	level = 0
 	money = 0
 	extra = 1
@@ -180,8 +189,8 @@ func initialize():
 	shop_through_count = 0
 
 
-# 現在の GameRank を計算する
-func _calc_game_rank():
+# 現在の Rank を計算する
+func _calc_rank():
 	if score < 1_000:
 		return Rank.WHITE
 	elif 1_000 <= score and score < 10_000:

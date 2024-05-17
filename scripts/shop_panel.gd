@@ -17,6 +17,7 @@ var gear_type: Gear.GearType = Gear.GearType.NONE
 
 func _ready():
 	Global.hero_got_gear.connect(_on_hero_got_gear)
+
 	_icon.visible = false
 	_title_label.visible = false
 	_desc_label.visible = false
@@ -32,6 +33,7 @@ func initialize_gear(gear_info):
 	_desc_label.visible = true
 	_cost_label.visible = true
 	_max_label.visible = true
+
 	_icon.texture = gear_info["icon"]
 	_title_label.text = gear_info["title"]
 	_desc_label.text = gear_info["desc"]

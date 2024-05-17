@@ -154,11 +154,11 @@ func _on_body_area_entered(area):
 			Global.hero_damaged.emit()
 
 	if area.is_in_group("Level"):
-		print("[Hero] got level.")
+		#print("[Hero] got level.")
 		Global.hero_got_level.emit()
 
 	if area.is_in_group("Money"):
-		print("[Hero] got money.")
+		#print("[Hero] got money.")
 		area.queue_free()
 		Global.hero_got_money.emit()
 
@@ -167,7 +167,7 @@ func _on_body_area_entered(area):
 		Global.hero_entered_shop.emit()
 
 	if area.is_in_group("Gear"):
-		# TODO: get_node を滅ぼしたい
+		# TODO: toucheble_area クラスにギア番号を持たせて get_node を滅ぼす
 		var _shop = area.get_node("../../")
 		var _is_gear_a = area.global_position.y < 320
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]

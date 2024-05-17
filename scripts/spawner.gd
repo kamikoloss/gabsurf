@@ -11,11 +11,13 @@ const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上方向であること�
 const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するかの基準値
 
 
-var _is_shop_spawned = false # 現在 Shop が出現しているかどうか
-var _is_shop_respawned = false # 直近で Shop が再出現したかどうか
-var _shop_counter = 0 # Shop がトータルで何回出現したか
-var _money_counter_shop = 0 # Money を取得するたびに 1 増加する (Shop が出現したら 0 に戻す)
-var _money_counter_shop_quota = 3 # Money を何回取るたびに Shop が出現するか
+var _is_gear_shop_spawned = false # 現在 Gear Shop が出現しているかどうか
+var _is_gear_shop_respawned = false # 直近で Gear Shop が再出現したかどうか
+var _gear_shop_counter = 0 # Gear Shop がトータルで何回出現したか
+var _money_counter_gear_shop = 0 # Money を取得するたびに 1 増加する (Gear Shop が出現したら 0 に戻す)
+var _money_counter_gear_shop_quota = 3 # Money を何回取るたびに Gear Shop が出現するか
+
+var _is_stage_shop_spawned = false # 現在 Stage Shop が出現しているかどうか
 
 var _is_spawn_gate = false # Gate が出現するかどうか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとに Gate が出現するか
@@ -32,6 +34,7 @@ var _enemy_spawn_height_max = SPAWN_HEIGHT_MAX_DEFAULT
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
+	Global.rank_changed.connect(_on_rank_changed)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
@@ -43,11 +46,12 @@ func _process(delta):
 
 
 func _on_state_changed(from):
-	# ACTIVE (ポーズから再開したとき)
-	# Shop が出現していないなら Gate と Enemy を出現させる
+	# ACTIVE
+	# Gear Shop も Stage Shop も出現していないなら Gate と Enemy を出現させる
 	if Global.state == Global.State.ACTIVE:
-		_is_spawn_gate = !_is_shop_spawned
-		_is_spawn_enemy = !_is_shop_spawned
+		var _is_spawnable = !_is_gear_shop_spawned and !_is_stage_shop_spawned
+		_is_spawn_gate = _is_spawnable
+		_is_spawn_enemy = _is_spawnable
 	# ACTIVE 以外
 	# Gate と Enemy を生成しない
 	else:
@@ -55,15 +59,24 @@ func _on_state_changed(from):
 		_is_spawn_enemy = false
 
 
-func _on_hero_got_money():
-	_money_counter_shop += 1
+func _on_rank_changed(from):
+	var _target_rank = Global.STAGE_TARGET_RANK[Global.stage_number]
 
-	# Money の取得回数が Shop 出現の規定回数に達した場合
-	if _money_counter_shop_quota <= _money_counter_shop:
-		_money_counter_shop = 0
+	# Rank が Stage Shop 出現の条件に達した場合: Stage Shop を出現させる
+	if (Global.rank == _target_rank):
+		Global.stage_number += 1
+		_spawn_stage_shop()
+
+
+func _on_hero_got_money():
+	_money_counter_gear_shop += 1
+
+	# Money の取得回数が Gear Shop 出現の条件に達した場合: Gear Shop を出現させる
+	if _money_counter_gear_shop_quota <= _money_counter_gear_shop:
+		_money_counter_gear_shop = 0
 
 		if !Gear.my_gears.has(Gear.GearType.NOS):
-			_spawn_shop()
+			_spawn_gear_shop()
 
 
 func _on_hero_got_gear(gear):
@@ -77,17 +90,17 @@ func _on_hero_got_gear(gear):
 
 
 func _on_hero_exited_shop():
-	_is_shop_spawned = false # 厳密にはまだ存在するがもう存在しない扱いとする
+	_is_gear_shop_spawned = false # 厳密にはまだ存在するがもう存在しない扱いとする
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
 
 	# SPR 所持 and ショップをスルーした and 再出現ではない 場合: Shop が再出現する
-	if Gear.my_gears.has(Gear.GearType.SPR) and 0 < Global.shop_through_count and !_is_shop_respawned:
-		_spawn_shop()
-		_is_shop_respawned = true
+	if Gear.my_gears.has(Gear.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
+		_spawn_gear_shop()
+		_is_gear_shop_respawned = true
 	# Shop が再出現しなかった場合: フラグを更新する
 	else:
-		_is_shop_respawned = false
+		_is_gear_shop_respawned = false
 
 
 # Gate を生成しつづける (_process 内で呼ぶ)
@@ -120,7 +133,7 @@ func _spawn_gate(height_diff, x_diff, set_money):
 	_gate.height_diff += height_diff
 	_gate.set_money = set_money
 	add_child(_gate)
-	print("[Spawner] spawned a gate.")
+	#print("[Spawner] spawned a gate.")
 
 
 # Enemy を生成しつづける (_process 内で呼ぶ)
@@ -144,19 +157,32 @@ func _spawn_enemy():
 	_enemy.global_position.x += (get_viewport().get_camera_2d().global_position.x + 400)
 	_enemy.global_position.y += (_height_diff + 320)
 	add_child(_enemy)
-	print("[Spawner] spawned a enemy.")
+	#print("[Spawner] spawned a enemy.")
 
 
-# Shop を生成する
-func _spawn_shop():
-	_is_shop_spawned = true
+# Gear Shop を生成する
+func _spawn_gear_shop():
+	_is_gear_shop_spawned = true
 	_is_spawn_gate = false
 	_is_spawn_enemy = false
-	_shop_counter += 1
+	_gear_shop_counter += 1
 
 	var _shop = _shop_scene.instantiate()
 	_shop.global_position.x += (get_viewport().get_camera_2d().global_position.x + 800)
-	_shop.number = _shop_counter
+	_shop.number = _gear_shop_counter
 	add_child(_shop)
 	_shop.initialize_gear()
-	print("[Spawner] spawned a shop.")
+	print("[Spawner] spawned a gear shop.")
+
+
+# Stage Shop を生成する
+func _spawn_stage_shop():
+	_is_stage_shop_spawned = true
+	_is_spawn_gate = false
+	_is_spawn_enemy = false
+
+	var _shop = _shop_scene.instantiate()
+	_shop.global_position.x += (get_viewport().get_camera_2d().global_position.x + 800)
+	add_child(_shop)
+	_shop.initialize_stage()
+	print("[Spawner] spawned a stage shop.")
