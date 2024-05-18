@@ -91,7 +91,7 @@ func _on_retry_button_down():
 	Global.ui_retried.emit()
 
 
-func _on_state_changed(from):
+func _on_state_changed(_from):
 	match Global.state:
 		Global.State.TITLE:
 			_body_panel.visible = true
@@ -109,7 +109,7 @@ func _on_state_changed(from):
 	_refresh_label_gear()
 
 
-func _on_rank_changed(from):
+func _on_rank_changed(_from):
 	var _rank_y_positions = {
 		Global.Rank.WHITE: -320,
 		Global.Rank.BLUE: -240,

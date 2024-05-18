@@ -45,7 +45,7 @@ func _process(delta):
 	_process_spawn_enemy(delta)
 
 
-func _on_state_changed(from):
+func _on_state_changed(_from):
 	# ACTIVE
 	# Gear Shop も Stage Shop も出現していないなら Gate と Enemy を出現させる
 	if Global.state == Global.State.ACTIVE:
@@ -59,7 +59,7 @@ func _on_state_changed(from):
 		_is_spawn_enemy = false
 
 
-func _on_rank_changed(from):
+func _on_rank_changed(_from):
 	var _target_rank = Global.STAGE_TARGET_RANK[Global.stage_number]
 
 	# Rank が Stage Shop 出現の条件に達した場合: Stage Shop を出現させる

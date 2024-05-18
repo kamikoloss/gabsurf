@@ -1,5 +1,6 @@
 extends Node
 
+# TODO: どうにかして shop に移して Global から外したい enum だけは Global でいいかも
 
 enum GearType {
 	NONE,

@@ -51,7 +51,7 @@ func _physics_process(delta):
 		move_and_slide()
 
 
-func _on_state_changed(from):
+func _on_state_changed(_from):
 	match Global.state:
 		Global.State.GAMEOVER:
 			# 吹き飛ぶ

@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=37 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_twex4"]
@@ -23,7 +23,6 @@
 [ext_resource type="AudioStream" uid="uid://dtft8uq0el80q" path="res://sounds/きらーん1.mp3" id="17_n53r3"]
 [ext_resource type="AudioStream" uid="uid://8ipsk44p7jw7" path="res://sounds/ビシッとツッコミ2.mp3" id="18_ejv3f"]
 [ext_resource type="AudioStream" uid="uid://dimnppt1iprus" path="res://sounds/お寺の鐘.mp3" id="19_qmw2f"]
-[ext_resource type="AudioStream" uid="uid://bytvev1ha5g2q" path="res://sounds/DJのスクラッチ1.mp3" id="20_6e0j0"]
 [ext_resource type="PackedScene" uid="uid://gcdoe2l0jlmr" path="res://scenes/enemy.tscn" id="24_rr5ek"]
 [ext_resource type="PackedScene" uid="uid://cwxachiyntvge" path="res://scenes/shop.tscn" id="25_t0vuc"]
 
@@ -901,7 +900,6 @@ _money_sound = ExtResource("16_nalia")
 _gear_sound = ExtResource("17_n53r3")
 _damage_sound = ExtResource("18_ejv3f")
 _gameover_sound = ExtResource("19_qmw2f")
-_retry_sound = ExtResource("20_6e0j0")
 
 [node name="BGM" type="AudioStreamPlayer" parent="Scripts/Audio"]
 stream = ExtResource("14_fbbs1")

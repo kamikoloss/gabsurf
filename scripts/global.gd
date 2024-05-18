@@ -63,7 +63,7 @@ const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
 
 const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数
-const HERO_MOVE_VELOCITY_DEFAULT = 200 # Hero の移動速度のデフォルト値 (px/s)
+const HERO_MOVE_VELOCITY_DEFAULT = 200.0 # Hero の移動速度のデフォルト値 (px/s)
 
 
 var state: State = State.NONE:
@@ -161,7 +161,7 @@ var life: int = -1:
 
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
-var hero_move_velocity: int = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
+var hero_move_velocity: float = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
 
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか

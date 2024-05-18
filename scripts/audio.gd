@@ -12,7 +12,7 @@ extends Node
 @export var _gear_sound: AudioStream
 @export var _damage_sound: AudioStream
 @export var _gameover_sound: AudioStream
-@export var _retry_sound: AudioStream
+#@export var _retry_sound: AudioStream
 
 
 const SLOW_SPEED_SHOP = 0.8 # Shop に入ったときに何倍速のスローになるか
@@ -36,7 +36,7 @@ func _ready():
 	Global.enemy_dead.connect(_on_enemy_dead)
 
 
-func _on_state_changed(from):
+func _on_state_changed(_from):
 	match Global.state:
 		# ゲーム中
 		Global.State.ACTIVE:
@@ -62,7 +62,7 @@ func _on_ui_jumped():
 
 func _on_hero_damaged():
 	# ゲーム中 and 残機がある: ダメージ音を鳴らす
-	if  Global.state == Global.State.ACTIVE and 0<= Global.life:
+	if  Global.state == Global.State.ACTIVE and 0 <= Global.life:
 		_play_se(_damage_sound)
 
 
@@ -70,7 +70,7 @@ func _on_hero_got_money():
 	_play_se(_money_sound)
 
 
-func _on_hero_got_gear(gear):
+func _on_hero_got_gear(_gear):
 	_play_se(_gear_sound)
 
 

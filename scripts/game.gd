@@ -43,11 +43,11 @@ func _ready():
 	Gear.initialize()
 
 
-func _process(delta):
+func _process(_delta):
 	_screen.global_position.x = get_viewport().get_camera_2d().global_position.x
 
 
-func _on_state_changed(from):
+func _on_state_changed(_from):
 	match Global.state:
 		# タイトル画面
 		Global.State.TITLE:
@@ -69,11 +69,11 @@ func _on_state_changed(from):
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
-func _on_rank_changed(from):
+func _on_rank_changed(_from):
 	pass
 
 
-func _on_stage_changed(from):
+func _on_stage_changed(_from):
 	# TODO: 背景を変更する
 	pass
 
@@ -221,6 +221,7 @@ func _exit_slow(duration):
 
 
 # 無敵状態に突入する
+# TODO: hero に移せば Global がいらなくなる気がする
 func _enter_anti_damage(duration):
 	Global.is_hero_anti_damage = true
 
