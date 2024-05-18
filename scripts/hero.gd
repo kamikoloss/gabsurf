@@ -6,10 +6,15 @@ extends CharacterBody2D
 @export var _hero_sprite: AnimatedSprite2D
 @export var _jump_label: Label
 @export var _life_label: Label
+@export var _anti_damage_bar: TextureProgressBar
 
 
 var _jump_counter_weapon = 0
 var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
+
+var _is_anti_damage = false # Hero が無敵状態かどうか
+
+var _anti_damage_tween = null
 
 
 const JUMP_COOLTIME = 0.05 # (s)
@@ -17,15 +22,20 @@ const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
 const FALL_VELOCITY_MAX = 300 # 終端速度 (px/s)
 const MOVE_ACCELARATE_DULATION = 1.0 # 加速が終わる時間 (s)
+
 const DEAD_VELOCITY = Vector2(200, -800) # 死んだときに吹き飛ぶベクトル
 const DEAD_ROTATION = -20 # 死んだときに回転する速度
+
+const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
 
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
+	Global.life_changed.connect(_on_life_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
-	Global.life_changed.connect(_on_life_changed)
+	Global.hero_damaged.connect(_on_hero_damaged)
+	Global.enemy_dead.connect(_on_enemy_dead)
 
 	_shoes.remove_from_group("Weapon")
 	_jump_label.visible = false
@@ -58,6 +68,24 @@ func _on_state_changed(_from):
 			velocity = DEAD_VELOCITY
 			_hero_sprite.stop()
 			_hero_sprite.play("die")
+
+
+func _on_life_changed(from):
+	var _life_text = ""
+	for n in Global.life:
+		_life_text += "♥"
+	_life_label.text = _life_text
+
+	# ダメージを受けたがまだ残機がある場合: コケる
+	if Global.state == Global.State.ACTIVE and Global.life < from:
+		_hero_sprite.stop()
+		_hero_sprite.play("die")
+		await get_tree().create_timer(0.5).timeout
+		# NOTE: ゲームオーバー時は 0.5 秒後 ACTIVE じゃないので "default" に戻らない
+		# TODO: ごちゃごちゃしているので整理する
+		if Global.state == Global.State.ACTIVE:
+			_hero_sprite.stop()
+			_hero_sprite.play("default")
 
 
 func _on_ui_jumped():
@@ -116,22 +144,24 @@ func _on_hero_got_gear(gear):
 			_shoes.add_to_group("Weapon")
 
 
-func _on_life_changed(from):
-	var _life_text = ""
-	for n in Global.life:
-		_life_text += "♥"
-	_life_label.text = _life_text
+func _on_hero_damaged():
+	# ゲーム中でない: ダメージを受けても何も起きない
+	if Global.state != Global.State.ACTIVE:
+		return
 
-	# ダメージを受けたがまだ残機がある場合: コケる
-	if Global.state == Global.State.ACTIVE and Global.life < from:
-		_hero_sprite.stop()
-		_hero_sprite.play("die")
-		await get_tree().create_timer(0.5).timeout
-		# NOTE: ゲームオーバー時は 0.5 秒後 ACTIVE じゃないので "default" に戻らない
-		# TODO: ごちゃごちゃしているので整理する
-		if Global.state == Global.State.ACTIVE:
-			_hero_sprite.stop()
-			_hero_sprite.play("default")
+	# Life がまだある場合
+	if 0 < Global.life:
+		# 無敵状態ではない: 無敵状態に突入する
+		if !_is_anti_damage:
+			_enter_anti_damage(DAMAGED_ANTI_DAMAGE_DURATION)
+
+
+func _on_enemy_dead():
+	# ATD
+	if Gear.my_gears.has(Gear.GearType.ATD):
+		var _atd = [0, 1, 2, 3]
+		var _atd_count = Gear.my_gears.count(Gear.GearType.ATD)
+		_enter_anti_damage(_atd[_atd_count])
 
 
 func _on_body_area_entered(area):
@@ -139,7 +169,7 @@ func _on_body_area_entered(area):
 		return
 
 	if area.is_in_group("Wall"):
-		if Global.is_hero_anti_damage:
+		if _is_anti_damage:
 			return
 		print("[Hero] damged by walls.")
 		Global.hero_damaged.emit()
@@ -147,7 +177,7 @@ func _on_body_area_entered(area):
 	if area.is_in_group("Enemy"):
 		if area.is_dead: # area = enemy
 			return
-		if Global.is_hero_anti_damage:
+		if _is_anti_damage:
 			return
 		else:
 			print("[Hero] damged by a enemy.")
@@ -187,3 +217,19 @@ func _on_body_area_exited(area):
 	if area.is_in_group("Shop"):
 		print("[Hero] exited shop.")
 		Global.hero_exited_shop.emit()
+
+
+# 無敵状態に突入する
+func _enter_anti_damage(duration):
+	_is_anti_damage = true
+	_anti_damage_bar.visible = true
+	_anti_damage_bar.value = 100
+
+	if _anti_damage_tween:
+		_anti_damage_tween.kill()
+	_anti_damage_tween = create_tween()
+	_anti_damage_tween.set_trans(Tween.TRANS_LINEAR)
+	_anti_damage_tween.tween_property(_anti_damage_bar, "value", 0, duration)
+	_anti_damage_tween.tween_callback(func(): _anti_damage_bar.visible = false)
+	_anti_damage_tween.tween_callback(func(): _is_anti_damage = false)
+	#_tween.tween_callback(func(): print("[Game] anti-damage is finished."))

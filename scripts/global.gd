@@ -160,7 +160,6 @@ var life: int = -1:
 		life_changed.emit(_from)
 
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
-var is_hero_anti_damage: bool = false # Hero が無敵状態かどうか
 var hero_move_velocity: float = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
 
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
@@ -183,7 +182,6 @@ func initialize():
 	life = LIFE_MAX
 
 	can_hero_jump = true
-	is_hero_anti_damage = false
 	hero_move_velocity = HERO_MOVE_VELOCITY_DEFAULT
 	gate_gap_diff = 0
 	shop_through_count = 0

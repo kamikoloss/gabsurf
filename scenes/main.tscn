@@ -126,9 +126,9 @@ corner_radius_bottom_left = 8
 [node name="Game" type="Node2D" parent="." node_paths=PackedStringArray("_screen", "_hero_anti_damage_bar")]
 script = ExtResource("1_sqtl6")
 _screen = NodePath("Screen")
-_hero_anti_damage_bar = NodePath("Hero/UI/TextureProgressBar")
+_hero_anti_damage_bar = NodePath("Hero/UI/AntiDamageBar")
 
-[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_label", "_life_label")]
+[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_label", "_life_label", "_anti_damage_bar")]
 z_index = 30
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
@@ -138,6 +138,7 @@ _shoes = NodePath("Shoes")
 _hero_sprite = NodePath("AnimatedSprite2D")
 _jump_label = NodePath("UI/Jump")
 _life_label = NodePath("UI/Life")
+_anti_damage_bar = NodePath("UI/AntiDamageBar")
 
 [node name="Camera2D" type="Camera2D" parent="Game/Hero"]
 position = Vector2(-300, -800)
@@ -190,7 +191,7 @@ text = "○○○○○"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="TextureProgressBar" type="TextureProgressBar" parent="Game/Hero/UI"]
+[node name="AntiDamageBar" type="TextureProgressBar" parent="Game/Hero/UI"]
 layout_mode = 0
 offset_left = -64.0
 offset_top = 110.0

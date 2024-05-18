@@ -8,19 +8,17 @@ extends Node2D
 const SLOW_SPEED_GEAR_SHOP = 0.6 # Gear Shop に入ったときに何倍速のスローになるか
 const SLOW_DURATION_GEAR_SHOP = 1.0 # Gear Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_STAGE_SHOP = 0.4 # Stage Shop に入ったときに何倍速のスローになるか
-const SLOW_DURATION_STAGE_SHOP = 2.0 # Stage Shop に入ったときに何秒かけてスローになるか
+const SLOW_DURATION_STAGE_SHOP = 1.0 # Stage Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
-const SLOW_DURATION_GAMEOVER = 3.0 # ゲームオーバー時に何秒かけてスローになるか
+const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
-const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
 
 
 var _money_counter_difficult = 0 # Money を取るたびに 1 増加する 難易度が上昇したら 0 に戻す
 var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
 
 var _slow_tween = null
-var _anti_damage_tween = null
 
 
 func _ready():
@@ -103,17 +101,12 @@ func _on_hero_damaged():
 	if Global.state != Global.State.ACTIVE:
 		return
 
-	# 残機を減らす
+	# Life を減らす
 	Global.life -= 1
 
-	# Hero の残機が 0 になった場合: ゲームオーバー
+	# Life が 0 になった場合: ゲームオーバー
 	if Global.life <= 0:
 		Global.state = Global.State.GAMEOVER
-	# まだ残機がある場合
-	else:
-		# 無敵状態ではない: 無敵状態に突入する
-		if !Global.is_hero_anti_damage:
-			_enter_anti_damage(DAMAGED_ANTI_DAMAGE_DURATION)
 
 
 func _on_hero_got_level():
@@ -186,12 +179,6 @@ func _on_hero_exited_shop():
 
 
 func _on_enemy_dead():
-	# ATD
-	if Gear.my_gears.has(Gear.GearType.ATD):
-		var _atd = [0, 1, 2, 3]
-		var _atd_count = Gear.my_gears.count(Gear.GearType.ATD)
-		_enter_anti_damage(_atd[_atd_count])
-
 	# EME
 	if Gear.my_gears.has(Gear.GearType.EME):
 		var _eme = [0, 1, 2, 3]
@@ -218,21 +205,3 @@ func _enter_slow(speed, duration):
 func _exit_slow(duration):
 	var _tween = _get_slow_tween()
 	_tween.tween_property(Engine, "time_scale", 1.0, duration)
-
-
-# 無敵状態に突入する
-# TODO: hero に移せば Global がいらなくなる気がする
-func _enter_anti_damage(duration):
-	Global.is_hero_anti_damage = true
-
-	_hero_anti_damage_bar.visible = true
-	_hero_anti_damage_bar.value = 100
-
-	if _anti_damage_tween:
-		_anti_damage_tween.kill()
-	_anti_damage_tween = create_tween()
-	_anti_damage_tween.set_trans(Tween.TRANS_LINEAR)
-	_anti_damage_tween.tween_property(_hero_anti_damage_bar, "value", 0, duration)
-	_anti_damage_tween.tween_callback(func(): _hero_anti_damage_bar.visible = false)
-	_anti_damage_tween.tween_callback(func(): Global.is_hero_anti_damage = false)
-	#_tween.tween_callback(func(): print("[Game] anti-damage is finished."))
