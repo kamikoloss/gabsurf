@@ -210,7 +210,7 @@ func _on_body_area_entered(area):
 	if area.is_in_group("Gear"):
 		# TODO: toucheble_area クラスにギア番号を持たせて get_node を滅ぼす
 		var _shop = area.get_node("../../")
-		var _is_gear_a = area.global_position.y < 320
+		var _is_gear_a = area.position.y < 320
 		var _gear = _shop.gear["a"] if _is_gear_a else _shop.gear["b"]
 		Global.hero_touched_gear.emit(_gear)
 

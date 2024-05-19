@@ -40,7 +40,7 @@ func _ready():
 
 
 func _process(_delta):
-	_screen.global_position.x = get_viewport().get_camera_2d().global_position.x
+	_screen.position.x = get_viewport().get_camera_2d().global_position.x
 
 
 func _on_state_changed(_from):
