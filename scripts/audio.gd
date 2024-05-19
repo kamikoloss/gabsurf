@@ -7,12 +7,7 @@ const SLOW_SPEED_GAMEOVER = 0.6 # ゲームオーバー時に何倍速のスロ�
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 
 
-@export_category("Nodes")
 @export var _bgm_player: AudioStreamPlayer
-@export var _se_player: AudioStreamPlayer
-@export var _se_player_ui: AudioStreamPlayer
-
-@export_category("Sounds")
 @export var _jump_sound: AudioStream
 @export var _money_sound: AudioStream
 @export var _gear_sound: AudioStream
@@ -50,12 +45,12 @@ func _on_state_changed(_from):
 			_bgm_player.stop()
 		# ゲームオーバー
 		Global.State.GAMEOVER:
-			_play_se_ui(_gameover_sound)
+			_play_se(_gameover_sound)
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
 func _on_ui_jumped():
-	_play_se_ui(_jump_sound)
+	_play_se(_jump_sound)
 
 
 func _on_hero_got_damage():
@@ -86,16 +81,13 @@ func _on_enemy_dead():
 
 # SE を鳴らす
 func _play_se(sound):
-	_se_player.stop()
+	var _se_player: AudioStreamPlayer = AudioStreamPlayer.new()
+	add_child(_se_player)
 	_se_player.stream = sound
+	_se_player.volume_db = -3.0
 	_se_player.play()
-
-
-# SE を鳴らす (UI)
-func _play_se_ui(sound):
-	_se_player_ui.stop()
-	_se_player_ui.stream = sound
-	_se_player_ui.play()
+	await _se_player.finished
+	_se_player.queue_free()
 
 
 # スロー用の Tween を取得する

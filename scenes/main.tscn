@@ -891,11 +891,9 @@ centered = false
 
 [node name="Scripts" type="Node" parent="."]
 
-[node name="Audio" type="Node" parent="Scripts" node_paths=PackedStringArray("_bgm_player", "_se_player", "_se_player_ui")]
+[node name="Audio" type="Node" parent="Scripts" node_paths=PackedStringArray("_bgm_player")]
 script = ExtResource("15_h40bv")
 _bgm_player = NodePath("BGM")
-_se_player = NodePath("SE")
-_se_player_ui = NodePath("SE2")
 _jump_sound = ExtResource("15_hm4ky")
 _money_sound = ExtResource("16_nalia")
 _gear_sound = ExtResource("17_n53r3")
@@ -906,11 +904,6 @@ _gameover_sound = ExtResource("19_qmw2f")
 stream = ExtResource("14_fbbs1")
 volume_db = -6.0
 autoplay = true
-
-[node name="SE" type="AudioStreamPlayer" parent="Scripts/Audio"]
-
-[node name="SE2" type="AudioStreamPlayer" parent="Scripts/Audio"]
-volume_db = -3.0
 
 [node name="Spawner" type="Node" parent="Scripts"]
 script = ExtResource("15_y3gqg")
