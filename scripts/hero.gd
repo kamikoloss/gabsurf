@@ -114,8 +114,8 @@ func _on_ui_jumped():
 			_jump_counter_weapon = 0
 			# ミサイルを発射する
 			var _weapon = _weapon_scene.instantiate()
-			#_weapon.position = position
-			add_child(_weapon)
+			_weapon.position = position
+			get_tree().root.add_child(_weapon)
 
 
 func _on_hero_got_gear(gear):
@@ -190,8 +190,9 @@ func _on_body_area_entered(area):
 		Global.hero_touched_damage.emit()
 
 	if area.is_in_group("Enemy"):
-		#print("[Hero] touched a enemy.")
-		Global.hero_touched_damage.emit()
+		if area.is_active and !area.is_dead:
+			#print("[Hero] touched a enemy.")
+			Global.hero_touched_damage.emit()
 
 	if area.is_in_group("Level"):
 		#print("[Hero] got level.")

@@ -1,13 +1,13 @@
 extends Node2D
 
 
+const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
+
+
 @export var _shop_panel_scene: PackedScene
 @export var _enter_label: Label
 @export var _middle_panel: Panel
 #@export var _middle_label: Label
-
-
-const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
 
 
 var number = 0

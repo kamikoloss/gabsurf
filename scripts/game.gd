@@ -1,10 +1,6 @@
 extends Node2D
 
 
-@export var _screen: Node
-@export var _hero_anti_damage_bar: TextureProgressBar
-
-
 const SLOW_SPEED_GEAR_SHOP = 0.6 # Gear Shop に入ったときに何倍速のスローになるか
 const SLOW_DURATION_GEAR_SHOP = 1.0 # Gear Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_STAGE_SHOP = 0.4 # Stage Shop に入ったときに何倍速のスローになるか
@@ -13,6 +9,10 @@ const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスロ�
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
+
+
+@export var _screen: Node
+@export var _hero_anti_damage_bar: TextureProgressBar
 
 
 var _money_counter_difficult = 0 # Money を取るたびに 1 増加する 難易度が上昇したら 0 に戻す

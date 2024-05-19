@@ -1,14 +1,14 @@
 extends Node
 
 
-@export var _gate_scene: PackedScene
-@export var _enemy_scene: PackedScene
-@export var _shop_scene: PackedScene
-
-
 const SPAWN_HEIGHT_MIN_DEFAULT = 80
 const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上方向であることに注意する
 const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するかの基準値
+
+
+@export var _gate_scene: PackedScene
+@export var _enemy_scene: PackedScene
+@export var _shop_scene: PackedScene
 
 
 var _is_gear_shop_spawned = false # 現在 Gear Shop が出現しているかどうか

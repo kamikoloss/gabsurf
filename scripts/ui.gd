@@ -1,6 +1,10 @@
 extends Control
 
 
+const BG_DURATION = 2.0 # BG が何秒かけて移動するか
+const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
+
+
 @export var _bg: ParallaxBackground
 @export var _header_level_label: Label
 @export var _header_money_label: Label
@@ -13,10 +17,6 @@ extends Control
 @export var _title_label: Label
 @export var _gears_label: Label
 @export var _rank_meter: Control
-
-
-const BG_DURATION = 2.0 # BG が何秒かけて移動するか
-const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 
 var _bg_tween = null

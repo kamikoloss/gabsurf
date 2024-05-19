@@ -1,6 +1,12 @@
 extends Node
 
 
+const SLOW_SPEED_SHOP = 0.8 # Shop に入ったときに何倍速のスローになるか
+const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスローになるか
+const SLOW_SPEED_GAMEOVER = 0.6 # ゲームオーバー時に何倍速のスローになるか
+const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
+
+
 @export_category("Nodes")
 @export var _bgm_player: AudioStreamPlayer
 @export var _se_player: AudioStreamPlayer
@@ -13,12 +19,6 @@ extends Node
 @export var _damage_sound: AudioStream
 @export var _gameover_sound: AudioStream
 #@export var _retry_sound: AudioStream
-
-
-const SLOW_SPEED_SHOP = 0.8 # Shop に入ったときに何倍速のスローになるか
-const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスローになるか
-const SLOW_SPEED_GAMEOVER = 0.6 # ゲームオーバー時に何倍速のスローになるか
-const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 
 
 var _slow_tween = null
