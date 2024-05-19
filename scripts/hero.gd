@@ -1,22 +1,6 @@
 extends CharacterBody2D
 
 
-@export var _weapon_scene: PackedScene
-@export var _shoes: Area2D
-@export var _hero_sprite: AnimatedSprite2D
-@export var _jump_label: Label
-@export var _life_label: Label
-@export var _anti_damage_bar: TextureProgressBar
-
-
-var _jump_counter_weapon = 0
-var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
-
-var _is_anti_damage = false # Hero が無敵状態かどうか
-
-var _anti_damage_tween = null
-
-
 const JUMP_COOLTIME = 0.05 # (s)
 const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
@@ -26,15 +10,31 @@ const MOVE_ACCELARATE_DULATION = 1.0 # 加速が終わる時間 (s)
 const DEAD_VELOCITY = Vector2(200, -800) # 死んだときに吹き飛ぶベクトル
 const DEAD_ROTATION = -20 # 死んだときに回転する速度
 
-const DAMAGED_ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
+const ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵になるか
+
+
+@export var _weapon_scene: PackedScene
+@export var _shoes: Area2D
+@export var _hero_sprite: AnimatedSprite2D
+@export var _jump_label: Label
+@export var _life_label: Label
+@export var _anti_damage_bar: TextureProgressBar
+
+
+var _is_anti_damage = false # Hero が無敵状態かどうか
+
+var _jump_counter_weapon = 0
+var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
+
+var _anti_damage_tween = null
 
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
-	Global.life_changed.connect(_on_life_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
-	Global.hero_damaged.connect(_on_hero_damaged)
+	Global.hero_touched_damage.connect(_on_hero_touched_damage)
+	Global.hero_got_damage.connect(_on_hero_got_damage)
 	Global.enemy_dead.connect(_on_enemy_dead)
 
 	_shoes.remove_from_group("Weapon")
@@ -66,26 +66,6 @@ func _on_state_changed(_from):
 		Global.State.GAMEOVER:
 			# 吹き飛ぶ
 			velocity = DEAD_VELOCITY
-			_hero_sprite.stop()
-			_hero_sprite.play("die")
-
-
-func _on_life_changed(from):
-	var _life_text = ""
-	for n in Global.life:
-		_life_text += "♥"
-	_life_label.text = _life_text
-
-	# ダメージを受けたがまだ残機がある場合: コケる
-	if Global.state == Global.State.ACTIVE and Global.life < from:
-		_hero_sprite.stop()
-		_hero_sprite.play("die")
-		await get_tree().create_timer(0.5).timeout
-		# NOTE: ゲームオーバー時は 0.5 秒後 ACTIVE じゃないので "default" に戻らない
-		# TODO: ごちゃごちゃしているので整理する
-		if Global.state == Global.State.ACTIVE:
-			_hero_sprite.stop()
-			_hero_sprite.play("default")
 
 
 func _on_ui_jumped():
@@ -106,6 +86,7 @@ func _on_ui_jumped():
 	velocity.y = _jump_velocity_y
 
 	# 加速 (横方向)
+	# TODO: hero に移す
 	if Gear.my_gears.has(Gear.GearType.JMA):
 		var _jma = [null, 200, 400, 600]
 		var _jma_count = Gear.my_gears.count(Gear.GearType.JMA)
@@ -114,7 +95,7 @@ func _on_ui_jumped():
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
 
-	# MSB 所持中
+	# ミサイル系
 	if Gear.my_gears.has(Gear.GearType.MSB):
 		_jump_counter_weapon += 1
 
@@ -144,16 +125,45 @@ func _on_hero_got_gear(gear):
 			_shoes.add_to_group("Weapon")
 
 
-func _on_hero_damaged():
+func _on_hero_touched_damage():
 	# ゲーム中でない: ダメージを受けても何も起きない
 	if Global.state != Global.State.ACTIVE:
 		return
 
+	# 無敵状態: ダメージを受けない
+	if _is_anti_damage:
+		return
+
+	# それ以外: ダメージを受ける
+	# Life を減らす
+	Global.life -= 1
+	print("[Hero] damged.")
+	Global.hero_got_damage.emit()
+
+
+func _on_hero_got_damage():
+	# コケる
+	_hero_sprite.stop()
+	_hero_sprite.play("die")
+
+	# Life 表示を更新する
+	var _life_text = ""
+	for n in Global.life:
+		_life_text += "♥"
+	_life_label.text = _life_text
+
+	# Life が 0 (以下) になった場合
+	if Global.life <= 0:
+		# ゲームオーバー
+		Global.state = Global.State.GAMEOVER
 	# Life がまだある場合
-	if 0 < Global.life:
-		# 無敵状態ではない: 無敵状態に突入する
-		if !_is_anti_damage:
-			_enter_anti_damage(DAMAGED_ANTI_DAMAGE_DURATION)
+	else:
+		# 無敵状態に突入する
+		_enter_anti_damage(ANTI_DAMAGE_DURATION)
+		# コケから戻る
+		await get_tree().create_timer(0.5).timeout
+		_hero_sprite.stop()
+		_hero_sprite.play("default")
 
 
 func _on_enemy_dead():
@@ -169,19 +179,12 @@ func _on_body_area_entered(area):
 		return
 
 	if area.is_in_group("Wall"):
-		if _is_anti_damage:
-			return
-		print("[Hero] damged by walls.")
-		Global.hero_damaged.emit()
+		#print("[Hero] touched walls.")
+		Global.hero_touched_damage.emit()
 
 	if area.is_in_group("Enemy"):
-		if area.is_dead: # area = enemy
-			return
-		if _is_anti_damage:
-			return
-		else:
-			print("[Hero] damged by a enemy.")
-			Global.hero_damaged.emit()
+		#print("[Hero] touched a enemy.")
+		Global.hero_touched_damage.emit()
 
 	if area.is_in_group("Level"):
 		#print("[Hero] got level.")

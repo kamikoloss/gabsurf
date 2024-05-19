@@ -23,7 +23,6 @@ var _slow_tween = null
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
-	Global.rank_changed.connect(_on_rank_changed)
 	Global.stage_changed.connect(_on_stage_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.ui_paused.connect(_on_ui_paused)
@@ -32,7 +31,6 @@ func _ready():
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_touched_gear.connect(_on_hero_touched_gear)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
-	Global.hero_damaged.connect(_on_hero_damaged)
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
 	Global.enemy_dead.connect(_on_enemy_dead)
@@ -67,10 +65,6 @@ func _on_state_changed(_from):
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
-func _on_rank_changed(_from):
-	pass
-
-
 func _on_stage_changed(_from):
 	# TODO: 背景を変更する
 	pass
@@ -96,19 +90,6 @@ func _on_ui_retried():
 		get_tree().reload_current_scene()
 
 
-func _on_hero_damaged():
-	# ゲーム中でない: ダメージを受けても何も起きない
-	if Global.state != Global.State.ACTIVE:
-		return
-
-	# Life を減らす
-	Global.life -= 1
-
-	# Life が 0 になった場合: ゲームオーバー
-	if Global.life <= 0:
-		Global.state = Global.State.GAMEOVER
-
-
 func _on_hero_got_level():
 	Global.level += LEVEL_BASE
 
@@ -127,10 +108,10 @@ func _on_hero_got_money():
 func _on_hero_touched_gear(gear):
 	var _cost = Gear.gear_info[gear]["c"] * Global.MONEY_RATIO
 
-	# 所持金が足りない場合: 買えない
+	# Money が足りない場合: 買えない
 	if Global.money < _cost:
 		print("[Game] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
-	# 所持金が足りる場合
+	# Money が足りる場合
 	else:
 		Global.money -= _cost
 		Global.shop_through_count = 0

@@ -1,12 +1,12 @@
 extends Node
 
 
-@export_group("Nodes")
+@export_category("Nodes")
 @export var _bgm_player: AudioStreamPlayer
 @export var _se_player: AudioStreamPlayer
 @export var _se_player_ui: AudioStreamPlayer
 
-@export_group("Sounds")
+@export_category("Sounds")
 @export var _jump_sound: AudioStream
 @export var _money_sound: AudioStream
 @export var _gear_sound: AudioStream
@@ -30,7 +30,7 @@ func _ready():
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
-	Global.hero_damaged.connect(_on_hero_damaged)
+	Global.hero_got_damage.connect(_on_hero_got_damage)
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
 	Global.enemy_dead.connect(_on_enemy_dead)
@@ -50,20 +50,16 @@ func _on_state_changed(_from):
 			_bgm_player.stop()
 		# ゲームオーバー
 		Global.State.GAMEOVER:
-			_play_se(_gameover_sound)
+			_play_se_ui(_gameover_sound)
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
 func _on_ui_jumped():
-	# タイトル or ゲーム中 or ポーズ中: ジャンプ音を鳴らす
-	if Global.state != Global.State.GAMEOVER:
-		_play_se_ui(_jump_sound)
+	_play_se_ui(_jump_sound)
 
 
-func _on_hero_damaged():
-	# ゲーム中 and 残機がある: ダメージ音を鳴らす
-	if  Global.state == Global.State.ACTIVE and 0 <= Global.life:
-		_play_se(_damage_sound)
+func _on_hero_got_damage():
+	_play_se(_damage_sound)
 
 
 func _on_hero_got_money():

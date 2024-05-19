@@ -8,18 +8,17 @@ signal level_changed
 signal money_changed
 signal extra_changed
 signal score_changed
-signal life_changed
 
 signal ui_jumped # ジャンプボタンを押したとき
 signal ui_paused # ポーズボタンを押したとき
 signal ui_retried # リトライボタンを押したとき
 
-signal hero_got_stage # Stage を取得したとき
 signal hero_got_level # Level を取得したとき
 signal hero_got_money # Money を取得したとき
 signal hero_touched_gear # Gear に触れたとき (まだ取得していない)
 signal hero_got_gear # Gear を取得したとき
-signal hero_damaged # ダメージを受けたとき
+signal hero_touched_damage # ダメージに触れたとき (まだ受けていない)
+signal hero_got_damage # ダメージを受けたとき
 signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき
 
@@ -56,13 +55,13 @@ enum Stage {
 
 const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
 	null,
-	Global.Rank.GREEN, # Stage 1
-	Global.Rank.RED, # Stage 2
-	Global.Rank.GOLD, # Stage 3
+	Global.Rank.GREEN,
+	Global.Rank.RED,
+	Global.Rank.GOLD,
 ]
 
-const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数
+const MONEY_RATIO = 5 # Money の係数
 const HERO_MOVE_VELOCITY_DEFAULT = 200.0 # Hero の移動速度のデフォルト値 (px/s)
 
 
@@ -148,17 +147,7 @@ var score: int = -1:
 		score_changed.emit(_from)
 		rank = _calc_rank()
 
-var life: int = -1:
-	get:
-		return life
-	set(value):
-		if value == life:
-			return
-		var _from = life
-		life = value
-		#print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
-		life_changed.emit(_from)
-
+var life: int = -1
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var hero_move_velocity: float = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
 
@@ -179,8 +168,8 @@ func initialize():
 	money = 0
 	extra = 1
 	score = 0
-	life = LIFE_MAX
 
+	life = LIFE_MAX
 	can_hero_jump = true
 	hero_move_velocity = HERO_MOVE_VELOCITY_DEFAULT
 	gate_gap_diff = 0
