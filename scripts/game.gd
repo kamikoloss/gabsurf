@@ -138,9 +138,6 @@ func _on_hero_got_gear(gear):
 			var _rng = RandomNumberGenerator.new()
 			var _lot = _rng.randi_range(0, 5)
 			Global.money += _lot * Global.MONEY_RATIO
-		Gear.GearType.SCL:
-			Global.hero_move_velocity *= 1.25
-			Global.extra *= 2
 
 
 func _on_hero_entered_shop():

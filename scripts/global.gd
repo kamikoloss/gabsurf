@@ -62,7 +62,6 @@ const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
 
 const LIFE_MAX = 3 # Life の最大数
 const MONEY_RATIO = 5 # Money の係数
-const HERO_MOVE_VELOCITY_DEFAULT = 200.0 # Hero の移動速度のデフォルト値 (px/s)
 
 
 var state: State = State.NONE:
@@ -149,12 +148,9 @@ var score: int = -1:
 
 var life: int = -1
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
-var hero_move_velocity: float = HERO_MOVE_VELOCITY_DEFAULT # Hero の横移動の速度 (px/s)
 
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか
-
-var _accelerate_tween = null
 
 
 # グローバル変数の初期化を行う
@@ -171,7 +167,6 @@ func initialize():
 
 	life = LIFE_MAX
 	can_hero_jump = true
-	hero_move_velocity = HERO_MOVE_VELOCITY_DEFAULT
 	gate_gap_diff = 0
 	shop_through_count = 0
 
@@ -196,15 +191,3 @@ func _calc_score():
 		return
 
 	return level * money * extra
-
-
-# Hero の横移動の速度を一時的に加速する
-func accelerate_hero_move(speed_diff, duration):
-	var _from = HERO_MOVE_VELOCITY_DEFAULT + speed_diff
-	var _to = HERO_MOVE_VELOCITY_DEFAULT
-
-	if _accelerate_tween:
-		_accelerate_tween.kill()
-	_accelerate_tween = create_tween()
-	_accelerate_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
-	_accelerate_tween.tween_method(func(v): hero_move_velocity = v, _from, _to, duration)

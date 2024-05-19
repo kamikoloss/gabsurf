@@ -5,6 +5,8 @@ const JUMP_COOLTIME = 0.05 # (s)
 const JUMP_VELOCITY = -600 # ジャンプの速度 (px/s)
 const FALL_VELOCITY = 2400 # 落下速度 (px/s)
 const FALL_VELOCITY_MAX = 300 # 終端速度 (px/s)
+
+const MOVE_VELOCITY_DEFAULT = 200.0 # 移動速度のデフォルト値 (px/s)
 const MOVE_ACCELARATE_DULATION = 1.0 # 加速が終わる時間 (s)
 
 const DEAD_VELOCITY = Vector2(200, -800) # 死んだときに吹き飛ぶベクトル
@@ -23,9 +25,12 @@ const ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵�
 
 var _is_anti_damage = false # Hero が無敵状態かどうか
 
+var _move_velocity = MOVE_VELOCITY_DEFAULT # 横移動の速度 (px/s)
+
 var _jump_counter_weapon = 0
 var _jump_counter_weapon_quota = 9999 # Gear 取得時に変更
 
+var _accelerate_tween = null
 var _anti_damage_tween = null
 
 
@@ -51,7 +56,7 @@ func _physics_process(delta):
 
 	# ゲーム中: 横に動き続ける + 落下する
 	if Global.state == Global.State.ACTIVE:
-		velocity.x = Global.hero_move_velocity
+		velocity.x = _move_velocity
 		move_and_slide()
 
 	# ゲームオーバー: 回転する + 落下する
@@ -86,11 +91,10 @@ func _on_ui_jumped():
 	velocity.y = _jump_velocity_y
 
 	# 加速 (横方向)
-	# TODO: hero に移す
 	if Gear.my_gears.has(Gear.GearType.JMA):
 		var _jma = [null, 200, 400, 600]
 		var _jma_count = Gear.my_gears.count(Gear.GearType.JMA)
-		Global.accelerate_hero_move(_jma[_jma_count], MOVE_ACCELARATE_DULATION)
+		_accelerate_move(_jma[_jma_count], MOVE_ACCELARATE_DULATION)
 
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
@@ -110,7 +114,7 @@ func _on_ui_jumped():
 			_jump_counter_weapon = 0
 			# ミサイルを発射する
 			var _weapon = _weapon_scene.instantiate()
-			_weapon.position = position
+			#_weapon.position = position
 			add_child(_weapon)
 
 
@@ -121,6 +125,9 @@ func _on_hero_got_gear(gear):
 			var _msb = [null, 5, 3, 2]
 			var _msb_count = Gear.my_gears.count(Gear.GearType.MSB)
 			_jump_counter_weapon_quota = _msb[_msb_count]
+		Gear.GearType.SCL:
+			_move_velocity *= 1.25
+			Global.extra *= 2
 		Gear.GearType.SHO:
 			_shoes.add_to_group("Weapon")
 
@@ -220,6 +227,18 @@ func _on_body_area_exited(area):
 	if area.is_in_group("Shop"):
 		print("[Hero] exited shop.")
 		Global.hero_exited_shop.emit()
+
+
+# 横移動の速度を一時的に加速する
+func _accelerate_move(speed_diff, duration):
+	var _from = MOVE_VELOCITY_DEFAULT + speed_diff
+	var _to = MOVE_VELOCITY_DEFAULT
+
+	if _accelerate_tween:
+		_accelerate_tween.kill()
+	_accelerate_tween = create_tween()
+	_accelerate_tween.set_trans(Tween.TRANS_QUINT).set_ease(Tween.EASE_OUT)
+	_accelerate_tween.tween_method(func(v): _move_velocity = v, _from, _to, duration)
 
 
 # 無敵状態に突入する
