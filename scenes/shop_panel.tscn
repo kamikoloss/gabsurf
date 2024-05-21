@@ -4,6 +4,9 @@
 [ext_resource type="Script" path="res://scripts/shop/shop_panel.gd" id="1_mgovo"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_xode2"]
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_duswt"]
+size = Vector2(80, 40)
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j506a"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 1)
 border_width_left = 2
@@ -40,10 +43,7 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_duswt"]
-size = Vector2(80, 40)
-
-[node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label", "_desc2_label", "_cost_label", "_max_label", "_color_panel", "_touch_area")]
+[node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label", "_desc2_label", "_cost_label", "_max_label", "_color_panel", "_buy_area")]
 script = ExtResource("1_mgovo")
 _icon = NodePath("Gear/MarginContainer/HBoxContainer/TextureRect")
 _title_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Title")
@@ -52,7 +52,13 @@ _desc2_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Descri
 _cost_label = NodePath("Cost/Label")
 _max_label = NodePath("Max/Label")
 _color_panel = NodePath("Buy")
-_touch_area = NodePath("Area2D")
+_buy_area = NodePath("Area2D")
+
+[node name="Area2D" type="Area2D" parent="." groups=["Gear"]]
+position = Vector2(400, 60)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+shape = SubResource("RectangleShape2D_duswt")
 
 [node name="Gear" type="Panel" parent="."]
 offset_right = 360.0
@@ -174,9 +180,3 @@ theme_override_font_sizes/font_size = 24
 text = "BUY"
 horizontal_alignment = 1
 vertical_alignment = 1
-
-[node name="Area2D" type="Area2D" parent="." groups=["Gear"]]
-position = Vector2(400, 60)
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_duswt")

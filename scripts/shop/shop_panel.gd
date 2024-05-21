@@ -1,7 +1,7 @@
 extends Node2D
 
 
-signal button_touched
+signal buy_area_entered
 
 
 @export var _icon: TextureRect
@@ -11,7 +11,7 @@ signal button_touched
 @export var _cost_label: Label
 @export var _max_label: Label
 @export var _color_panel: Panel
-@export var _touch_area: Area2D
+@export var _buy_area: Area2D
 
 
 var gear_type = Global.GearType.NONE
@@ -26,7 +26,7 @@ func _ready():
 	_cost_label.visible = false
 	_max_label.visible = false
 	
-	_touch_area.area_entered.connect(_on_touch_area_entered)
+	_buy_area.area_entered.connect(_on_buy_area_entered)
 
 
 # Gear 用の UI を設定する
@@ -51,16 +51,19 @@ func initialize_stage():
 
 # Panel の色を変更する
 func _change_panel_color(color):
-	var style = _color_panel.get_theme_stylebox("panel").duplicate()
-	style.bg_color = color
-	_color_panel.add_theme_stylebox_override("panel", style)
+	var _style = _color_panel.get_theme_stylebox("panel").duplicate()
+	_style.bg_color = color
+	_color_panel.add_theme_stylebox_override("panel", _style)
 
 
-func _on_touch_area_entered():
+func _on_buy_area_entered(area):
+	if !area.is_in_group("Hero"):
+		return
+
 	if gear_type != Global.GearType.NONE:
-		button_touched.emit(gear_type)
+		buy_area_entered.emit(gear_type)
 	if stage_type != Global.StageType.NONE:
-		button_touched.emit(stage_type)
+		buy_area_entered.emit(stage_type)
 
-	_touch_area.queue_free()
+	_buy_area.queue_free()
 	_change_panel_color(Color(0.5, 0.25, 0.25)) # グレーがかった緑

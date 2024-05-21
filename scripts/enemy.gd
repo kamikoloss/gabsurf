@@ -48,7 +48,9 @@ func _on_area_exited(area):
 
 func _die():
 	is_dead = true
+
 	_dead_velocity = DEAD_VELOCITY
 	_sprite.modulate = DEAD_COLOR
-	print("[Enemy] dead.")
+
+	#print("[Enemy] dead.")
 	Global.enemy_dead.emit()

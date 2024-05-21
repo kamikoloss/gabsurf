@@ -118,6 +118,7 @@ func get_gear_ui(gear):
 	var _title = ""
 	var _desc = ""
 	var _max = ""
+	var _info = _gear_info[gear]
 
 	# 名称をランクの色にする
 	var _rank_color = null
@@ -126,33 +127,33 @@ func get_gear_ui(gear):
 			_rank_color = key
 	match _rank_color:
 		Global.Rank.WHITE:
-			_title = _gear_info[gear]["t"]
+			_title = _info["t"]
 		Global.Rank.BLUE:
-			_title = "[color=#8080FF]{0}[/color]".format([_gear_info[gear]["t"]])
+			_title = "[color=#8080FF]{0}[/color]".format([_info["t"]])
 		Global.Rank.GREEN:
-			_title = "[color=#80FF80]{0}[/color]".format([_gear_info[gear]["t"]])
+			_title = "[color=#80FF80]{0}[/color]".format([_info["t"]])
 		Global.Rank.RED:
-			_title = "[color=#FF8080]{0}[/color]".format([_gear_info[gear]["t"]])
+			_title = "[color=#FF8080]{0}[/color]".format([_info["t"]])
 		Global.Rank.GOLD:
-			_title = "[color=#FFFF80]{0}[/color]".format([_gear_info[gear]["t"]])
+			_title = "[color=#FFFF80]{0}[/color]".format([_info["t"]])
 
 	# 説明文を必要に応じてフォーマットする
-	if _gear_info["f"] != null:
-		var _format = _gear_info[gear]["f"][Global.gears.count(gear)]
-		_desc = _gear_info["d"].format([_format])
+	if _info["f"] != null:
+		var _format = _info["f"][Global.gears.count(gear)]
+		_desc = _info["d"].format([_format])
 	else:
-		_desc = _gear_info["d"]
+		_desc = _info["d"]
 
 	# "<買ったら何個目になるか>/<最大何個買えるか>"
 	var _count = Global.gears.count(gear)
-	_max = "{0}/{1}".format([_count + 1, _gear_info["m"]])
+	_max = "{0}/{1}".format([_count + 1, _info["m"]])
 
 	return {
 		"title": _title,
 		"desc": _desc,
-		"cost": "$" + str(_gear_info["c"] * Global.MONEY_RATIO),
+		"cost": "$" + str(_info["c"] * Global.MONEY_RATIO),
 		"max": _max,
-		"icon": _icon_list[_gear_info[gear]["i"]],
+		"icon": _icon_list[_info["i"]],
 	}
 
 

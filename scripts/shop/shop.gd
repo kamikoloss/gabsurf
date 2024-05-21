@@ -44,7 +44,7 @@ func initialize_gear(number):
 		var _shop_panel = _shop_panel_scene.instantiate()
 		_shop_panel.position.y = _panel_position_y[k]
 		_shop_panel.gear_type = _gear[k]
-		_shop_panel.area_touched.connect(_on_panel_area_touched)
+		_shop_panel.buy_area_entered.connect(_on_buy_area_entered)
 		add_child(_shop_panel)
 		_shop_panel.initialize_gear(_gear_info)
 
@@ -62,9 +62,9 @@ func _auto_destroy():
 	queue_free()
 
 
-func _on_panel_area_touched(type):
-	if _gear_shop:
-		var _cost = _gear_shop.get_gear_cost(type)
+func _on_buy_area_entered(type):
+	if _is_gear_shop:
+		var _cost = _gear_shop.get_gear_cost(type) * Global.MONEY_RATIO
 		# Money が足りない場合: 買えない
 		if Global.money < _cost:
 			print("[Shop] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
@@ -73,5 +73,5 @@ func _on_panel_area_touched(type):
 			Global.money -= _cost
 			Global.shop_through_count = 0
 			Global.gears += [type]
-			#print("[Shop] got gear {0}. (cost: {1})".format([Gear.gear_info[gear]["t"], _cost]))
+			print("[Shop] got gear {0}. (cost: {1})".format([type, _cost]))
 			Global.hero_got_gear.emit(type)

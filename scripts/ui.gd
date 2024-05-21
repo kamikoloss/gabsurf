@@ -41,7 +41,6 @@ func _ready():
 	_footer_pause_label.visible = true
 	_footer_jump_label.visible = true
 	_footer_retry_label.visible = false
-	_refresh_label_gear()
 
 
 # 入力制御
@@ -82,7 +81,6 @@ func _on_pause_button_down():
 		_footer_pause_label.visible = false
 		_footer_jump_label.visible = true
 		_footer_retry_label.visible = true
-		_refresh_label_gear()
 
 	Global.ui_paused.emit()
 
@@ -105,8 +103,6 @@ func _on_state_changed(_from):
 			_footer_pause_label.visible = false
 			_footer_jump_label.visible = false
 			_footer_retry_label.visible = true
-
-	_refresh_label_gear()
 
 
 func _on_rank_changed(_from):
@@ -164,12 +160,3 @@ func _on_score_changed(from):
 	_score_tween.set_parallel(true)
 	_score_tween.tween_method(func(v): _header_score_label.text = str(v), from, Global.score, LABEL_DURATION)
 	_score_tween.tween_property(_rank_meter, "position", _meter_position, LABEL_DURATION)
-
-
-func _refresh_label_gear():
-	var _gears = "Gears: {"
-	for gear in Global.gears:
-		_gears += gear
-		_gears += ","
-	_gears += "}"
-	_gears_label.text = _gears

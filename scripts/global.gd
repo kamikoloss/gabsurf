@@ -17,7 +17,6 @@ signal ui_retried # リトライボタンを押したとき
 
 signal hero_got_level # Level を取得したとき
 signal hero_got_money # Money を取得したとき
-signal hero_touched_gear # Gear に触れたとき (まだ取得していない)
 signal hero_got_gear # Gear を取得したとき
 signal hero_touched_damage # ダメージに触れたとき (まだ受けていない)
 signal hero_got_damage # ダメージを受けたとき
