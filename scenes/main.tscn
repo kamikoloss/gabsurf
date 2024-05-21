@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=38 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_twex4"]
@@ -61,6 +61,13 @@ radius = 64.0
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e62gy"]
 size = Vector2(128, 32)
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rhkc2"]
+particle_flag_disable_z = true
+gravity = Vector3(0, -98, 0)
+scale_min = 5.0
+scale_max = 20.0
+color = Color(1, 1, 1, 0.12549)
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ebco"]
 size = Vector2(360, 640)
@@ -174,6 +181,13 @@ visible = false
 self_modulate = Color(0, 1, 0, 0.25098)
 scale = Vector2(0.5, 0.125)
 texture = ExtResource("3_fq3iy")
+
+[node name="GPUParticles2D" type="GPUParticles2D" parent="Game/Hero"]
+position = Vector2(-64, 64)
+scale = Vector2(1, 1)
+amount = 64
+amount_ratio = 0.5
+process_material = SubResource("ParticleProcessMaterial_rhkc2")
 
 [node name="UI" type="Control" parent="Game/Hero"]
 layout_mode = 3
@@ -793,6 +807,7 @@ horizontal_alignment = 1
 vertical_alignment = 1
 
 [node name="Gears" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/Labels"]
+visible = false
 custom_minimum_size = Vector2(0, 128)
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
