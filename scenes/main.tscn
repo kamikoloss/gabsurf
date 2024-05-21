@@ -911,8 +911,6 @@ _gate_scene = ExtResource("15_00pt1")
 _enemy_scene = ExtResource("24_rr5ek")
 _shop_scene = ExtResource("25_t0vuc")
 
-[node name="Gear" type="Node" parent="Scripts"]
-
 [connection signal="area_entered" from="Game/Hero/Body" to="Game/Hero" method="_on_body_area_entered"]
 [connection signal="area_exited" from="Game/Hero/Body" to="Game/Hero" method="_on_body_area_exited"]
 [connection signal="button_down" from="UI/CanvasLayer/Layout/Footer/Buttons/Pause" to="UI" method="_on_pause_button_down"]

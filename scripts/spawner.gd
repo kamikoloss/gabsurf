@@ -1,5 +1,6 @@
 extends Node
 
+# TODO: _is_shop_spawned だけでいい
 
 const SPAWN_HEIGHT_MIN_DEFAULT = 80
 const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上方向であることに注意する
@@ -75,17 +76,17 @@ func _on_hero_got_money():
 	if _money_counter_gear_shop_quota <= _money_counter_gear_shop:
 		_money_counter_gear_shop = 0
 
-		if !Gear.my_gears.has(Gear.GearType.NOS):
+		if !Global.gears.has(Global.GearType.NOS):
 			_spawn_gear_shop()
 
 
 func _on_hero_got_gear(gear):
 	match gear:
-		Gear.GearType.EMP:
+		Global.GearType.EMP:
 			_enemy_spawn_height_max = 0
-		Gear.GearType.EMS:
+		Global.GearType.EMS:
 			var _ems = [2, 3, 5]
-			var _ems_count = Gear.my_gears.count(Gear.GearType.EMS)
+			var _ems_count = Global.gears.count(Global.GearType.EMS)
 			_enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_DEFAULT / _ems[_ems_count]
 
 
@@ -95,7 +96,7 @@ func _on_hero_exited_shop():
 	_is_spawn_enemy = true
 
 	# SPR 所持 and ショップをスルーした and 再出現ではない 場合: Shop が再出現する
-	if Gear.my_gears.has(Gear.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
+	if Global.gears.has(Global.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
 		_spawn_gear_shop()
 		_is_gear_shop_respawned = true
 	# Shop が再出現しなかった場合: フラグを更新する
@@ -114,9 +115,9 @@ func _process_spawn_gate(delta):
 		var _x_diff = 0
 		_gate_spawn_timer = 0
 
-		if Gear.my_gears.has(Gear.GearType.GTM):
+		if Global.gears.has(Global.GearType.GTM):
 			var _gtm = [null, 2, 3, 5]
-			var _gtm_count = Gear.my_gears.count(Gear.GearType.GTM)
+			var _gtm_count = Global.gears.count(Global.GearType.GTM)
 			for g in _gtm[_gtm_count]:
 				_spawn_gate(_height_diff, _x_diff, g == 0)
 				_x_diff += 40
@@ -138,7 +139,7 @@ func _spawn_gate(height_diff, x_diff, set_money):
 
 # Enemy を生成しつづける (_process 内で呼ぶ)
 func _process_spawn_enemy(delta):
-	if Gear.my_gears.has(Gear.GearType.NOE):
+	if Global.gears.has(Global.GearType.NOE):
 		return
 
 	if _is_spawn_enemy:
@@ -169,9 +170,8 @@ func _spawn_gear_shop():
 
 	var _shop = _shop_scene.instantiate()
 	_shop.position.x += (get_viewport().get_camera_2d().global_position.x + 800)
-	_shop.number = _gear_shop_counter
 	add_child(_shop)
-	_shop.initialize_gear()
+	_shop.initialize_gear(_gear_shop_counter)
 	print("[Spawner] spawned a gear shop.")
 
 

@@ -1,6 +1,9 @@
 extends Node2D
 
 
+signal button_touched
+
+
 @export var _icon: TextureRect
 @export var _title_label: RichTextLabel
 @export var _desc_label: Label
@@ -11,19 +14,19 @@ extends Node2D
 @export var _touch_area: Area2D
 
 
-var stage_type: Global.Stage = Global.Stage.NONE
-var gear_type: Gear.GearType = Gear.GearType.NONE
+var gear_type = Global.GearType.NONE
+var stage_type = Global.StageType.NONE
 
 
 func _ready():
-	Global.hero_got_gear.connect(_on_hero_got_gear)
-
 	_icon.visible = false
 	_title_label.visible = false
 	_desc_label.visible = false
 	_desc2_label.visible = false
 	_cost_label.visible = false
 	_max_label.visible = false
+	
+	_touch_area.area_entered.connect(_on_touch_area_entered)
 
 
 # Gear 用の UI を設定する
@@ -53,7 +56,11 @@ func _change_panel_color(color):
 	_color_panel.add_theme_stylebox_override("panel", style)
 
 
-func _on_hero_got_gear(gear):
-	if gear == gear_type:
-		_touch_area.queue_free()
-		_change_panel_color(Color(0.5, 0.25, 0.25)) # グレーがかった緑
+func _on_touch_area_entered():
+	if gear_type != Global.GearType.NONE:
+		button_touched.emit(gear_type)
+	if stage_type != Global.StageType.NONE:
+		button_touched.emit(stage_type)
+
+	_touch_area.queue_free()
+	_change_panel_color(Color(0.5, 0.25, 0.25)) # グレーがかった緑

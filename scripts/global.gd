@@ -1,5 +1,7 @@
 extends Node
 
+# TODO: get/set は score 以外冗長すぎる
+
 
 signal state_changed
 signal rank_changed
@@ -42,14 +44,29 @@ enum Rank {
 	GOLD,
 }
 
-enum Stage {
+enum GearType {
+	NONE,
+	ATD, BDA, COL,
+	EME, EMP, EMS, # Enemy 系
+	EXT,
+	GTG, GTM, # Gate 系
+	JMA, JMV, # ジャンプ系
+	LFP, LFM, # Life 系
+	LOT,
+	MSB, MSM, MSW, # ミサイル系
+	NOE, NOS, # 出現しなくなる系
+	SCL, SHO,
+	SPR, SPT, # Shop 系
+}
+
+enum StageType {
 	NONE, # 初期値
 	A,
 	B,
 	C,
 	D,
 	E,
-	F,
+	X,
 }
 
 
@@ -86,7 +103,7 @@ var rank: Rank = Rank.NONE:
 		print("[Global] rank is changed. ({0} -> {1})".format([_from, value]))
 		rank_changed.emit(_from)
 
-var stage: Stage = Stage.NONE:
+var stage: StageType = StageType.NONE:
 	get:
 		return stage
 	set(value):
@@ -148,6 +165,7 @@ var score: int = -1:
 
 var life: int = -1
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
+var gears: Array[GearType] = [] # 所持している Gear のリスト
 
 var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか
@@ -158,7 +176,7 @@ var shop_through_count: int = 0 # Shop を連続何回スルーしたか
 func initialize():
 	state = State.TITLE
 	rank = Rank.WHITE
-	stage = Stage.A
+	stage = StageType.A
 	stage_number = 1
 	level = 0
 	money = 0
@@ -167,6 +185,7 @@ func initialize():
 
 	life = LIFE_MAX
 	can_hero_jump = true
+	gears = []
 	gate_gap_diff = 0
 	shop_through_count = 0
 

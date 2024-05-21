@@ -18,7 +18,6 @@ config/icon="res://images/enemy1.png"
 [autoload]
 
 Global="*res://scripts/global.gd"
-Gear="*res://scripts/gear.gd"
 
 [display]
 

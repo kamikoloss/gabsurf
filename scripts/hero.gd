@@ -84,23 +84,23 @@ func _on_ui_jumped():
 
 	# ジャンプ (縦方向)
 	var _jump_velocity_y = JUMP_VELOCITY
-	if Gear.my_gears.has(Gear.GearType.JMV):
+	if Global.gears.has(Global.GearType.JMV):
 		var _jmv = [null, 0.9, 0.8, 0.7]
-		var _jmv_count = Gear.my_gears.count(Gear.GearType.JMV)
+		var _jmv_count = Global.gears.count(Global.GearType.JMV)
 		_jump_velocity_y *= _jmv[_jmv_count]
 	velocity.y = _jump_velocity_y
 
 	# 加速 (横方向)
-	if Gear.my_gears.has(Gear.GearType.JMA):
+	if Global.gears.has(Global.GearType.JMA):
 		var _jma = [null, 200, 400, 600]
-		var _jma_count = Gear.my_gears.count(Gear.GearType.JMA)
+		var _jma_count = Global.gears.count(Global.GearType.JMA)
 		_accelerate_move(_jma[_jma_count], MOVE_ACCELARATE_DULATION)
 
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
 
 	# ミサイル系
-	if Gear.my_gears.has(Gear.GearType.MSB):
+	if Global.gears.has(Global.GearType.MSB):
 		_jump_counter_weapon += 1
 
 		var _jump_text = ""
@@ -120,15 +120,15 @@ func _on_ui_jumped():
 
 func _on_hero_got_gear(gear):
 	match gear:
-		Gear.GearType.MSB:
+		Global.GearType.MSB:
 			_jump_label.visible = true
 			var _msb = [null, 5, 3, 2]
-			var _msb_count = Gear.my_gears.count(Gear.GearType.MSB)
+			var _msb_count = Global.gears.count(Global.GearType.MSB)
 			_jump_counter_weapon_quota = _msb[_msb_count]
-		Gear.GearType.SCL:
+		Global.GearType.SCL:
 			_move_velocity *= 1.25
 			Global.extra *= 2
-		Gear.GearType.SHO:
+		Global.GearType.SHO:
 			_shoes.add_to_group("Weapon")
 
 
@@ -175,9 +175,9 @@ func _on_hero_got_damage():
 
 func _on_enemy_dead():
 	# ATD
-	if Gear.my_gears.has(Gear.GearType.ATD):
+	if Global.gears.has(Global.GearType.ATD):
 		var _atd = [0, 1, 2, 3]
-		var _atd_count = Gear.my_gears.count(Gear.GearType.ATD)
+		var _atd_count = Global.gears.count(Global.GearType.ATD)
 		_enter_anti_damage(_atd[_atd_count])
 
 

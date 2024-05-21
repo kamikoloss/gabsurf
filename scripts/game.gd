@@ -29,14 +29,12 @@ func _ready():
 	Global.ui_retried.connect(_on_ui_retried)
 	Global.hero_got_level.connect(_on_hero_got_level)
 	Global.hero_got_money.connect(_on_hero_got_money)
-	Global.hero_touched_gear.connect(_on_hero_touched_gear)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_entered_shop.connect(_on_hero_entered_shop)
 	Global.hero_exited_shop.connect(_on_hero_exited_shop)
 	Global.enemy_dead.connect(_on_enemy_dead)
 
 	Global.initialize()
-	Gear.initialize()
 
 
 func _process(_delta):
@@ -105,36 +103,21 @@ func _on_hero_got_money():
 		print("[Game] current gate gap diff is {0}".format([Global.gate_gap_diff]))
 
 
-func _on_hero_touched_gear(gear):
-	var _cost = Gear.gear_info[gear]["c"] * Global.MONEY_RATIO
-
-	# Money が足りない場合: 買えない
-	if Global.money < _cost:
-		print("[Game] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
-	# Money が足りる場合
-	else:
-		Global.money -= _cost
-		Global.shop_through_count = 0
-		Gear.my_gears += [gear]
-		print("[Game] got gear {0}. (cost: {1})".format([Gear.gear_info[gear]["t"], _cost]))
-		Global.hero_got_gear.emit(gear)
-
-
 func _on_hero_got_gear(gear):
 	match gear:
-		Gear.GearType.EXT:
+		Global.GearType.EXT:
 			Global.extra += 5
-		Gear.GearType.GTG:
+		Global.GearType.GTG:
 			Global.gate_gap_diff += 64
-		Gear.GearType.LFP:
+		Global.GearType.LFP:
 			Global.life += 1
-		Gear.GearType.LFM:
+		Global.GearType.LFM:
 			if Global.life <= 1:
 				print("[Game] try to get gear LFM, but no life!!")
 			else:
 				Global.life -= 1
 				Global.money += 10 * Global.MONEY_RATIO
-		Gear.GearType.LOT:
+		Global.GearType.LOT:
 			var _rng = RandomNumberGenerator.new()
 			var _lot = _rng.randi_range(0, 5)
 			Global.money += _lot * Global.MONEY_RATIO
@@ -149,7 +132,7 @@ func _on_hero_entered_shop():
 
 func _on_hero_exited_shop():
 	if Global.state == Global.State.ACTIVE:
-		if Gear.my_gears.has(Gear.GearType.SPT) and 0 < Global.shop_through_count:
+		if Global.gears.has(Global.GearType.SPT) and 0 < Global.shop_through_count:
 			# TODO: メッセージ表示
 			Global.money += Global.shop_through_count * Global.MONEY_RATIO
 
@@ -158,9 +141,9 @@ func _on_hero_exited_shop():
 
 func _on_enemy_dead():
 	# EME
-	if Gear.my_gears.has(Gear.GearType.EME):
+	if Global.gears.has(Global.GearType.EME):
 		var _eme = [0, 1, 2, 3]
-		var _eme_count = Gear.my_gears.count(Gear.GearType.EME)
+		var _eme_count = Global.gears.count(Global.GearType.EME)
 		Global.extra += _eme[_eme_count]
 
 

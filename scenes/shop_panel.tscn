@@ -1,7 +1,7 @@
 [gd_scene load_steps=8 format=3 uid="uid://cgmhibc16cmge"]
 
-[ext_resource type="Script" path="res://scripts/shop_panel.gd" id="1_g6kve"]
 [ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="1_gwhs4"]
+[ext_resource type="Script" path="res://scripts/shop/shop_panel.gd" id="1_mgovo"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_xode2"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_j506a"]
@@ -44,7 +44,7 @@ corner_radius_bottom_left = 4
 size = Vector2(80, 40)
 
 [node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label", "_desc2_label", "_cost_label", "_max_label", "_color_panel", "_touch_area")]
-script = ExtResource("1_g6kve")
+script = ExtResource("1_mgovo")
 _icon = NodePath("Gear/MarginContainer/HBoxContainer/TextureRect")
 _title_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Title")
 _desc_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description")

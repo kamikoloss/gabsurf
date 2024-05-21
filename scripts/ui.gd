@@ -168,8 +168,8 @@ func _on_score_changed(from):
 
 func _refresh_label_gear():
 	var _gears = "Gears: {"
-	for gear in Gear.my_gears:
-		_gears += Gear.gear_info[gear]["t"]
+	for gear in Global.gears:
+		_gears += gear
 		_gears += ","
 	_gears += "}"
 	_gears_label.text = _gears

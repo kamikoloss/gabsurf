@@ -1,8 +1,23 @@
-[gd_scene load_steps=6 format=3 uid="uid://cwxachiyntvge"]
+[gd_scene load_steps=21 format=3 uid="uid://cwxachiyntvge"]
 
-[ext_resource type="Script" path="res://scripts/shop.gd" id="1_14w86"]
+[ext_resource type="Script" path="res://scripts/shop/shop.gd" id="1_1bss0"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_bu7gq"]
 [ext_resource type="PackedScene" uid="uid://cgmhibc16cmge" path="res://scenes/shop_panel.tscn" id="3_mafvx"]
+[ext_resource type="Script" path="res://scripts/shop/gear_shop.gd" id="4_7qat4"]
+[ext_resource type="Texture2D" uid="uid://cuxfc80ujqfb3" path="res://images/item1.png" id="5_2crfv"]
+[ext_resource type="Texture2D" uid="uid://bs6k5efq4hhpc" path="res://images/circle.png" id="5_plrx5"]
+[ext_resource type="Script" path="res://scripts/shop/stage_shop.gd" id="5_yj3d7"]
+[ext_resource type="Texture2D" uid="uid://c2f8yd6eu7b4n" path="res://images/item2.png" id="6_dkxws"]
+[ext_resource type="Texture2D" uid="uid://dm3hvniixi3ed" path="res://images/item3.png" id="7_o5nm3"]
+[ext_resource type="Texture2D" uid="uid://b706esivbow6f" path="res://images/item4.png" id="8_tsb7n"]
+[ext_resource type="Texture2D" uid="uid://btaukb6183rlx" path="res://images/item5.png" id="9_a5px6"]
+[ext_resource type="Texture2D" uid="uid://git4yqdw2qap" path="res://images/item6.png" id="10_g01kq"]
+[ext_resource type="Texture2D" uid="uid://bpt5fnb5vpcaa" path="res://images/item7.png" id="11_jyesc"]
+[ext_resource type="Texture2D" uid="uid://c2ck5vwna3mu" path="res://images/item8.png" id="12_xtx5d"]
+[ext_resource type="Texture2D" uid="uid://dh58pntg33h0c" path="res://images/item9.png" id="13_nakda"]
+[ext_resource type="Texture2D" uid="uid://dplqhpbovf1to" path="res://images/item10.png" id="14_8y0vs"]
+[ext_resource type="Texture2D" uid="uid://bu7vucobssfp5" path="res://images/item11.png" id="15_ple51"]
+[ext_resource type="Texture2D" uid="uid://w6v16t0sh28p" path="res://images/item12.png" id="16_crw0l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o4fh"]
 size = Vector2(360, 640)
@@ -19,12 +34,14 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label", "_middle_panel")]
+[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label", "_middle_panel", "_gear_shop", "_stage_shop")]
 z_index = 10
-script = ExtResource("1_14w86")
+script = ExtResource("1_1bss0")
 _shop_panel_scene = ExtResource("3_mafvx")
 _enter_label = NodePath("Enter/VBoxContainer/Label2")
 _middle_panel = NodePath("Middle")
+_gear_shop = NodePath("Gear")
+_stage_shop = NodePath("Stage")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Shop"]]
 position = Vector2(180, 320)
@@ -81,3 +98,10 @@ theme_override_font_sizes/font_size = 24
 text = "MIDDLE TEXT"
 horizontal_alignment = 1
 vertical_alignment = 1
+
+[node name="Gear" type="Node" parent="."]
+script = ExtResource("4_7qat4")
+_icon_list = Array[Texture]([ExtResource("5_plrx5"), ExtResource("5_2crfv"), ExtResource("6_dkxws"), ExtResource("7_o5nm3"), ExtResource("8_tsb7n"), ExtResource("9_a5px6"), ExtResource("10_g01kq"), ExtResource("11_jyesc"), ExtResource("12_xtx5d"), ExtResource("13_nakda"), ExtResource("14_8y0vs"), ExtResource("15_ple51"), ExtResource("16_crw0l")])
+
+[node name="Stage" type="Node" parent="."]
+script = ExtResource("5_yj3d7")
