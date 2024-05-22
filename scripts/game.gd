@@ -15,9 +15,6 @@ const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
 @export var _hero_anti_damage_bar: TextureProgressBar
 
 
-var _money_counter_difficult = 0 # Money を取るたびに 1 増加する 難易度が上昇したら 0 に戻す
-var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
-
 var _slow_tween = null
 
 
@@ -94,21 +91,12 @@ func _on_hero_got_level():
 
 func _on_hero_got_money():
 	Global.money += Global.MONEY_RATIO
-	_money_counter_difficult += 1
-
-	# 難易度上昇の規定回数に達した場合
-	if _money_counter_difficult_quota <= _money_counter_difficult:
-		_money_counter_difficult = 0
-		Global.gate_gap_diff -= GATE_GAP_STEP
-		print("[Game] current gate gap diff is {0}".format([Global.gate_gap_diff]))
 
 
 func _on_hero_got_gear(gear):
 	match gear:
 		Global.GearType.EXT:
 			Global.extra += 5
-		Global.GearType.GTG:
-			Global.gate_gap_diff += 64
 		Global.GearType.LFP:
 			Global.life += 1
 		Global.GearType.LFM:

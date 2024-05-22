@@ -1,7 +1,5 @@
 extends Node
 
-# TODO: get/set は score 以外冗長すぎる
-
 
 signal state_changed
 signal rank_changed
@@ -166,7 +164,6 @@ var life: int = -1
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var gears: Array[GearType] = [] # 所持している Gear のリスト
 
-var gate_gap_diff: int = 0 # Gate の開きの差 (px) マイナスで狭くなる
 var shop_through_count: int = 0 # Shop を連続何回スルーしたか
 
 
@@ -185,7 +182,6 @@ func initialize():
 	life = LIFE_MAX
 	can_hero_jump = true
 	gears = []
-	gate_gap_diff = 0
 	shop_through_count = 0
 
 

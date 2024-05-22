@@ -4,6 +4,7 @@ class_name Shop
 
 
 const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
+const SHOP_PANEL_POSITION_Y = { "a": 120, "b": 400 }
 
 
 @export var _shop_panel_scene: PackedScene
@@ -36,13 +37,12 @@ func initialize_gear(number):
 	print("[Shop] gears are {0} and {1}.".format([_gear["a"], _gear["b"]]))
 
 	# ShopPanel を2つ生成する
-	var _panel_position_y = { "a": 120, "b": 400 }
 	for k in ["a", "b"]:
 		if _gear[k] == null:
 			return
 		var _gear_info = _gear_shop.get_gear_ui(_gear[k])
 		var _shop_panel = _shop_panel_scene.instantiate()
-		_shop_panel.position.y = _panel_position_y[k]
+		_shop_panel.position.y = SHOP_PANEL_POSITION_Y[k]
 		_shop_panel.gear_type = _gear[k]
 		_shop_panel.buy_area_entered.connect(_on_buy_area_entered)
 		add_child(_shop_panel)
@@ -63,6 +63,7 @@ func _auto_destroy():
 
 
 func _on_buy_area_entered(type):
+	# Gear Shop の場合
 	if _is_gear_shop:
 		var _cost = _gear_shop.get_gear_cost(type) * Global.MONEY_RATIO
 		# Money が足りない場合: 買えない
@@ -75,3 +76,7 @@ func _on_buy_area_entered(type):
 			Global.gears += [type]
 			print("[Shop] got gear {0}. (cost: {1})".format([type, _cost]))
 			Global.hero_got_gear.emit(type)
+
+	# Stage Shop の場合
+	if _is_stage_shop:
+		pass

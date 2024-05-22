@@ -9,7 +9,7 @@ var _stage_info = {
 	# Stage 1
 	Global.StageType.A: { "t": "ビル街", "d1": "" },
 	# Stage 2
-	Global.StageType.B: { "t": "B", "d1": "" },
+	Global.StageType.B: { "t": "B", "d1": "Shop を通過するごとに\nゲートの狭さ -8" },
 	Global.StageType.C: { "t": "C", "d1": "ゲートが上下に動く" },
 	# Stage 3
 	Global.StageType.D: { "t": "D", "d1": "Shop を通過するごとに\nゲートの狭さ -16" },

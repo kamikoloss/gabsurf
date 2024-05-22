@@ -17,6 +17,8 @@ var _is_gear_shop_respawned = false # 直近で Gear Shop が再出現したか�
 var _gear_shop_counter = 0 # Gear Shop がトータルで何回出現したか
 var _money_counter_gear_shop = 0 # Money を取得するたびに 1 増加する (Gear Shop が出現したら 0 に戻す)
 var _money_counter_gear_shop_quota = 3 # Money を何回取るたびに Gear Shop が出現するか
+var _money_counter_difficult = 0 # Money を取るたびに 1 増加する (難易度が上昇したら 0 に戻す)
+var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
 
 var _is_stage_shop_spawned = false # 現在 Stage Shop が出現しているかどうか
 
@@ -25,6 +27,7 @@ var _gate_spawn_cooltime = 2.0 # 何秒ごとに Gate が出現するか
 var _gate_spawn_timer = 0.0
 var _gate_spawn_height_min = SPAWN_HEIGHT_MIN_DEFAULT
 var _gate_spawn_height_max = SPAWN_HEIGHT_MAX_DEFAULT
+var _gate_gap_diff = 0 # Gate の開きの差 (px) マイナスで狭くなる
 
 var _is_spawn_enemy = false # Enemy が出現するかどうか
 var _enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_DEFAULT # 何秒ごとに Enemy が出現するか
@@ -71,6 +74,7 @@ func _on_rank_changed(_from):
 
 func _on_hero_got_money():
 	_money_counter_gear_shop += 1
+	_money_counter_difficult += 1
 
 	# Money の取得回数が Gear Shop 出現の条件に達した場合: Gear Shop を出現させる
 	if _money_counter_gear_shop_quota <= _money_counter_gear_shop:
@@ -78,6 +82,16 @@ func _on_hero_got_money():
 
 		if !Global.gears.has(Global.GearType.NOS):
 			_spawn_gear_shop()
+
+	# 難易度上昇の規定回数に達した場合
+	if _money_counter_difficult_quota <= _money_counter_difficult:
+		_money_counter_difficult = 0
+		
+		match Global.stage:
+			Global.StageType.B:
+				_gate_gap_diff -= 16
+			Global.StageType.D:
+				_gate_gap_diff -= 16
 
 
 func _on_hero_got_gear(gear):
@@ -88,6 +102,8 @@ func _on_hero_got_gear(gear):
 			var _ems = [2, 3, 5]
 			var _ems_count = Global.gears.count(Global.GearType.EMS)
 			_enemy_spawn_cooltime = ENEMY_SPAWN_COOLTIME_DEFAULT / _ems[_ems_count]
+		Global.GearType.GTG:
+			_gate_gap_diff += 64
 
 
 func _on_hero_exited_shop():
