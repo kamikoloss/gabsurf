@@ -1,6 +1,5 @@
 extends Node
 
-# TODO: _is_shop_spawned だけでいい
 
 const SPAWN_HEIGHT_MIN_DEFAULT = 80
 const SPAWN_HEIGHT_MAX_DEFAULT = -80 # マイナスが上方向であることに注意する
@@ -12,15 +11,14 @@ const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するか�
 @export var _shop_scene: PackedScene
 
 
-var _is_gear_shop_spawned = false # 現在 Gear Shop が出現しているかどうか
+var _money_counter_difficult = 0 # Money を取るたびに 1 増加する (難易度が上昇したら 0 に戻す)
+var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
+
+var _is_shop_spawned = false # 現在 Shop が出現しているかどうか
 var _is_gear_shop_respawned = false # 直近で Gear Shop が再出現したかどうか
 var _gear_shop_counter = 0 # Gear Shop がトータルで何回出現したか
 var _money_counter_gear_shop = 0 # Money を取得するたびに 1 増加する (Gear Shop が出現したら 0 に戻す)
 var _money_counter_gear_shop_quota = 3 # Money を何回取るたびに Gear Shop が出現するか
-var _money_counter_difficult = 0 # Money を取るたびに 1 増加する (難易度が上昇したら 0 に戻す)
-var _money_counter_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
-
-var _is_stage_shop_spawned = false # 現在 Stage Shop が出現しているかどうか
 
 var _is_spawn_gate = false # Gate が出現するかどうか
 var _gate_spawn_cooltime = 2.0 # 何秒ごとに Gate が出現するか
@@ -50,14 +48,11 @@ func _process(delta):
 
 
 func _on_state_changed(_from):
-	# ACTIVE
-	# Gear Shop も Stage Shop も出現していないなら Gate と Enemy を出現させる
+	# ACTIVE: Shop が出現していないなら Gate と Enemy を出現させる
 	if Global.state == Global.State.ACTIVE:
-		var _is_spawnable = !_is_gear_shop_spawned and !_is_stage_shop_spawned
-		_is_spawn_gate = _is_spawnable
-		_is_spawn_enemy = _is_spawnable
-	# ACTIVE 以外
-	# Gate と Enemy を生成しない
+		_is_spawn_gate = !_is_shop_spawned
+		_is_spawn_enemy = !_is_shop_spawned
+	# ACTIVE 以外: Gate と Enemy を生成しない
 	else:
 		_is_spawn_gate = false
 		_is_spawn_enemy = false
@@ -107,7 +102,7 @@ func _on_hero_got_gear(gear):
 
 
 func _on_hero_exited_shop():
-	_is_gear_shop_spawned = false # 厳密にはまだ存在するがもう存在しない扱いとする
+	_is_shop_spawned = false # 厳密にはまだ存在するがもう存在しない扱いとする
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
 
@@ -146,11 +141,11 @@ func _spawn_gate(height_diff, x_diff, set_money):
 	var _gate = _gate_scene.instantiate()
 	_gate.position.x += (get_viewport().get_camera_2d().global_position.x + 400 + x_diff)
 	_gate.position.y += 320
-	_gate.gap_diff = Global.gate_gap_diff
+	_gate.gap_diff = _gate_gap_diff
 	_gate.height_diff += height_diff
 	_gate.set_money = set_money
 	add_child(_gate)
-	#print("[Spawner] spawned a gate.")
+	#print("[Spawner] spawned a gate.")1
 
 
 # Enemy を生成しつづける (_process 内で呼ぶ)
@@ -179,7 +174,7 @@ func _spawn_enemy():
 
 # Gear Shop を生成する
 func _spawn_gear_shop():
-	_is_gear_shop_spawned = true
+	_is_shop_spawned = true
 	_is_spawn_gate = false
 	_is_spawn_enemy = false
 	_gear_shop_counter += 1
@@ -187,18 +182,18 @@ func _spawn_gear_shop():
 	var _shop = _shop_scene.instantiate()
 	_shop.position.x += (get_viewport().get_camera_2d().global_position.x + 800)
 	add_child(_shop)
-	_shop.initialize_gear(_gear_shop_counter)
+	_shop.setup_gear_ui(_gear_shop_counter)
 	print("[Spawner] spawned a gear shop.")
 
 
 # Stage Shop を生成する
 func _spawn_stage_shop():
-	_is_stage_shop_spawned = true
+	_is_shop_spawned = true
 	_is_spawn_gate = false
 	_is_spawn_enemy = false
 
 	var _shop = _shop_scene.instantiate()
 	_shop.position.x += (get_viewport().get_camera_2d().global_position.x + 800)
 	add_child(_shop)
-	_shop.initialize_stage()
+	_shop.setup_stage_ui()
 	print("[Spawner] spawned a stage shop.")

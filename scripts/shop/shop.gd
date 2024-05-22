@@ -8,7 +8,8 @@ const SHOP_PANEL_POSITION_Y = { "a": 120, "b": 400 }
 
 
 @export var _shop_panel_scene: PackedScene
-@export var _enter_label: Label
+@export var _enter_label_1: Label
+@export var _enter_label_2: Label
 @export var _middle_panel: Panel
 #@export var _middle_label: Label
 
@@ -16,43 +17,57 @@ const SHOP_PANEL_POSITION_Y = { "a": 120, "b": 400 }
 @export var _stage_shop: StageShop
 
 
-var _is_gear_shop = false
-var _is_stage_shop = false
-
-
 func _ready():
 	_auto_destroy()
 
 
 # Gear 用の UI を設定する
-func initialize_gear(number):
-	_is_gear_shop = true
-	_enter_label.text = str(number)
+func setup_gear_ui(shop_count):
+	_enter_label_1.text = "SHOP"
+	_enter_label_2.text = str(shop_count)
 	_middle_panel.visible = false
 
 	# Shop に並べる Gear を2つ抽選する
-	var _gear = { "a": null, "b": null }
-	_gear["a"] = _gear_shop.get_random_gear()
-	_gear["b"] = _gear_shop.get_random_gear(_gear["a"])
-	print("[Shop] gears are {0} and {1}.".format([_gear["a"], _gear["b"]]))
+	var _gears = { "a": null, "b": null }
+	_gears["a"] = _gear_shop.get_random()
+	_gears["b"] = _gear_shop.get_random(_gears["a"])
+	print("[Shop] gears are {0} and {1}.".format([_gears["a"], _gears["b"]]))
 
 	# ShopPanel を2つ生成する
 	for k in ["a", "b"]:
-		if _gear[k] == null:
+		if _gears[k] == null:
 			return
-		var _gear_info = _gear_shop.get_gear_ui(_gear[k])
+		var _gear_info = _gear_shop.get_info(_gears[k])
 		var _shop_panel = _shop_panel_scene.instantiate()
 		_shop_panel.position.y = SHOP_PANEL_POSITION_Y[k]
-		_shop_panel.gear_type = _gear[k]
-		_shop_panel.buy_area_entered.connect(_on_buy_area_entered)
+		_shop_panel.gear_type = _gears[k]
+		_shop_panel.buy_area_entered.connect(_on_gear_shop_buy_area_entered)
 		add_child(_shop_panel)
-		_shop_panel.initialize_gear(_gear_info)
+		_shop_panel.setup_gear_ui(_gear_info)
 
 
 # Stage 用の UI を設定する
-func initialize_stage():
-	_is_stage_shop = true
-	pass
+func setup_stage_ui():
+	_enter_label_1.text = "STAGE"
+	_enter_label_2.text = str()
+
+	# Shop に並べる Stage を2つ抽選する
+	var _stages = { "a": null, "b": null }
+	_stages["a"] = _stage_shop.get_random()
+	_stages["b"] = _stage_shop.get_random(_stages["a"])
+	print("[Shop] stages are {0} and {1}.".format([_stages["a"], _stages["b"]]))
+
+	# ShopPanel を2つ生成する
+	for k in ["a", "b"]:
+		if _stages[k] == null:
+			return
+		var _stage_info = _stage_shop.get_info(_stages[k])
+		var _shop_panel = _shop_panel_scene.instantiate()
+		_shop_panel.position.y = SHOP_PANEL_POSITION_Y[k]
+		_shop_panel.stage_type = _stages[k]
+		_shop_panel.buy_area_entered.connect(_on_stage_shop_buy_area_entered)
+		add_child(_shop_panel)
+		_shop_panel.setup_stage_ui(_stage_info)
 
 
 # 指定秒数後に自身を破壊する
@@ -62,21 +77,20 @@ func _auto_destroy():
 	queue_free()
 
 
-func _on_buy_area_entered(type):
-	# Gear Shop の場合
-	if _is_gear_shop:
-		var _cost = _gear_shop.get_gear_cost(type) * Global.MONEY_RATIO
-		# Money が足りない場合: 買えない
-		if Global.money < _cost:
-			print("[Shop] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
-		# Money が足りる場合
-		else:
-			Global.money -= _cost
-			Global.shop_through_count = 0
-			Global.gears += [type]
-			print("[Shop] got gear {0}. (cost: {1})".format([type, _cost]))
-			Global.hero_got_gear.emit(type)
+func _on_gear_shop_buy_area_entered(gear_type):
+	var _cost = _gear_shop.get_cost(gear_type) * Global.MONEY_RATIO
+	# Money が足りない場合: 買えない
+	if Global.money < _cost:
+		print("[Shop] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
+	# Money が足りる場合
+	else:
+		Global.money -= _cost
+		Global.shop_through_count = 0
+		Global.gears += [gear_type]
+		print("[Shop] got gear {0}. (cost: {1})".format([gear_type, _cost]))
+		# TODO: signal の命名ルールから外れている
+		Global.hero_got_gear.emit(gear_type)
 
-	# Stage Shop の場合
-	if _is_stage_shop:
-		pass
+
+func _on_stage_shop_buy_area_entered(stage_type):
+	Global.stage = stage_type

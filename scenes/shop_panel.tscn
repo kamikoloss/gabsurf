@@ -43,15 +43,15 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label", "_desc2_label", "_cost_label", "_max_label", "_color_panel", "_buy_area")]
+[node name="ShopPanel" type="Node2D" node_paths=PackedStringArray("_icon", "_title_label", "_desc_label_1", "_desc_label_2", "_cost_label", "_max_label", "_buy_panel", "_buy_area")]
 script = ExtResource("1_mgovo")
 _icon = NodePath("Gear/MarginContainer/HBoxContainer/TextureRect")
 _title_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Title")
-_desc_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description")
-_desc2_label = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description2")
+_desc_label_1 = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description")
+_desc_label_2 = NodePath("Gear/MarginContainer/HBoxContainer/VBoxContainer/Description2")
 _cost_label = NodePath("Cost/Label")
 _max_label = NodePath("Max/Label")
-_color_panel = NodePath("Buy")
+_buy_panel = NodePath("Buy")
 _buy_area = NodePath("Area2D")
 
 [node name="Area2D" type="Area2D" parent="." groups=["Gear"]]

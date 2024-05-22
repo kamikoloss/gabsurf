@@ -6,11 +6,11 @@ signal buy_area_entered
 
 @export var _icon: TextureRect
 @export var _title_label: RichTextLabel
-@export var _desc_label: Label
-@export var _desc2_label: Label
+@export var _desc_label_1: Label
+@export var _desc_label_2: Label
 @export var _cost_label: Label
 @export var _max_label: Label
-@export var _color_panel: Panel
+@export var _buy_panel: Panel
 @export var _buy_area: Area2D
 
 
@@ -21,8 +21,8 @@ var stage_type = Global.StageType.NONE
 func _ready():
 	_icon.visible = false
 	_title_label.visible = false
-	_desc_label.visible = false
-	_desc2_label.visible = false
+	_desc_label_1.visible = false
+	_desc_label_2.visible = false
 	_cost_label.visible = false
 	_max_label.visible = false
 	
@@ -30,30 +30,34 @@ func _ready():
 
 
 # Gear 用の UI を設定する
-func initialize_gear(gear_info):
+func setup_gear_ui(gear_info):
 	_icon.visible = true
 	_title_label.visible = true
-	_desc_label.visible = true
+	_desc_label_1.visible = true
 	_cost_label.visible = true
 	_max_label.visible = true
 
 	_icon.texture = gear_info["icon"]
 	_title_label.text = gear_info["title"]
-	_desc_label.text = gear_info["desc"]
+	_desc_label_1.text = gear_info["desc"]
 	_cost_label.text = gear_info["cost"]
 	_max_label.text = gear_info["max"]
 
 
 # Stage 用の UI を設定する
-func initialize_stage():
-	pass
+func setup_stage_ui(stage_info):
+	_title_label.visible = true
+	_desc_label_1.visible = true
+
+	_title_label.text = stage_info["title"]
+	_desc_label_1.text = stage_info["desc"]
 
 
-# Panel の色を変更する
+# Buy Panel の色を変更する
 func _change_panel_color(color):
-	var _style = _color_panel.get_theme_stylebox("panel").duplicate()
+	var _style = _buy_panel.get_theme_stylebox("panel").duplicate()
 	_style.bg_color = color
-	_color_panel.add_theme_stylebox_override("panel", _style)
+	_buy_panel.add_theme_stylebox_override("panel", _style)
 
 
 func _on_buy_area_entered(area):

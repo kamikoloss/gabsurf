@@ -34,11 +34,10 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label", "_middle_panel", "_gear_shop", "_stage_shop")]
+[node name="Shop" type="Node2D" node_paths=PackedStringArray("_middle_panel", "_gear_shop", "_stage_shop")]
 z_index = 10
 script = ExtResource("1_1bss0")
 _shop_panel_scene = ExtResource("3_mafvx")
-_enter_label = NodePath("Enter/VBoxContainer/Label2")
 _middle_panel = NodePath("Middle")
 _gear_shop = NodePath("Gear")
 _stage_shop = NodePath("Stage")

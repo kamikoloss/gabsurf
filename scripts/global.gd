@@ -39,6 +39,7 @@ enum Rank {
 	GREEN,
 	RED,
 	GOLD,
+	BLACK,
 }
 
 enum GearType {
@@ -74,8 +75,8 @@ const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
 	Global.Rank.GOLD,
 ]
 
-const LIFE_MAX = 3 # Life の最大数
 const MONEY_RATIO = 5 # Money の係数
+const LIFE_MAX = 3 # Life の最大数
 
 
 var state: State = State.NONE:
