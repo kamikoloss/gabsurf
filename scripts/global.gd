@@ -70,7 +70,8 @@ enum StageType {
 
 const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
 	null,
-	Global.Rank.GREEN,
+	Global.Rank.BLUE,
+	#Global.Rank.GREEN,
 	Global.Rank.RED,
 	Global.Rank.GOLD,
 ]

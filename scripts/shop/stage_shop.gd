@@ -35,9 +35,16 @@ var _stage_rank = {
 }
 
 
-func get_random(ignore = null):
-	pass
+# 店頭に並ぶ可能性がある Stage を取得する
+func get_active_types():
+	return _stage_rank[Global.stage_number]
 
 
 func get_info(type):
-	pass
+	var _info = _stage_info[type]
+
+	return {
+		"title": _info["t"],
+		"desc": _info["d"],
+		"gate": _info["g"],
+	}

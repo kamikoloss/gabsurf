@@ -34,13 +34,14 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label_1", "_enter_label_2", "_middle_panel", "_gear_shop", "_stage_shop")]
+[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label_1", "_enter_label_2", "_middle_panel", "_middle_label", "_gear_shop", "_stage_shop")]
 z_index = 10
 script = ExtResource("1_1bss0")
 _shop_panel_scene = ExtResource("3_mafvx")
 _enter_label_1 = NodePath("Enter/VBoxContainer/Label")
 _enter_label_2 = NodePath("Enter/VBoxContainer/Label2")
 _middle_panel = NodePath("Middle")
+_middle_label = NodePath("Middle/Label")
 _gear_shop = NodePath("Gear")
 _stage_shop = NodePath("Stage")
 
@@ -102,7 +103,7 @@ vertical_alignment = 1
 
 [node name="Gear" type="Node" parent="."]
 script = ExtResource("4_7qat4")
-_icon_list = Array[Texture]([ExtResource("5_plrx5"), ExtResource("5_2crfv"), ExtResource("6_dkxws"), ExtResource("7_o5nm3"), ExtResource("8_tsb7n"), ExtResource("9_a5px6"), ExtResource("10_g01kq"), ExtResource("11_jyesc"), ExtResource("12_xtx5d"), ExtResource("13_nakda"), ExtResource("14_8y0vs"), ExtResource("15_ple51"), ExtResource("16_crw0l")])
+_icons = Array[Texture]([ExtResource("5_plrx5"), ExtResource("5_2crfv"), ExtResource("6_dkxws"), ExtResource("7_o5nm3"), ExtResource("8_tsb7n"), ExtResource("9_a5px6"), ExtResource("10_g01kq"), ExtResource("11_jyesc"), ExtResource("12_xtx5d"), ExtResource("13_nakda"), ExtResource("14_8y0vs"), ExtResource("15_ple51"), ExtResource("16_crw0l")])
 
 [node name="Stage" type="Node" parent="."]
 script = ExtResource("5_yj3d7")

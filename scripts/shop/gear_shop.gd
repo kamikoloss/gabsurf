@@ -3,7 +3,7 @@ extends Node
 class_name GearShop
 
 
-@export var _icon_list: Array[Texture]
+@export var _icons: Array[Texture]
 
 
 # Gear の情報
@@ -72,52 +72,34 @@ var _gear_rank = {
 }
 
 
-# ランダムな Gear を取得する
-# 抽選に失敗した場合は null を返す
-func get_randomr(ignore = null):
-	var _gear = null # 最終的に取得される Gear
-	var _gears_on_sale = [] # 店頭に並ぶ Gear
+# 店頭に並ぶ可能性がある Gear を取得する
+func get_active_types():
+	var _active_types = []
 
-	# 現在のランクまでの Gear を店頭に並べる
+	# 現在のランクまでの Gear を取得する
 	for r in Global.Rank.values():
 		if r != Global.Rank.NONE and r <= Global.rank:
-			_gears_on_sale += _gear_rank[r]
+			_active_types += _gear_rank[r]
 
-	# 特殊条件
-	# 現在の残機が最大数の場合: LFP は並べない
-	if Global.life == Global.LIFE_MAX and _gears_on_sale.has(Global.GearType.LFP):
-		_gears_on_sale.remove_at(_gears_on_sale.find(Global.GearType.LFP))
+	# すでに最大数持っている場合: 除く
+	for g in Global.gears:
+		if Global.gears.count(g) == _gear_info[g]["m"]:
+			_active_types.remove_at(_active_types.find(g))
 
-	# Gear を抽選する
-	for n in 10:
-		# 店頭に並んでいる Gear が存在しない場合: 中止
-		if _gears_on_sale.size() == 0:
-			break
-		# 抽選する
-		var _random = _gears_on_sale[randi() % _gears_on_sale.size()]
-		# 避ける Gear が抽選された場合: NG 次のループへ
-		if _random == ignore:
-			continue
-		# すでに持っている Gear が抽選された場合
-		if Global.gears.has(_random):
-			# まだ最大数に達していない場合: OK
-			if 0 < _gear_info[_random]["m"] and Global.gears.count(_random) < _gear_info[_random]["m"]:
-				_gear = _random
-				break
-		# まだ持っていない場合: OK
-		else:
-			_gear = _random
-			break
+	# 現在の残機が最大数の場合: LFP を除く
+	if Global.life == Global.LIFE_MAX and _active_types.has(Global.GearType.LFP):
+		_active_types.remove_at(_active_types.find(Global.GearType.LFP))
 
-	return _gear
+	return _active_types
 
 
-# Shop 用の情報を取得する
+# 表示用の情報を取得する
 func get_info(type):
+	var _info = _gear_info[type]
+	
 	var _title = ""
 	var _desc = ""
 	var _max = ""
-	var _info = _gear_info[type]
 
 	# 名称をランクの色にする
 	var _rank_color = null
@@ -152,7 +134,7 @@ func get_info(type):
 		"desc": _desc,
 		"cost": "$" + str(_info["c"] * Global.MONEY_RATIO),
 		"max": _max,
-		"icon": _icon_list[_info["i"]],
+		"icon": _icons[_info["i"]],
 	}
 
 
