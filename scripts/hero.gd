@@ -78,6 +78,11 @@ func _on_state_changed(_from):
 		Global.State.GAMEOVER:
 			# 吹き飛ぶ
 			velocity = DEAD_VELOCITY
+			# コケる
+			_hero_sprite.stop()
+			_hero_sprite.play("die")
+			# 残機表示なし
+			_life_label.text = ""
 
 
 func _on_ui_jumped():
@@ -230,7 +235,6 @@ func _on_body_area_exited(area):
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
 	if area.is_in_group("Screen"):
 		print("[Hero] exited screen.")
-		Global.life = 0
 		Global.state = Global.State.GAMEOVER
 
 	if area is ShopArea:

@@ -23,14 +23,16 @@ const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 @export var _help_jump_label: Label
 @export var _help_retry_label: Label
 
-@export var _bg: ParallaxBackground
+@export var _bg_parallax: ParallaxBackground
+@export var _bg_color: TextureRect
 
 
-var _bg_tween = null
 var _level_tween = null
 var _money_tween = null
 var _extra_tween = null
 var _score_tween = null
+var _bg_parallax_position_tween = null
+var _bg_color_tween = null
 
 
 func _ready():
@@ -120,6 +122,28 @@ func _on_state_changed(_from):
 
 func _on_stage_changed(_from):
 	_refresh_next_label()
+	
+	# BG の背景色を変更する
+	var _cartain_color = Color(0.2, 0.2, 0.2)
+	var _after_color: Color
+
+	match Global.stage:
+		Global.StageType.B:
+			_after_color = Color(0.4, 0.2, 0.2, 0.2)
+		Global.StageType.C:
+			_after_color = Color(0.4, 0.2, 0.2, 0.2)
+		Global.StageType.D:
+			_after_color = Color(0.2, 0.2, 0.4, 0.2)
+		Global.StageType.E:
+			_after_color = Color(0.2, 0.2, 0.4, 0.8) # 視界が悪い
+		Global.StageType.X:
+			_after_color = Color(0.2, 0.2, 0.2, 0.2)
+
+	if _bg_color_tween:
+		_bg_color_tween.kill()
+	_bg_color_tween = create_tween()
+	_bg_color_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_OUT)
+	_bg_color_tween.tween_property(_bg_color, "self_modulate", _after_color, BG_DURATION)
 
 
 func _on_rank_changed(_from):
@@ -132,11 +156,11 @@ func _on_rank_changed(_from):
 	}
 	var _position = Vector2(0, _rank_y_positions[Global.rank])
 
-	if _bg_tween:
-		_bg_tween.kill()
-	_bg_tween = create_tween()
-	_bg_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
-	_bg_tween.tween_property(_bg, "offset", _position, BG_DURATION)
+	if _bg_parallax_position_tween:
+		_bg_parallax_position_tween.kill()
+	_bg_parallax_position_tween = create_tween()
+	_bg_parallax_position_tween.set_trans(Tween.TRANS_QUAD).set_ease(Tween.EASE_IN_OUT)
+	_bg_parallax_position_tween.tween_property(_bg_parallax, "offset", _position, BG_DURATION)
 
 
 func _on_level_changed(from):

@@ -71,9 +71,12 @@ enum ShopType { NONE, GEAR, STAGE }
 
 
 const STAGE_TARGET_RANK = { # Stage ごとの目標 Rank
-	1: Global.Rank.GREEN,
-	2: Global.Rank.RED,
-	3: Global.Rank.GOLD,
+	1: Global.Rank.BLUE,
+	2: Global.Rank.GREEN,
+	3: Global.Rank.RED,
+	#1: Global.Rank.GREEN,
+	#2: Global.Rank.RED,
+	#3: Global.Rank.GOLD,
 }
 
 const MONEY_RATIO = 5 # Money の係数

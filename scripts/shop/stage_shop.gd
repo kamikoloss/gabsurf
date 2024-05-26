@@ -13,7 +13,7 @@ var _stage_info = {
 	Global.StageType.C: { "g": 2, "t": "C", "d": "ゲートが上下に動く\n (速度: 低)" },
 	# Stage 3
 	Global.StageType.D: { "g": 5, "t": "D", "d": "ショップを通過するごとに\nゲートの狭さ -16" },
-	Global.StageType.E: { "g": 3, "t": "E", "d": "" },
+	Global.StageType.E: { "g": 3, "t": "E", "d": "深い霧に包まれて\n視界が悪くなる" },
 	# Stage X
 	Global.StageType.X: { "g": 5, "t": "成層圏", "d": "重力 1/2"},
 }

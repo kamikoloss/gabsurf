@@ -329,7 +329,7 @@ texture = ExtResource("3_fq3iy")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Walls/WallBottom"]
 shape = SubResource("RectangleShape2D_4c1x3")
 
-[node name="UI" type="Control" parent="." node_paths=PackedStringArray("_gear_shop", "_score_level_label", "_score_money_label", "_score_extra_label", "_score_score_label", "_rank_meter", "_body_panel", "_title_label", "_gears_label", "_next_label", "_help_pause_label", "_help_jump_label", "_help_retry_label", "_bg")]
+[node name="UI" type="Control" parent="." node_paths=PackedStringArray("_gear_shop", "_score_level_label", "_score_money_label", "_score_extra_label", "_score_score_label", "_rank_meter", "_body_panel", "_title_label", "_gears_label", "_next_label", "_help_pause_label", "_help_jump_label", "_help_retry_label", "_bg_parallax", "_bg_color")]
 layout_mode = 3
 anchors_preset = 0
 script = ExtResource("1_twex4")
@@ -346,9 +346,16 @@ _next_label = NodePath("CanvasLayer/Layout/SubHeader/VBoxContainer/Next")
 _help_pause_label = NodePath("CanvasLayer/Layout/SubFooter/VBoxContainer/HBoxContainer/Pause/Label")
 _help_jump_label = NodePath("CanvasLayer/Layout/SubFooter/VBoxContainer/HBoxContainer/Jump/Label")
 _help_retry_label = NodePath("CanvasLayer/Layout/SubFooter/VBoxContainer/HBoxContainer/Retry/Label")
-_bg = NodePath("ParallaxBackground")
+_bg_parallax = NodePath("ParallaxBackground")
+_bg_color = NodePath("CanvasLayer/BackgroundColor")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="UI"]
+
+[node name="BackgroundColor" type="TextureRect" parent="UI/CanvasLayer"]
+self_modulate = Color(0.25098, 0.25098, 0.25098, 0)
+offset_right = 360.0
+offset_bottom = 640.0
+texture = ExtResource("3_fq3iy")
 
 [node name="Score" type="Control" parent="UI/CanvasLayer"]
 layout_mode = 3
