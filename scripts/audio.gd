@@ -1,8 +1,10 @@
 extends Node
 
 
-const SLOW_SPEED_SHOP = 0.8 # Shop に入ったときに何倍速のスローになるか
-const SLOW_DURATION_SHOP = 1.0 # Shop に入ったときに何秒かけてスローになるか
+const SLOW_SPEED_GEAR_SHOP = 0.8 # Gear Shop に入ったときに何倍速のスローになるか
+const SLOW_DURATION_GEAR_SHOP = 1.0 # Gear Shop に入ったときに何秒かけてスローになるか
+const SLOW_SPEED_STAGE_SHOP = 0.4 # Gear Shop に入ったときに何倍速のスローになるか
+const SLOW_DURATION_STAGE_SHOP = 1.0 # Gear Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.6 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
 
@@ -72,14 +74,26 @@ func _on_hero_got_gear(_gear):
 	_play_se(_gear_sound)
 
 
-func _on_hero_entered_shop():
-	if Global.state == Global.State.ACTIVE:
-		_enter_slow(SLOW_SPEED_SHOP, SLOW_DURATION_SHOP)
+func _on_hero_entered_shop(shop_type: Global.ShopType):
+	if Global.state != Global.State.ACTIVE:
+		return
+
+	match shop_type:
+		Global.ShopType.GEAR:
+			_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
+		Global.ShopType.STAGE:
+			_enter_slow(SLOW_SPEED_STAGE_SHOP, SLOW_DURATION_STAGE_SHOP)
 
 
-func _on_hero_exited_shop():
-	if Global.state == Global.State.ACTIVE:
-		_exit_slow(SLOW_DURATION_SHOP)
+func _on_hero_exited_shop(shop_type: Global.ShopType):
+	if Global.state != Global.State.ACTIVE:
+		return
+
+	match shop_type:
+		Global.ShopType.GEAR:
+			_exit_slow(SLOW_DURATION_GEAR_SHOP)
+		Global.ShopType.STAGE:
+			_exit_slow(SLOW_DURATION_STAGE_SHOP)
 
 
 func _on_enemy_dead():

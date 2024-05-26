@@ -1,4 +1,5 @@
 extends Node2D
+class_name  ShopPanel
 
 
 signal buy_area_entered

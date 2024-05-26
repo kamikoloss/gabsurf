@@ -1,5 +1,4 @@
 extends Node2D
-
 class_name Shop
 
 
@@ -8,6 +7,8 @@ const SHOP_PANEL_POSITION_Y = { "a": 120, "b": 400 }
 
 
 @export var _shop_panel_scene: PackedScene
+
+@export var _shop_area: Area2D
 @export var _enter_label_1: Label
 @export var _enter_label_2: Label
 @export var _middle_panel: Panel
@@ -25,6 +26,8 @@ func _ready():
 
 # Gear 用の UI を設定する
 func setup_gear_ui(shop_count):
+	_shop_area.shop_type = Global.ShopType.GEAR
+
 	_enter_label_1.text = "SHOP"
 	_enter_label_2.text = str(shop_count)
 
@@ -50,10 +53,12 @@ func setup_gear_ui(shop_count):
 
 # Stage 用の UI を設定する
 func setup_stage_ui():
-	_middle_panel.visible = false
+	_shop_area.shop_type = Global.ShopType.STAGE
+
+	_middle_panel.visible = true
 
 	_enter_label_1.text = "STAGE"
-	_enter_label_2.text = str(Global.stage_number)
+	_enter_label_2.text = str(Global.stage_number + 1)
 	_middle_label.text = "LEVEL -> 0"
 
 	# Shop に並べる Stage を2つ抽選する

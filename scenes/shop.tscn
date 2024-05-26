@@ -1,7 +1,8 @@
-[gd_scene load_steps=21 format=3 uid="uid://cwxachiyntvge"]
+[gd_scene load_steps=22 format=3 uid="uid://cwxachiyntvge"]
 
 [ext_resource type="Script" path="res://scripts/shop/shop.gd" id="1_1bss0"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_bu7gq"]
+[ext_resource type="Script" path="res://scripts/shop/shop_area.gd" id="3_ca3xh"]
 [ext_resource type="PackedScene" uid="uid://cgmhibc16cmge" path="res://scenes/shop_panel.tscn" id="3_mafvx"]
 [ext_resource type="Script" path="res://scripts/shop/gear_shop.gd" id="4_7qat4"]
 [ext_resource type="Texture2D" uid="uid://cuxfc80ujqfb3" path="res://images/item1.png" id="5_2crfv"]
@@ -20,7 +21,7 @@
 [ext_resource type="Texture2D" uid="uid://w6v16t0sh28p" path="res://images/item12.png" id="16_crw0l"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o4fh"]
-size = Vector2(360, 640)
+size = Vector2(480, 640)
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_kttc5"]
 bg_color = Color(0.25098, 0.25098, 0.25098, 1)
@@ -34,31 +35,40 @@ corner_radius_top_right = 4
 corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
-[node name="Shop" type="Node2D" node_paths=PackedStringArray("_enter_label_1", "_enter_label_2", "_middle_panel", "_middle_label", "_gear_shop", "_stage_shop")]
+[node name="Shop" type="Node2D" node_paths=PackedStringArray("_shop_area", "_enter_label_1", "_enter_label_2", "_middle_panel", "_middle_label", "_gear_shop", "_stage_shop")]
 z_index = 10
 script = ExtResource("1_1bss0")
 _shop_panel_scene = ExtResource("3_mafvx")
-_enter_label_1 = NodePath("Enter/VBoxContainer/Label")
-_enter_label_2 = NodePath("Enter/VBoxContainer/Label2")
-_middle_panel = NodePath("Middle")
-_middle_label = NodePath("Middle/Label")
+_shop_area = NodePath("ShopArea")
+_enter_label_1 = NodePath("UI/Enter/VBoxContainer/Label")
+_enter_label_2 = NodePath("UI/Enter/VBoxContainer/Label2")
+_middle_panel = NodePath("UI/Middle")
+_middle_label = NodePath("UI/Middle/Label")
 _gear_shop = NodePath("Gear")
 _stage_shop = NodePath("Stage")
 
-[node name="Area2D" type="Area2D" parent="." groups=["Shop"]]
+[node name="ShopArea" type="Area2D" parent="."]
 position = Vector2(180, 320)
+script = ExtResource("3_ca3xh")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="ShopArea"]
 shape = SubResource("RectangleShape2D_8o4fh")
 
-[node name="Enter" type="Panel" parent="."]
+[node name="UI" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="Enter" type="Panel" parent="UI"]
+layout_mode = 0
 offset_left = -240.0
 offset_top = 280.0
 offset_right = -120.0
 offset_bottom = 360.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_kttc5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="Enter"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/Enter"]
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -69,7 +79,7 @@ offset_bottom = 29.5
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Label" type="Label" parent="Enter/VBoxContainer"]
+[node name="Label" type="Label" parent="UI/Enter/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 24
@@ -77,7 +87,7 @@ text = "SHOP"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Label2" type="Label" parent="Enter/VBoxContainer"]
+[node name="Label2" type="Label" parent="UI/Enter/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_bu7gq")
 theme_override_font_sizes/font_size = 32
@@ -85,13 +95,14 @@ text = "99"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Middle" type="Panel" parent="."]
+[node name="Middle" type="Panel" parent="UI"]
+layout_mode = 0
 offset_top = 300.0
 offset_right = 360.0
 offset_bottom = 340.0
 theme_override_styles/panel = SubResource("StyleBoxFlat_kttc5")
 
-[node name="Label" type="Label" parent="Middle"]
+[node name="Label" type="Label" parent="UI/Middle"]
 layout_mode = 2
 offset_right = 360.0
 offset_bottom = 40.0

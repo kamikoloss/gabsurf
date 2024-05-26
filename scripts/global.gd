@@ -25,7 +25,7 @@ signal enemy_dead # 倒されたとき
 
 
 enum State {
-	NONE, # 初期値
+	NONE,
 	TITLE, # タイトル
 	ACTIVE, # ゲーム中
 	PAUSED, # ポーズ中
@@ -33,7 +33,7 @@ enum State {
 }
 
 enum Rank {
-	NONE, # 初期値
+	NONE,
 	WHITE,
 	BLUE,
 	GREEN,
@@ -58,7 +58,7 @@ enum GearType {
 }
 
 enum StageType {
-	NONE, # 初期値
+	NONE,
 	A,
 	B,
 	C,
@@ -66,6 +66,8 @@ enum StageType {
 	E,
 	X,
 }
+
+enum ShopType { NONE, GEAR, STAGE }
 
 
 const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank

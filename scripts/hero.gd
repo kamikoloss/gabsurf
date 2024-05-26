@@ -203,9 +203,9 @@ func _on_body_area_entered(area):
 		area.queue_free()
 		Global.hero_got_money.emit()
 
-	if area.is_in_group("Shop"):
+	if area is ShopArea:
 		print("[Hero] entered shop.")
-		Global.hero_entered_shop.emit()
+		Global.hero_entered_shop.emit(area.shop_type)
 
 
 func _on_body_area_exited(area):
@@ -218,9 +218,9 @@ func _on_body_area_exited(area):
 		Global.life = 0
 		Global.state = Global.State.GAMEOVER
 
-	if area.is_in_group("Shop"):
+	if area is ShopArea:
 		print("[Hero] exited shop.")
-		Global.hero_exited_shop.emit()
+		Global.hero_exited_shop.emit(area.shop_type)
 
 
 # 横移動の速度を一時的に加速する

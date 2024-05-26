@@ -1,5 +1,4 @@
 extends Node
-
 class_name StageShop
 
 
@@ -21,15 +20,15 @@ var _stage_info = {
 
 # Stage Number ごとに店に並ぶ Stage のリスト
 var _stage_rank = {
-	2: [
+	1: [
 		Global.StageType.B,
 		Global.StageType.C,
 	],
-	3: [
+	2: [
 		Global.StageType.D,
 		Global.StageType.E,
 	],
-	4: [
+	3: [
 		Global.StageType.X
 	]
 }

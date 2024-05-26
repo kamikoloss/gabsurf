@@ -7,6 +7,7 @@ const SLOW_SPEED_STAGE_SHOP = 0.4 # Stage Shop に入ったときに何倍速の
 const SLOW_DURATION_STAGE_SHOP = 1.0 # Stage Shop に入ったときに何秒かけてスローになるか
 const SLOW_SPEED_GAMEOVER = 0.2 # ゲームオーバー時に何倍速のスローになるか
 const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけてスローになるか
+
 const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっていくか
 const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
 
@@ -61,8 +62,7 @@ func _on_state_changed(_from):
 
 
 func _on_stage_changed(_from):
-	# TODO: 背景を変更する
-	pass
+	Global.stage_number += 1
 
 
 func _on_ui_jumped():
@@ -111,20 +111,33 @@ func _on_hero_got_gear(gear):
 			Global.money += _lot * Global.MONEY_RATIO
 
 
-func _on_hero_entered_shop():
-	if Global.state == Global.State.ACTIVE:
-		Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
+func _on_hero_entered_shop(shop_type: Global.ShopType):
+	if Global.state != Global.State.ACTIVE:
+		return
 
-		_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
+	Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
+
+	match shop_type:
+		Global.ShopType.GEAR:
+			_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
+		Global.ShopType.STAGE:
+			_enter_slow(SLOW_SPEED_STAGE_SHOP, SLOW_DURATION_STAGE_SHOP)
 
 
-func _on_hero_exited_shop():
-	if Global.state == Global.State.ACTIVE:
-		if Global.gears.has(Global.GearType.SPT) and 0 < Global.shop_through_count:
-			# TODO: メッセージ表示
-			Global.money += Global.shop_through_count * Global.MONEY_RATIO
+func _on_hero_exited_shop(shop_type: Global.ShopType):
+	if Global.state != Global.State.ACTIVE:
+		return
 
-		_exit_slow(SLOW_DURATION_GEAR_SHOP)
+	# SPT
+	if Global.gears.has(Global.GearType.SPT) and 0 < Global.shop_through_count:
+		# TODO: メッセージ表示
+		Global.money += Global.shop_through_count * Global.MONEY_RATIO
+
+	match shop_type:
+		Global.ShopType.GEAR:
+			_exit_slow(SLOW_DURATION_GEAR_SHOP)
+		Global.ShopType.STAGE:
+			_exit_slow(SLOW_DURATION_STAGE_SHOP)
 
 
 func _on_enemy_dead():
