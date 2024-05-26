@@ -16,8 +16,11 @@ const ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵�
 
 
 @export var _weapon_scene: PackedScene
+
 @export var _shoes: Area2D
 @export var _hero_sprite: AnimatedSprite2D
+@export var _jump_particles: GPUParticles2D
+
 @export var _jump_label: Label
 @export var _life_label: Label
 @export var _anti_damage_bar: TextureProgressBar
@@ -96,8 +99,15 @@ func _on_ui_jumped():
 		var _jma_count = Global.gears.count(Global.GearType.JMA)
 		_accelerate_move(_jma[_jma_count], MOVE_ACCELARATE_DULATION)
 
+	# アニメーション
 	_hero_sprite.stop()
 	_hero_sprite.play("jump")
+
+	# パーティクル
+	var _jump_particle_clone = _jump_particles.duplicate()
+	_jump_particle_clone.finished.connect(func(): _jump_particle_clone.queue_free())
+	add_child(_jump_particle_clone)
+	_jump_particle_clone.restart()
 
 	# ミサイル系
 	if Global.gears.has(Global.GearType.MSB):

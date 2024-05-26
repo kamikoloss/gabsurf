@@ -1,4 +1,4 @@
-[gd_scene load_steps=39 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=48 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_twex4"]
@@ -63,12 +63,57 @@ radius = 64.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e62gy"]
 size = Vector2(128, 32)
 
+[sub_resource type="Curve" id="Curve_qcm13"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_shtsg"]
+curve = SubResource("Curve_qcm13")
+
+[sub_resource type="Curve" id="Curve_gj5c7"]
+min_value = 0.5
+_data = [Vector2(0, 0.5), 0.0, 0.5, 0, 1, Vector2(1, 1), 0.5, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_ol5xl"]
+curve = SubResource("Curve_gj5c7")
+
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_rhkc2"]
-particle_flag_disable_z = true
+direction = Vector3(-1, 0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
 gravity = Vector3(0, -98, 0)
-scale_min = 5.0
+scale_min = 10.0
 scale_max = 20.0
-color = Color(1, 1, 1, 0.12549)
+scale_curve = SubResource("CurveTexture_ol5xl")
+color = Color(1, 1, 1, 0.25098)
+alpha_curve = SubResource("CurveTexture_shtsg")
+
+[sub_resource type="Curve" id="Curve_10wje"]
+_data = [Vector2(0, 1), 0.0, -1.0, 0, 1, Vector2(1, 0), -1.0, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_mcmct"]
+curve = SubResource("Curve_10wje")
+
+[sub_resource type="Curve" id="Curve_qn1ap"]
+min_value = 0.5
+_data = [Vector2(0, 0.5), 0.0, 0.5, 0, 1, Vector2(1, 1), 0.5, 0.0, 1, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_yduwy"]
+curve = SubResource("Curve_qn1ap")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_6kaga"]
+direction = Vector3(-1, 0, 0)
+initial_velocity_min = 100.0
+initial_velocity_max = 200.0
+gravity = Vector3(0, -98, 0)
+scale_min = 20.0
+scale_max = 40.0
+scale_curve = SubResource("CurveTexture_yduwy")
+color = Color(1, 1, 1, 0.25098)
+alpha_curve = SubResource("CurveTexture_mcmct")
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ebco"]
 size = Vector2(360, 640)
@@ -136,7 +181,7 @@ script = ExtResource("1_sqtl6")
 _screen = NodePath("Screen")
 _hero_anti_damage_bar = NodePath("Hero/UI/AntiDamageBar")
 
-[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_label", "_life_label", "_anti_damage_bar")]
+[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_particles", "_jump_label", "_life_label", "_anti_damage_bar")]
 z_index = 30
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
@@ -144,6 +189,7 @@ script = ExtResource("3_ksiqv")
 _weapon_scene = ExtResource("9_1dycg")
 _shoes = NodePath("Shoes")
 _hero_sprite = NodePath("AnimatedSprite2D")
+_jump_particles = NodePath("JumpParticles")
 _jump_label = NodePath("UI/Jump")
 _life_label = NodePath("UI/Life")
 _anti_damage_bar = NodePath("UI/AntiDamageBar")
@@ -183,11 +229,22 @@ self_modulate = Color(0, 1, 0, 0.25098)
 scale = Vector2(0.5, 0.125)
 texture = ExtResource("3_fq3iy")
 
-[node name="GPUParticles2D" type="GPUParticles2D" parent="Game/Hero"]
+[node name="RunParticles" type="GPUParticles2D" parent="Game/Hero"]
 position = Vector2(-64, 64)
-amount = 64
+amount = 32
 amount_ratio = 0.5
 process_material = SubResource("ParticleProcessMaterial_rhkc2")
+
+[node name="JumpParticles" type="GPUParticles2D" parent="Game/Hero"]
+position = Vector2(-64, 64)
+scale = Vector2(1, 1)
+emitting = false
+amount = 16
+amount_ratio = 0.5
+process_material = SubResource("ParticleProcessMaterial_6kaga")
+one_shot = true
+explosiveness = 0.9
+trail_lifetime = 100.0
 
 [node name="UI" type="Control" parent="Game/Hero"]
 layout_mode = 3
