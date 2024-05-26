@@ -16,7 +16,7 @@ const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 @export var _body_panel: Panel
 @export var _title_label: Label
-@export var _gears_label: Label
+@export var _gears_label: RichTextLabel
 @export var _next_label: RichTextLabel
 
 @export var _help_pause_label: Label
@@ -35,13 +35,14 @@ var _score_tween = null
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
+	Global.stage_changed.connect(_on_stage_changed)
 	Global.rank_changed.connect(_on_rank_changed)
 	Global.level_changed.connect(_on_level_changed)
 	Global.money_changed.connect(_on_money_changed)
 	Global.extra_changed.connect(_on_extra_changed)
 	Global.score_changed.connect(_on_score_changed)
 
-	_next_label.text = "NEXT:\n..."
+	_refresh_next_label()
 
 	# _on_state_changed() の TITLE と同じ処理
 	# _ready() 内で 初期 state が変わるので connect() が追い付かない
@@ -117,6 +118,10 @@ func _on_state_changed(_from):
 	_refresh_gear_label()
 
 
+func _on_stage_changed(_from):
+	_refresh_next_label()
+
+
 func _on_rank_changed(_from):
 	var _rank_y_positions = {
 		Global.Rank.WHITE: -320,
@@ -172,6 +177,26 @@ func _on_score_changed(from):
 	_score_tween.set_parallel(true)
 	_score_tween.tween_method(func(v): _score_score_label.text = str(v), from, Global.score, LABEL_DURATION)
 	_score_tween.tween_property(_rank_meter, "position", _meter_position, LABEL_DURATION)
+
+
+func _refresh_next_label():
+	var _base = "NEXT:\n"
+	var _rank = ""
+
+	var _target_rank = Global.STAGE_TARGET_RANK[Global.stage_number]
+	match _target_rank:
+		Global.Rank.BLUE:
+			_rank = "[color=#8080FF]1,000[/color]"
+		Global.Rank.GREEN:
+			_rank = "[color=#80FF80]10,000[/color]"
+		Global.Rank.RED:
+			_rank = "[color=#FF8080]100,000[/color]"
+		Global.Rank.GOLD:
+			_rank = "[color=#FFFF80]1,000,000[/color]"
+		Global.Rank.BLACK:
+			_rank = "[color=#808080]10,000,000[/color]"
+
+	_next_label.text = _base + _rank
 
 
 func _refresh_gear_label():

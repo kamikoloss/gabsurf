@@ -166,7 +166,7 @@ corner_radius_bottom_right = 4
 corner_radius_bottom_left = 4
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_mb1rg"]
-bg_color = Color(0.12549, 0.12549, 0.12549, 0.501961)
+bg_color = Color(0.12549, 0.12549, 0.12549, 0.752941)
 border_width_right = 4
 border_width_bottom = 4
 border_color = Color(0.12549, 0.12549, 0.12549, 0.752941)
@@ -342,8 +342,8 @@ _score_extra_label = NodePath("CanvasLayer/Score/Extra/VBoxContainer/Label2")
 _score_score_label = NodePath("CanvasLayer/Score/Score/VBoxContainer/Label2")
 _rank_meter = NodePath("CanvasLayer/Rank/Mask/Meter")
 _body_panel = NodePath("CanvasLayer/Layout/Body/Panel")
-_title_label = NodePath("CanvasLayer/Layout/Body/Panel/VBoxContainer/VBoxContainer/Title")
-_gears_label = NodePath("CanvasLayer/Layout/Body/Panel/VBoxContainer/Gears")
+_title_label = NodePath("CanvasLayer/Layout/Body/Panel/MarginContainer/VBoxContainer/VBoxContainer/Title")
+_gears_label = NodePath("CanvasLayer/Layout/Body/Panel/MarginContainer/VBoxContainer/Gears")
 _next_label = NodePath("CanvasLayer/Layout/SubHeader/VBoxContainer/Next")
 _help_pause_label = NodePath("CanvasLayer/Layout/SubFooter/VBoxContainer/HBoxContainer/Pause/Label")
 _help_jump_label = NodePath("CanvasLayer/Layout/SubFooter/VBoxContainer/HBoxContainer/Jump/Label")
@@ -750,7 +750,7 @@ text = "0"
 layout_mode = 0
 offset_left = 10.0
 offset_top = 150.0
-offset_right = 90.0
+offset_right = 50.0
 offset_bottom = 170.0
 theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
@@ -793,7 +793,7 @@ theme_override_fonts/normal_font = ExtResource("1_vc8gg")
 theme_override_font_sizes/normal_font_size = 12
 bbcode_enabled = true
 text = "NEXT:
-[color=green]GREEN[/color]"
+999,999,999"
 fit_content = true
 
 [node name="Body" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
@@ -806,21 +806,28 @@ theme_override_constants/margin_right = 20
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_mb1rg")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel"]
+[node name="MarginContainer" type="MarginContainer" parent="UI/CanvasLayer/Layout/Body/Panel"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel/MarginContainer"]
+layout_mode = 2
 alignment = 1
 
-[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel/VBoxContainer"]
+[node name="VBoxContainer" type="VBoxContainer" parent="UI/CanvasLayer/Layout/Body/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 3
 alignment = 1
 
-[node name="Title" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/VBoxContainer/VBoxContainer"]
+[node name="Title" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 48
@@ -828,7 +835,7 @@ text = "TITLE"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Version" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/VBoxContainer/VBoxContainer"]
+[node name="Version" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/MarginContainer/VBoxContainer/VBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("1_vc8gg")
 theme_override_font_sizes/font_size = 12
@@ -836,15 +843,13 @@ text = "v0.5.1"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Gears" type="Label" parent="UI/CanvasLayer/Layout/Body/Panel/VBoxContainer"]
-custom_minimum_size = Vector2(0, 160)
+[node name="Gears" type="RichTextLabel" parent="UI/CanvasLayer/Layout/Body/Panel/MarginContainer/VBoxContainer"]
 layout_mode = 2
-theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 10
-text = "Gears: {アイテムサンプル1,アイテムサンプル2,アイテムサンプル3,アイテムサンプル4,アイテムサンプル5,アイテムサンプル6,アイテムサンプル7,アイテムサンプル8,アイテムサンプル9,アイテムサンプル10,アイテムサンプル11,アイテムサンプル12,アイテムサンプル13,アイテムサンプル14,アイテムサンプル15,アイテムサンプル16,アイテムサンプル17,アイテムサンプル18,アイテムサンプル19,アイテムサンプル20,アイテムサンプル21,アイテムサンプル22,アイテムサンプル23,アイテムサンプル24,アイテムサンプル25,アイテムサンプル26,アイテムサンプル27,アイテムサンプル28,アイテムサンプル29,アイテムサンプル30,アイテムサンプル31,アイテムサンプル32,}"
-horizontal_alignment = 1
-vertical_alignment = 1
-autowrap_mode = 3
+size_flags_vertical = 3
+theme_override_fonts/normal_font = ExtResource("1_vc8gg")
+theme_override_font_sizes/normal_font_size = 12
+bbcode_enabled = true
+text = "Gears: {アイテム1,アイテム2,アイテム3,アイテム4,アイテム5,アイテム6,アイテム7,アイテム8,アイテム9,アイテム10,アイテム11,アイテム12,アイテム13,アイテム14,アイテム15,アイテム16,アイテム17,アイテム18,アイテム19,アイテム20,アイテム21,アイテム22,アイテム23,アイテム24,アイテム25,アイテム26,アイテム27,アイテム28,アイテム29,アイテム30,アイテム31,アイテム32,}"
 
 [node name="SubFooter" type="MarginContainer" parent="UI/CanvasLayer/Layout"]
 layout_mode = 2
