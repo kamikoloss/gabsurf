@@ -70,6 +70,10 @@ enum StageType {
 enum ShopType { NONE, GEAR, STAGE }
 
 
+const VERSION = "v0.6.0" # ゲームのバージョン
+const MONEY_RATIO = 5 # Money の係数
+const LIFE_MAX = 3 # Life の最大数
+
 const STAGE_TARGET_RANK = { # Stage ごとの目標 Rank
 	1: Global.Rank.BLUE,
 	2: Global.Rank.GREEN,
@@ -78,9 +82,6 @@ const STAGE_TARGET_RANK = { # Stage ごとの目標 Rank
 	#2: Global.Rank.RED,
 	#3: Global.Rank.GOLD,
 }
-
-const MONEY_RATIO = 5 # Money の係数
-const LIFE_MAX = 3 # Life の最大数
 
 
 var state: State = State.NONE:

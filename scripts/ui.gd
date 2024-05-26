@@ -16,6 +16,7 @@ const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 @export var _body_panel: Panel
 @export var _title_label: Label
+@export var _version_label: Label
 @export var _gears_label: RichTextLabel
 @export var _next_label: RichTextLabel
 
@@ -44,6 +45,7 @@ func _ready():
 	Global.extra_changed.connect(_on_extra_changed)
 	Global.score_changed.connect(_on_score_changed)
 
+	_version_label.text = Global.VERSION
 	_refresh_next_label()
 
 	# _on_state_changed() の TITLE と同じ処理
