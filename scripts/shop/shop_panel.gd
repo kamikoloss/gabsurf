@@ -14,6 +14,7 @@ signal buy_area_entered
 @export var _cost_label: Label
 
 @export var _buy_panel: Panel
+@export var _buy_label: Label
 @export var _buy_area: Area2D
 
 @export var _max_panel: Panel
@@ -32,6 +33,7 @@ func _ready():
 func setup_gear_ui(gear_info):
 	_desc_label_2.visible = false
 
+	_buy_label.text = "BUY"
 	_icon.texture = gear_info["icon"]
 	_title_label.text = gear_info["title"]
 	_desc_label_1.text = gear_info["desc"]
@@ -46,6 +48,7 @@ func setup_stage_ui(stage_info):
 	_cost_panel.visible = false
 	_max_panel.visible = false
 
+	_buy_label.text = "GO"
 	_title_label.text = stage_info["title"]
 	_desc_label_1.text = stage_info["desc"]
 
