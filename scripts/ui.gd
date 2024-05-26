@@ -18,6 +18,7 @@ const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 @export var _title_label: Label
 @export var _version_label: Label
 @export var _gears_label: RichTextLabel
+@export var _stage_label: RichTextLabel
 @export var _next_label: RichTextLabel
 
 @export var _help_pause_label: Label
@@ -46,7 +47,7 @@ func _ready():
 	Global.score_changed.connect(_on_score_changed)
 
 	_version_label.text = Global.VERSION
-	_refresh_next_label()
+	_refresh_stage_label()
 
 	# _on_state_changed() の TITLE と同じ処理
 	# _ready() 内で 初期 state が変わるので connect() が追い付かない
@@ -123,7 +124,7 @@ func _on_state_changed(_from):
 
 
 func _on_stage_changed(_from):
-	_refresh_next_label()
+	_refresh_stage_label()
 	
 	# BG の背景色を変更する
 	var _cartain_color = Color(0.2, 0.2, 0.2)
@@ -205,10 +206,12 @@ func _on_score_changed(from):
 	_score_tween.tween_property(_rank_meter, "position", _meter_position, LABEL_DURATION)
 
 
-func _refresh_next_label():
-	var _base = "NEXT:\n"
-	var _rank = ""
+func _refresh_stage_label():
+	# STAGE
+	_stage_label.text = "STAGE: {0}".format([str(Global.stage_number)])
 
+	# NEXT
+	var _rank = ""
 	var _target_rank = Global.STAGE_TARGET_RANK[Global.stage_number]
 	match _target_rank:
 		Global.Rank.BLUE:
@@ -222,7 +225,7 @@ func _refresh_next_label():
 		Global.Rank.BLACK:
 			_rank = "[color=#808080]10,000,000[/color]"
 
-	_next_label.text = _base + _rank
+	_next_label.text = "NEXT: " + _rank
 
 
 func _refresh_gear_label():

@@ -134,6 +134,7 @@ func get_info(type):
 	_max = "{0}/{1}".format([_count + 1, _info["m"]])
 
 	# アイコン画像
+	# 使用しない可能性 (_icons が空の可能性) もある
 	if 0 < _icons.size():
 		_icon = _icons[_info["i"]]
 

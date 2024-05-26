@@ -62,6 +62,9 @@ func _on_stage_changed(_from):
 	# Gate の開きを元に戻す
 	_gate_gap_diff = 0
 
+	if Global.stage == Global.StageType.X:
+		_gate_gap_diff = -128
+
 
 func _on_hero_got_money():
 	_money_counter_gear_shop += 1
