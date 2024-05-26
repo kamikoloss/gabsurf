@@ -22,8 +22,9 @@ const ANTI_DAMAGE_DURATION = 1.0 # Hero が被ダメージ時に何秒間無敵�
 @export var _jump_particles: GPUParticles2D
 
 @export var _jump_label: Label
-@export var _life_label: Label
+@export var _shoes_texture: TextureRect
 @export var _anti_damage_bar: TextureProgressBar
+@export var _life_label: Label
 
 
 var _is_anti_damage = false # Hero が無敵状態かどうか
@@ -45,8 +46,11 @@ func _ready():
 	Global.hero_got_damage.connect(_on_hero_got_damage)
 	Global.enemy_dead.connect(_on_enemy_dead)
 
+	_anti_damage_bar.visible = false
+
 	_shoes.remove_from_group("Weapon")
 	_jump_label.visible = false
+	_shoes_texture.visible = false
 
 
 func _physics_process(delta):
@@ -139,6 +143,7 @@ func _on_hero_got_gear(gear):
 			_move_velocity *= 1.25
 			Global.extra *= 2
 		Global.GearType.SHO:
+			_shoes_texture.visible = true
 			_shoes.add_to_group("Weapon")
 
 
@@ -223,7 +228,7 @@ func _on_body_area_exited(area):
 		return
 
 	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
-	if area.is_in_group("ScreenOut"):
+	if area.is_in_group("Screen"):
 		print("[Hero] exited screen.")
 		Global.life = 0
 		Global.state = Global.State.GAMEOVER

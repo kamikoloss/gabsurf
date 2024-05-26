@@ -49,6 +49,6 @@ func _start_move():
 
 
 func _on_level_area_exited(area):
-	if area.is_in_group("ScreenOut"):
+	if area.is_in_group("Screen"):
 		#print("[Gate] destroyed.")
 		queue_free()

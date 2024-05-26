@@ -41,6 +41,7 @@ func setup_gear_ui(gear_info):
 
 # Stage 用の UI を設定する
 func setup_stage_ui(stage_info):
+	_icon.visible = false
 	_desc_label_2.visible = false
 	_cost_panel.visible = false
 	_max_panel.visible = false

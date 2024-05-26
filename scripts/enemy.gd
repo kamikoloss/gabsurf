@@ -28,7 +28,7 @@ func _process(delta):
 
 
 func _on_area_entered(area):
-	if area.is_in_group("ScreenIn"):
+	if area.is_in_group("Screen"):
 		is_active = true
 
 	if area.is_in_group("Hero"):
@@ -41,7 +41,7 @@ func _on_area_entered(area):
 
 
 func _on_area_exited(area):
-	if area.is_in_group("ScreenOut"):
+	if area.is_in_group("Screen"):
 		#print("[Enemy] destroyed.")
 		queue_free()
 

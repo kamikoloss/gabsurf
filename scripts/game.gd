@@ -12,14 +12,15 @@ const GATE_GAP_STEP = 16 # Gate が難易度上昇で何 px ずつ狭くなっ�
 const LEVEL_BASE = 1 # Gate 通過時に Level に加算される値
 
 
-@export var _screen: Node
-@export var _hero_anti_damage_bar: TextureProgressBar
+@export var _screen: Area2D
 
 
 var _slow_tween = null
 
 
 func _ready():
+	Engine.time_scale = 1.0
+
 	Global.state_changed.connect(_on_state_changed)
 	Global.stage_changed.connect(_on_stage_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
@@ -45,11 +46,9 @@ func _on_state_changed(_from):
 		Global.State.TITLE:
 			print("---------------- TITLE ----------------")
 			get_tree().paused = true
-			_hero_anti_damage_bar.visible = false
 		# ゲーム中
 		Global.State.ACTIVE:
 			print("---------------- ACTIVE ----------------")
-			Engine.time_scale = 1.0
 			get_tree().paused = false
 		# ポーズ中
 		Global.State.PAUSED:

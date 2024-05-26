@@ -1,4 +1,4 @@
-[gd_scene load_steps=49 format=3 uid="uid://d5mnddj5uoeu"]
+[gd_scene load_steps=48 format=3 uid="uid://d5mnddj5uoeu"]
 
 [ext_resource type="Script" path="res://scripts/game.gd" id="1_sqtl6"]
 [ext_resource type="Script" path="res://scripts/ui.gd" id="1_twex4"]
@@ -119,9 +119,6 @@ alpha_curve = SubResource("CurveTexture_mcmct")
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_3ebco"]
 size = Vector2(360, 640)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_d24ya"]
-size = Vector2(520, 800)
-
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4c1x3"]
 size = Vector2(256, 256)
 
@@ -177,12 +174,11 @@ corner_radius_bottom_left = 8
 
 [node name="Main" type="Node"]
 
-[node name="Game" type="Node2D" parent="." node_paths=PackedStringArray("_screen", "_hero_anti_damage_bar")]
+[node name="Game" type="Node2D" parent="." node_paths=PackedStringArray("_screen")]
 script = ExtResource("1_sqtl6")
 _screen = NodePath("Screen")
-_hero_anti_damage_bar = NodePath("Hero/UI/AntiDamageBar")
 
-[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_particles", "_jump_label", "_life_label", "_anti_damage_bar")]
+[node name="Hero" type="CharacterBody2D" parent="Game" node_paths=PackedStringArray("_shoes", "_hero_sprite", "_jump_particles", "_jump_label", "_shoes_texture", "_anti_damage_bar", "_life_label")]
 z_index = 30
 position = Vector2(120, 320)
 scale = Vector2(0.4, 0.4)
@@ -192,8 +188,9 @@ _shoes = NodePath("Shoes")
 _hero_sprite = NodePath("AnimatedSprite2D")
 _jump_particles = NodePath("JumpParticles")
 _jump_label = NodePath("UI/Jump")
-_life_label = NodePath("UI/Life")
+_shoes_texture = NodePath("UI/Shoes")
 _anti_damage_bar = NodePath("UI/AntiDamageBar")
+_life_label = NodePath("UI/Life")
 
 [node name="Camera2D" type="Camera2D" parent="Game/Hero"]
 position = Vector2(-300, -800)
@@ -253,23 +250,33 @@ anchors_preset = 0
 
 [node name="Jump" type="Label" parent="Game/Hero/UI"]
 layout_mode = 0
-offset_left = -160.0
+offset_left = -128.0
 offset_top = -160.0
-offset_right = 160.0
-offset_bottom = -120.0
+offset_right = 128.0
+offset_bottom = -128.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 24
 text = "○○○○○"
 horizontal_alignment = 1
 vertical_alignment = 1
 
+[node name="Shoes" type="TextureRect" parent="Game/Hero/UI"]
+self_modulate = Color(1, 0, 0, 1)
+layout_mode = 0
+offset_left = -32.0
+offset_top = -128.0
+offset_right = 32.0
+offset_bottom = -120.0
+texture = ExtResource("3_fq3iy")
+expand_mode = 1
+
 [node name="AntiDamageBar" type="TextureProgressBar" parent="Game/Hero/UI"]
 layout_mode = 0
 offset_left = -64.0
-offset_top = 110.0
+offset_top = 112.0
 offset_right = 192.0
-offset_bottom = 366.0
-scale = Vector2(0.5, 0.05)
+offset_bottom = 368.0
+scale = Vector2(0.5, 0.063)
 step = 0.1
 value = 100.0
 texture_progress = ExtResource("3_fq3iy")
@@ -278,30 +285,21 @@ tint_progress = Color(1, 0, 1, 1)
 [node name="Life" type="Label" parent="Game/Hero/UI"]
 self_modulate = Color(1, 0, 1, 1)
 layout_mode = 0
-offset_left = -160.0
-offset_top = 120.0
-offset_right = 160.0
+offset_left = -128.0
+offset_top = 128.0
+offset_right = 128.0
 offset_bottom = 160.0
 theme_override_fonts/font = ExtResource("1_vc8gg")
-theme_override_font_sizes/font_size = 32
+theme_override_font_sizes/font_size = 24
 text = "♥♥♥"
 horizontal_alignment = 1
 vertical_alignment = 1
 
-[node name="Screen" type="Node2D" parent="Game"]
+[node name="Screen" type="Area2D" parent="Game" groups=["Screen"]]
 
-[node name="ScreenIn" type="Area2D" parent="Game/Screen" groups=["ScreenIn"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Screen/ScreenIn"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Screen"]
 position = Vector2(180, 320)
 shape = SubResource("RectangleShape2D_3ebco")
-debug_color = Color(0, 0, 0, 0)
-
-[node name="ScreenOut" type="Area2D" parent="Game/Screen" groups=["ScreenOut"]]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Game/Screen/ScreenOut"]
-position = Vector2(180, 320)
-shape = SubResource("RectangleShape2D_d24ya")
 debug_color = Color(0, 0, 0, 0)
 
 [node name="Walls" type="Node2D" parent="Game"]
@@ -803,6 +801,7 @@ theme_override_constants/margin_left = 20
 theme_override_constants/margin_right = 20
 
 [node name="Panel" type="Panel" parent="UI/CanvasLayer/Layout/Body"]
+visible = false
 layout_mode = 2
 theme_override_styles/panel = SubResource("StyleBoxFlat_mb1rg")
 
