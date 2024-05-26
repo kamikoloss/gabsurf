@@ -103,6 +103,7 @@ func get_info(type):
 	var _title = ""
 	var _desc = ""
 	var _max = ""
+	var _icon = null
 
 	# 名称をランクの色にする
 	var _rank_color = null
@@ -132,12 +133,16 @@ func get_info(type):
 	var _count = Global.gears.count(type)
 	_max = "{0}/{1}".format([_count + 1, _info["m"]])
 
+	# アイコン画像
+	if 0 < _icons.size():
+		_icon = _icons[_info["i"]]
+
 	return {
 		"title": _title,
 		"desc": _desc,
 		"cost": "$" + str(_info["c"] * Global.MONEY_RATIO),
 		"max": _max,
-		"icon": _icons[_info["i"]],
+		"icon": _icon,
 	}
 
 

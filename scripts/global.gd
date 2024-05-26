@@ -70,13 +70,12 @@ enum StageType {
 enum ShopType { NONE, GEAR, STAGE }
 
 
-const STAGE_TARGET_RANK = [ # Stage ごとの目標 Rank
-	null,
-	Global.Rank.BLUE,
-	#Global.Rank.GREEN,
-	Global.Rank.RED,
-	Global.Rank.GOLD,
-]
+const STAGE_TARGET_RANK = { # Stage ごとの目標 Rank
+	#1: Global.Rank.BLUE,
+	1: Global.Rank.GREEN,
+	2: Global.Rank.RED,
+	3: Global.Rank.GOLD,
+}
 
 const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数

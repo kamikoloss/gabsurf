@@ -59,7 +59,7 @@ func setup_stage_ui():
 
 	_enter_label_1.text = "STAGE"
 	_enter_label_2.text = str(Global.stage_number + 1)
-	_middle_label.text = "LEVEL -> 0"
+	_middle_label.text = "LEVEL will be reset to 0."
 
 	# Shop に並べる Stage を2つ抽選する
 	var _active_types = _stage_shop.get_active_types()
