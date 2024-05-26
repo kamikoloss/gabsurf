@@ -9,9 +9,10 @@ const SLOW_DURATION_GAMEOVER = 1.0 # ゲームオーバー時に何秒かけて�
 
 @export var _bgm_player: AudioStreamPlayer
 @export var _jump_sound: AudioStream
+@export var _damage_sound: AudioStream
 @export var _money_sound: AudioStream
 @export var _gear_sound: AudioStream
-@export var _damage_sound: AudioStream
+@export var _stage_sound: AudioStream
 @export var _gameover_sound: AudioStream
 #@export var _retry_sound: AudioStream
 
@@ -22,6 +23,7 @@ var _bgm_position = null
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
+	Global.stage_changed.connect(_on_stage_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
@@ -49,8 +51,13 @@ func _on_state_changed(_from):
 			_enter_slow(SLOW_SPEED_GAMEOVER, SLOW_DURATION_GAMEOVER)
 
 
+func _on_stage_changed(_from):
+	_play_se(_stage_sound)
+
+
 func _on_ui_jumped():
-	_play_se(_jump_sound)
+	if Global.state != Global.State.GAMEOVER:
+		_play_se(_jump_sound)
 
 
 func _on_hero_got_damage():
@@ -81,13 +88,13 @@ func _on_enemy_dead():
 
 # SE を鳴らす
 func _play_se(sound):
-	var _se_player: AudioStreamPlayer = AudioStreamPlayer.new()
-	add_child(_se_player)
-	_se_player.stream = sound
-	_se_player.volume_db = -3.0
-	_se_player.play()
-	await _se_player.finished
-	_se_player.queue_free()
+	var _player: AudioStreamPlayer = AudioStreamPlayer.new()
+	add_child(_player)
+	_player.stream = sound
+	_player.volume_db = -3.0
+	_player.play()
+	await _player.finished
+	_player.queue_free()
 
 
 # スロー用の Tween を取得する
