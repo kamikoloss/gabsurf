@@ -86,7 +86,11 @@ func get_active_types():
 		if Global.gears.count(g) == _gear_info[g]["m"]:
 			_active_types.remove_at(_active_types.find(g))
 
-	# 現在の残機が最大数の場合: LFP を除く
+	# (GTG) ゲートが狭くならないステージの場合: 除く
+	var _gate_gap_stages = [Global.StageType.B, Global.StageType.D]
+	if Global.stage not in _gate_gap_stages:
+		_active_types.remove_at(_active_types.find(Global.GearType.GTG))
+	# (LFP) 現在の残機が最大数の場合: 除く
 	if Global.life == Global.LIFE_MAX and _active_types.has(Global.GearType.LFP):
 		_active_types.remove_at(_active_types.find(Global.GearType.LFP))
 

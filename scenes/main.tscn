@@ -540,7 +540,6 @@ offset_bottom = 160.0
 
 [node name="Mask" type="TextureRect" parent="UI/CanvasLayer/Rank"]
 clip_children = 1
-custom_minimum_size = Vector2(320, 320)
 layout_mode = 0
 offset_right = 320.0
 offset_bottom = 320.0

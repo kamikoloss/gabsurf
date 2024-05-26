@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://cxqj3ync58bdc"]
+[gd_scene load_steps=14 format=3 uid="uid://cxqj3ync58bdc"]
 
 [ext_resource type="Script" path="res://scripts/gate.gd" id="1_7s2va"]
 [ext_resource type="Texture2D" uid="uid://bopq1k1v0v1p7" path="res://images/square.png" id="1_qsvs6"]
@@ -63,23 +63,33 @@ radius = 64.0
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_0dqem"]
 size = Vector2(256, 256)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_6y2dd"]
-size = Vector2(80, 80)
-
-[node name="Gate" type="Node2D" node_paths=PackedStringArray("_gate_top", "_gate_bottom", "_money")]
+[node name="Gate" type="Node2D" node_paths=PackedStringArray("_gates", "_gate_top", "_gate_bottom", "_money", "_level_area")]
 z_index = 20
 script = ExtResource("1_7s2va")
+_gates = NodePath("Mask/Gates")
 _gate_top = NodePath("Mask/Gates/GateTop")
 _gate_bottom = NodePath("Mask/Gates/GateBottom")
 _money = NodePath("Mask/Gates/Money")
+_level_area = NodePath("Mask/Gates/Level")
 
-[node name="Mask" type="Sprite2D" parent="."]
+[node name="Mask" type="TextureRect" parent="."]
 clip_children = 1
-scale = Vector2(2, 1.875)
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -180.0
+offset_top = -240.0
+offset_right = 180.0
+offset_bottom = 240.0
+grow_horizontal = 2
+grow_vertical = 2
 texture = ExtResource("1_qsvs6")
 
 [node name="Gates" type="Node2D" parent="Mask"]
-scale = Vector2(0.5, 0.533333)
+position = Vector2(180, 240)
+scale = Vector2(1, 0.999999)
 
 [node name="GateTop" type="Area2D" parent="Mask/Gates" groups=["Wall"]]
 position = Vector2(0, -384)
@@ -116,10 +126,3 @@ scale = Vector2(0.05, 10)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Mask/Gates/Level"]
 shape = SubResource("RectangleShape2D_0dqem")
-
-[node name="Area2D" type="Area2D" parent="."]
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
-shape = SubResource("RectangleShape2D_6y2dd")
-
-[connection signal="area_exited" from="Area2D" to="." method="_on_area_2d_area_exited"]

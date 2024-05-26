@@ -149,6 +149,13 @@ func _spawn_gate(height_diff, x_diff, is_set_money):
 	_gate.gap_diff = _gate_gap_diff
 	_gate.height_diff += height_diff
 	_gate.is_set_money = is_set_money
+	
+	match Global.stage:
+		Global.StageType.C:
+			_gate.is_move = true
+			_gate.move_duration = 2.0
+			_gate.move_gap = 80
+
 	add_child(_gate)
 	#print("[Spawner] spawned a gate.")
 
