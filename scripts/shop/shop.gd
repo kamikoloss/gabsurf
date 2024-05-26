@@ -112,14 +112,16 @@ func _get_random_type(active_types, ignore_type = null):
 	return _type
 
 
-func _on_gear_shop_buy_area_entered(gear_type):
+func _on_gear_shop_buy_area_entered(shop_panel: ShopPanel, gear_type: Global.GearType):
 	var _cost = _gear_shop.get_cost(gear_type) * Global.MONEY_RATIO
 
 	# Money が足りない場合: 買えない
 	if Global.money < _cost:
+		shop_panel.change_panel_color(Color(0.2, 0.2, 0.2)) # グレー
 		print("[Shop] try to get gear, but no money!! (money: {0}, cost: {1})".format([Global.money, _cost]))
 	# Money が足りる場合
 	else:
+		shop_panel.change_panel_color(Color(0.4, 0.2, 0.2)) # グレーがかった赤
 		Global.money -= _cost
 		Global.shop_through_count = 0
 		Global.gears += [gear_type]
@@ -128,8 +130,8 @@ func _on_gear_shop_buy_area_entered(gear_type):
 		Global.hero_got_gear.emit(gear_type)
 
 
-func _on_stage_shop_buy_area_entered(stage_type):
+func _on_stage_shop_buy_area_entered(shop_panel: ShopPanel, stage_type: Global.StageType):
+	shop_panel.change_panel_color(Color(0.4, 0.2, 0.2)) # グレーがかった赤
+
 	Global.stage = stage_type
 	Global.level = 0
-
-	# TODO: 背景を変える

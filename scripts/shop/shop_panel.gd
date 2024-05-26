@@ -51,7 +51,7 @@ func setup_stage_ui(stage_info):
 
 
 # Buy Panel の色を変更する
-func _change_panel_color(color):
+func change_panel_color(color):
 	var _style = _buy_panel.get_theme_stylebox("panel").duplicate()
 	_style.bg_color = color
 	_buy_panel.add_theme_stylebox_override("panel", _style)
@@ -62,9 +62,8 @@ func _on_buy_area_entered(area):
 		return
 
 	if gear_type != Global.GearType.NONE:
-		buy_area_entered.emit(gear_type)
+		buy_area_entered.emit(self, gear_type)
 	if stage_type != Global.StageType.NONE:
-		buy_area_entered.emit(stage_type)
+		buy_area_entered.emit(self, stage_type)
 
 	_buy_area.queue_free()
-	_change_panel_color(Color(0.5, 0.25, 0.25)) # グレーがかった緑

@@ -12,7 +12,7 @@ var _stage_info = {
 	Global.StageType.B: { "g": 3, "t": "物騒な街", "d": "ショップを通過するごとに\nゲートの狭さ -8" },
 	Global.StageType.C: { "g": 2, "t": "ノリノリな街", "d": "ゲートが上下に動く" },
 	# Stage 3
-	Global.StageType.D: { "g": 5, "t": "すごく物騒な街", "d": "ショップを通過するごとに\nゲートの狭さ -16" },
+	Global.StageType.D: { "g": 5, "t": "かなり物騒な街", "d": "ショップを通過するごとに\nゲートの狭さ -16" },
 	Global.StageType.E: { "g": 3, "t": "薄暗い街", "d": "深い霧に包まれて\n視界が悪くなる" },
 	# Stage X
 	Global.StageType.X: { "g": 5, "t": "遠い街", "d": "どこまで行けるか\n試してみよう"},

@@ -214,6 +214,8 @@ func _refresh_stage_label():
 	var _rank = ""
 	var _target_rank = Global.STAGE_TARGET_RANK[Global.stage_number]
 	match _target_rank:
+		Global.Rank.NONE:
+			_rank = "[color=#808080]NONE[/color]"
 		Global.Rank.BLUE:
 			_rank = "[color=#8080FF]1,000[/color]"
 		Global.Rank.GREEN:
@@ -222,8 +224,6 @@ func _refresh_stage_label():
 			_rank = "[color=#FF8080]100,000[/color]"
 		Global.Rank.GOLD:
 			_rank = "[color=#FFFF80]1,000,000[/color]"
-		Global.Rank.BLACK:
-			_rank = "[color=#808080]10,000,000[/color]"
 
 	_next_label.text = "NEXT: " + _rank
 

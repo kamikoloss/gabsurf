@@ -81,6 +81,7 @@ const STAGE_TARGET_RANK = { # Stage ごとの目標 Rank
 	#1: Global.Rank.GREEN,
 	#2: Global.Rank.RED,
 	#3: Global.Rank.GOLD,
+	4: Global.Rank.NONE,
 }
 
 
