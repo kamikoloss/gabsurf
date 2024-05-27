@@ -69,7 +69,7 @@ enum StageType {
 enum ShopType { NONE, GEAR, STAGE }
 
 
-const VERSION = "v0.6.0" # ゲームのバージョン
+const VERSION = "v0.6.1" # ゲームのバージョン
 const MONEY_RATIO = 5 # Money の係数
 const LIFE_MAX = 3 # Life の最大数
 
