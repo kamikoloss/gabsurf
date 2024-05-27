@@ -2,13 +2,13 @@ extends Node2D
 class_name Shop
 
 
-const DESTROY_TIME = 10 # 生まれて何秒後に自身を破壊するか
 const SHOP_PANEL_POSITION_Y = { "a": 120, "b": 400 }
 
 
 @export var _shop_panel_scene: PackedScene
 
-@export var _shop_area: Area2D
+@export var _shop_area: ShopArea
+
 @export var _enter_label_1: Label
 @export var _enter_label_2: Label
 @export var _middle_panel: Panel
@@ -19,9 +19,8 @@ const SHOP_PANEL_POSITION_Y = { "a": 120, "b": 400 }
 
 
 func _ready():
+	_shop_area.area_exited.connect(_on_shop_area_exited)
 	_middle_panel.visible = false
-
-	_auto_destroy()
 
 
 # Gear 用の UI を設定する
@@ -81,11 +80,10 @@ func setup_stage_ui():
 		_shop_panel.setup_stage_ui(_stage_info)
 
 
-# 指定秒数後に自身を破壊する
-func _auto_destroy():
-	await get_tree().create_timer(DESTROY_TIME).timeout
-	#print("[Shop] destroyed.")
-	queue_free()
+func _on_shop_area_exited(area):
+	if area.is_in_group("Screen"):
+		#print("[Shop] destroyed.")
+		queue_free()
 
 
 # ランダムな値を抽選する

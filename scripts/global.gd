@@ -39,7 +39,6 @@ enum Rank {
 	GREEN,
 	RED,
 	GOLD,
-	BLACK,
 }
 
 enum GearType {

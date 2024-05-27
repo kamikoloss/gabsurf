@@ -108,7 +108,7 @@ func _on_hero_exited_shop(_shop_type: Global.ShopType):
 	_is_spawn_gate = true
 	_is_spawn_enemy = true
 
-	# SPR 所持 and ショップをスルーした and 再出現ではない 場合: Gear Shop が再出現させる
+	# SPR 所持 and ショップをスルーした and 再出現ではない 場合: Gear Shop を再出現させる
 	if Global.gears.has(Global.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
 		_spawn_gear_shop()
 		_is_gear_shop_respawned = true
@@ -117,6 +117,7 @@ func _on_hero_exited_shop(_shop_type: Global.ShopType):
 		_is_gear_shop_respawned = false
 
 	# 退店時に Rank が Stage Shop 出現の条件に達している場合: Stage Shop を出現させる
+	# Stage Shop を選ばない限り永遠に再出現しつづける
 	var _target_rank = []
 	for n in Global.stage_number:
 		_target_rank.append(Global.STAGE_TARGET_RANK[Global.stage_number])
