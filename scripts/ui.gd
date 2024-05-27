@@ -231,8 +231,7 @@ func _refresh_stage_label():
 func _refresh_gear_label():
 	var _text = "Gears: {"
 	for g in Global.gears:
-		var _info = _gear_shop.get_info(g)
-		_text += _info["title"] + ","
+		_text += _gear_shop.get_info(g)["title"] + ","
 	_text += "}"
 
 	_gears_label.text = _text

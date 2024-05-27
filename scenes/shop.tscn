@@ -1,4 +1,4 @@
-[gd_scene load_steps=22 format=3 uid="uid://cwxachiyntvge"]
+[gd_scene load_steps=23 format=3 uid="uid://cwxachiyntvge"]
 
 [ext_resource type="Script" path="res://scripts/shop/shop.gd" id="1_1bss0"]
 [ext_resource type="FontFile" uid="uid://rpqrb0labivf" path="res://fonts/PixelMplus12-Regular.ttf" id="2_bu7gq"]
@@ -19,6 +19,7 @@
 [ext_resource type="Texture2D" uid="uid://dplqhpbovf1to" path="res://images/item10.png" id="14_8y0vs"]
 [ext_resource type="Texture2D" uid="uid://bu7vucobssfp5" path="res://images/item11.png" id="15_ple51"]
 [ext_resource type="Texture2D" uid="uid://w6v16t0sh28p" path="res://images/item12.png" id="16_crw0l"]
+[ext_resource type="Texture2D" uid="uid://crrkcq4fr71gf" path="res://images/stage.png" id="20_yg611"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_8o4fh"]
 size = Vector2(480, 640)
@@ -118,3 +119,4 @@ _icons = Array[Texture]([ExtResource("5_plrx5"), ExtResource("5_2crfv"), ExtReso
 
 [node name="StageShop" type="Node" parent="."]
 script = ExtResource("5_yj3d7")
+_icons = Array[Texture]([ExtResource("20_yg611")])

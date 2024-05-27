@@ -6,7 +6,7 @@ class_name GearShop
 
 
 # Gear の情報
-# "c": コスト, "m": 最大何個買えるか, "i": ITEM_SPRITES の index,
+# "c": コスト, "m": 最大何個買えるか, "i": _icons index,
 # "t": 名称, "d": 説明文, "f": 説明文のフォーマット,
 var _gear_info = {
 	Global.GearType.ATD: { "c": 5, "m": 3, "i": 3, "t": "プロテイン", "d": "敵を倒すたびに\n{0}秒無敵になる", "f": [1, 2, 3] },
@@ -100,10 +100,15 @@ func get_active_types():
 func get_info(type):
 	var _info = _gear_info[type]
 	
+	var _icon = null
 	var _title = ""
 	var _desc = ""
 	var _max = ""
-	var _icon = null
+
+	# アイコン画像
+	# 使用しない可能性 (_icons が空の可能性) もある
+	if 0 < _icons.size():
+		_icon = _icons[_info["i"]]
 
 	# 名称をランクの色にする
 	var _rank_color = null
@@ -133,17 +138,12 @@ func get_info(type):
 	var _count = Global.gears.count(type)
 	_max = "{0}/{1}".format([_count + 1, _info["m"]])
 
-	# アイコン画像
-	# 使用しない可能性 (_icons が空の可能性) もある
-	if 0 < _icons.size():
-		_icon = _icons[_info["i"]]
-
 	return {
+		"icon": _icon,
 		"title": _title,
 		"desc": _desc,
 		"cost": "$" + str(_info["c"] * Global.MONEY_RATIO),
 		"max": _max,
-		"icon": _icon,
 	}
 
 
