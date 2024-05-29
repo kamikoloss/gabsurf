@@ -122,7 +122,7 @@ func _on_hero_exited_shop(shop_type: Global.ShopType):
 				_gate_gap_diff -= 16
 
 		# SPR: 所持 and ショップをスルーした and 再出現ではない 場合: Gear Shop を再出現させる
-		if Global.gears.has(Global.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
+		if Global.gears.has(Global.GearType.SPR) and 0 < _gear_shop_through_count and !_is_gear_shop_respawned:
 			_spawn_gear_shop()
 			_is_gear_shop_respawned = true
 		# Shop が再出現しなかった場合: フラグを更新する
@@ -132,7 +132,7 @@ func _on_hero_exited_shop(shop_type: Global.ShopType):
 		# SPT
 		if Global.gears.has(Global.GearType.SPT) and 0 < _gear_shop_through_count:
 			# TODO: メッセージ表示
-			Global.money += Global.shop_through_count * Global.MONEY_RATIO
+			Global.money += _gear_shop_through_count * Global.MONEY_RATIO
 
 
 # Gate を生成しつづける (_process 内で呼ぶ)

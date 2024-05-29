@@ -19,7 +19,7 @@ var _gear_info = {
 	Global.GearType.GTG: { "c": 5, "m": 5, "i": 8, "t": "ハックツール", "d": "ゲートの開き\n+64", "f": null },
 	Global.GearType.GTM: { "c": 3, "m": 3, "i": 1, "t": "ビール", "d": "ゲートが{0}個ずつ\n出現するようになる", "f": [2, 3, 5] },
 	Global.GearType.JMA: { "c": 2, "m": 3, "i": 7, "t": "ボード", "d": "ジャンプ時に\n加速する ({0})", "f": ["小", "中", "大"] },
-	#Global.GearType.JMS: { "c": 3, "m": 3, "i": 7, "t": "半重力装置", "d": "ジャンプボタンを\n長押しすると\nゆっくり落下する ({0})", "f": ["小", "中", "大"] },
+	#Global.GearType.JMS: { "c": 3, "m": 3, "i": 7, "t": "反重力装置", "d": "ジャンプボタンを\n長押しすると\nゆっくり落下する ({0})", "f": ["小", "中", "大"] },
 	Global.GearType.JMV: { "c": 2, "m": 3, "i": 7, "t": "ソフトウィール", "d": "ジャンプの高さが\n低くなる ({0})", "f": ["小", "中", "大"] },
 	Global.GearType.LFP: { "c": 5, "m": 5, "i": 12, "t": "生命保険", "d": "残機\n+1", "f": null },
 	Global.GearType.LFM: { "c": 0, "m": 3, "i": 12, "t": "臓器売買", "d": "残機 -1\nMONEY +{0}".format([10 * Global.MONEY_RATIO]), "f": null },
