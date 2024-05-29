@@ -121,7 +121,6 @@ func _on_gear_shop_buy_area_entered(shop_panel: ShopPanel, gear_type: Global.Gea
 	else:
 		shop_panel.change_panel_color(Color(0.4, 0.2, 0.2)) # グレーがかった赤
 		Global.money -= _cost
-		Global.shop_through_count = 0
 		Global.gears += [gear_type]
 		print("[Shop] got gear {0}. (cost: {1})".format([gear_type, _cost]))
 		# TODO: signal の命名ルールから外れている

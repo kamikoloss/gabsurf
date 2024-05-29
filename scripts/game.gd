@@ -114,8 +114,6 @@ func _on_hero_entered_shop(shop_type: Global.ShopType):
 	if Global.state != Global.State.ACTIVE:
 		return
 
-	Global.shop_through_count += 1 # Gear を取得したら 0 に戻す
-
 	match shop_type:
 		Global.ShopType.GEAR:
 			_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
@@ -126,11 +124,6 @@ func _on_hero_entered_shop(shop_type: Global.ShopType):
 func _on_hero_exited_shop(shop_type: Global.ShopType):
 	if Global.state != Global.State.ACTIVE:
 		return
-
-	# SPT
-	if Global.gears.has(Global.GearType.SPT) and 0 < Global.shop_through_count:
-		# TODO: メッセージ表示
-		Global.money += Global.shop_through_count * Global.MONEY_RATIO
 
 	match shop_type:
 		Global.ShopType.GEAR:

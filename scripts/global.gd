@@ -181,8 +181,6 @@ var life: int = -1:
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var gears: Array[GearType] = [] # 所持している Gear のリスト
 
-var shop_through_count: int = 0 # Shop を連続何回スルーしたか
-
 
 # グローバル変数の初期化を行う
 # シーン読み込み後に必ず呼ぶこと
@@ -195,11 +193,10 @@ func initialize():
 	money = 0
 	extra = 1
 	score = 0
-
 	life = LIFE_MAX
+
 	can_hero_jump = true
 	gears = []
-	shop_through_count = 0
 
 
 # 現在の Rank を計算する
