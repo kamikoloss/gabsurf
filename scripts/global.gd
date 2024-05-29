@@ -8,6 +8,7 @@ signal level_changed
 signal money_changed
 signal extra_changed
 signal score_changed
+signal life_changed
 
 signal ui_jumped # ジャンプボタンを押したとき
 signal ui_paused # ポーズボタンを押したとき
@@ -166,7 +167,17 @@ var score: int = -1:
 		score_changed.emit(_from)
 		rank = _calc_rank()
 
-var life: int = -1
+var life: int = -1:
+	get:
+		return life
+	set(value):
+		if value == life:
+			return
+		var _from = life
+		life = value
+		#print("[Global] life is changed. ({0} -> {1})".format([_from, value]))
+		life_changed.emit(_from)
+
 var can_hero_jump: bool = true # Hero がジャンプできるかどうか キーボード操作のときだけ確認する
 var gears: Array[GearType] = [] # 所持している Gear のリスト
 

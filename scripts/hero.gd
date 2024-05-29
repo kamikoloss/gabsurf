@@ -40,6 +40,7 @@ var _anti_damage_tween = null
 
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
+	Global.life_changed.connect(_on_life_changed)
 	Global.ui_jumped.connect(_on_ui_jumped)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_touched_damage.connect(_on_hero_touched_damage)
@@ -83,6 +84,14 @@ func _on_state_changed(_from):
 			_hero_sprite.play("die")
 			# 残機表示なし
 			_life_label.text = ""
+
+
+func _on_life_changed(_from):
+	# 残機の表示を更新する
+	var _life_text = ""
+	for n in Global.life:
+		_life_text += "♥"
+	_life_label.text = _life_text
 
 
 func _on_ui_jumped():
@@ -172,12 +181,6 @@ func _on_hero_got_damage():
 	# コケる
 	_hero_sprite.stop()
 	_hero_sprite.play("die")
-
-	# Life 表示を更新する
-	var _life_text = ""
-	for n in Global.life:
-		_life_text += "♥"
-	_life_label.text = _life_text
 
 	# Life が 0 (以下) になった場合
 	if Global.life <= 0:
