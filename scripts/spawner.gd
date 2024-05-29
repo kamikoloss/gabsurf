@@ -11,8 +11,6 @@ const ENEMY_SPAWN_COOLTIME_DEFAULT = 3.0 # 敵が何秒ごとに出現するか�
 @export var _shop_scene: PackedScene
 
 
-var _money_count_difficult = 0 # Money を取るたびに 1 増加する (難易度が上昇したら 0 に戻す)
-var _money_count_difficult_quota = 3 #Money を何回取るたびに難易度が上昇するか
 var _money_count_gear_shop = 0 # Money を取得するたびに 1 増加する (Gear Shop が出現したら 0 に戻す)
 var _money_count_gear_shop_quota = 3 # Money を何回取るたびに Gear Shop が出現するか
 
@@ -71,7 +69,6 @@ func _on_stage_changed(_from):
 
 func _on_hero_got_money():
 	_money_count_gear_shop += 1
-	_money_count_difficult += 1
 
 	# Money の取得回数が Gear Shop 出現の条件に達した場合: Gear Shop を出現させる
 	if _money_count_gear_shop_quota <= _money_count_gear_shop:
@@ -79,16 +76,6 @@ func _on_hero_got_money():
 
 		if !Global.gears.has(Global.GearType.NOS):
 			_spawn_gear_shop()
-
-	# 難易度上昇の規定回数に達した場合
-	if _money_count_difficult_quota <= _money_count_difficult:
-		_money_count_difficult = 0
-
-		match Global.stage:
-			Global.StageType.B:
-				_gate_gap_diff -= 8
-			Global.StageType.D:
-				_gate_gap_diff -= 16
 
 
 func _on_hero_got_gear(gear):
@@ -106,11 +93,8 @@ func _on_hero_got_gear(gear):
 
 
 func _on_hero_entered_shop(shop_type: Global.ShopType):
-	match shop_type:
-		Global.ShopType.GEAR:
-			_gear_shop_through_count += 1
-		Global.ShopType.STAGE:
-			pass
+	if shop_type == Global.ShopType.GEAR:
+		_gear_shop_through_count += 1
 
 
 func _on_hero_exited_shop(shop_type: Global.ShopType):
@@ -130,23 +114,25 @@ func _on_hero_exited_shop(shop_type: Global.ShopType):
 	if Global.rank in _target_rank:
 		_spawn_stage_shop()
 
-	match shop_type:
-		Global.ShopType.GEAR:
-			# SPR: 所持 and ショップをスルーした and 再出現ではない 場合: Gear Shop を再出現させる
-			if Global.gears.has(Global.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
-				_spawn_gear_shop()
-				_is_gear_shop_respawned = true
-			# Shop が再出現しなかった場合: フラグを更新する
-			else:
-				_is_gear_shop_respawned = false
+	if shop_type == Global.ShopType.GEAR:
+		match Global.stage:
+			Global.StageType.B:
+				_gate_gap_diff -= 8
+			Global.StageType.D:
+				_gate_gap_diff -= 16
 
-			# SPT
-			if Global.gears.has(Global.GearType.SPT) and 0 < _gear_shop_through_count:
-				# TODO: メッセージ表示
-				Global.money += Global.shop_through_count * Global.MONEY_RATIO
+		# SPR: 所持 and ショップをスルーした and 再出現ではない 場合: Gear Shop を再出現させる
+		if Global.gears.has(Global.GearType.SPR) and 0 < Global.shop_through_count and !_is_gear_shop_respawned:
+			_spawn_gear_shop()
+			_is_gear_shop_respawned = true
+		# Shop が再出現しなかった場合: フラグを更新する
+		else:
+			_is_gear_shop_respawned = false
 
-		Global.ShopType.STAGE:
-			pass
+		# SPT
+		if Global.gears.has(Global.GearType.SPT) and 0 < _gear_shop_through_count:
+			# TODO: メッセージ表示
+			Global.money += Global.shop_through_count * Global.MONEY_RATIO
 
 
 # Gate を生成しつづける (_process 内で呼ぶ)

@@ -78,22 +78,20 @@ func _on_hero_entered_shop(shop_type: Global.ShopType):
 	if Global.state != Global.State.ACTIVE:
 		return
 
-	match shop_type:
-		Global.ShopType.GEAR:
-			_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
-		Global.ShopType.STAGE:
-			_enter_slow(SLOW_SPEED_STAGE_SHOP, SLOW_DURATION_STAGE_SHOP)
+	if shop_type == Global.ShopType.GEAR:
+		_enter_slow(SLOW_SPEED_GEAR_SHOP, SLOW_DURATION_GEAR_SHOP)
+	if shop_type == Global.ShopType.STAGE:
+		_enter_slow(SLOW_SPEED_STAGE_SHOP, SLOW_DURATION_STAGE_SHOP)
 
 
 func _on_hero_exited_shop(shop_type: Global.ShopType):
 	if Global.state != Global.State.ACTIVE:
 		return
 
-	match shop_type:
-		Global.ShopType.GEAR:
-			_exit_slow(SLOW_DURATION_GEAR_SHOP)
-		Global.ShopType.STAGE:
-			_exit_slow(SLOW_DURATION_STAGE_SHOP)
+	if shop_type == Global.ShopType.GEAR:
+		_exit_slow(SLOW_DURATION_GEAR_SHOP)
+	if shop_type == Global.ShopType.STAGE:
+		_exit_slow(SLOW_DURATION_STAGE_SHOP)
 
 
 func _on_enemy_dead():
