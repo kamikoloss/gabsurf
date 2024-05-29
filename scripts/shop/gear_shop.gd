@@ -136,3 +136,7 @@ func get_info(type):
 		"cost": "$" + str(_info["c"] * Global.MONEY_RATIO),
 		"max": _max,
 	}
+
+
+func get_cost(type):
+	return _gear_info[type]["c"]
