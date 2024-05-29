@@ -111,7 +111,7 @@ func _get_random_type(active_types, ignore_type = null):
 
 
 func _on_gear_shop_buy_area_entered(shop_panel: ShopPanel, gear_type: Global.GearType):
-	var _cost = _gear_shop.get_cost(gear_type) * Global.MONEY_RATIO
+	var _cost = _gear_shop.get_info(gear_type)["cost"] * Global.MONEY_RATIO
 
 	# Money が足りない場合: 買えない
 	if Global.money < _cost:
