@@ -1,6 +1,7 @@
 extends Node
 
 
+# Global
 signal state_changed
 signal rank_changed
 signal stage_changed
@@ -10,10 +11,13 @@ signal extra_changed
 signal score_changed
 signal life_changed
 
-signal ui_jumped # ジャンプボタンを押したとき
-signal ui_paused # ポーズボタンを押したとき
-signal ui_retried # リトライボタンを押したとき
+# Main/UI
+signal center_button_down # 中央ボタンを押したとき
+signal left_button_down # 左ボタンを押したとき
+signal right_button_down # 右ボタンを押したとき
 
+# Main/Game/Hero
+signal hero_jumped # ジャンプしたとき
 signal hero_got_level # Level を取得したとき
 signal hero_got_money # Money を取得したとき
 signal hero_got_gear # Gear を取得したとき
@@ -22,6 +26,7 @@ signal hero_got_damage # ダメージを受けたとき
 signal hero_entered_shop # Shop に入ったとき
 signal hero_exited_shop # Shop を出たとき
 
+# Enemy
 signal enemy_dead # 倒されたとき
 
 
@@ -48,7 +53,7 @@ enum GearType {
 	EME, EMP, EMS, # Enemy 系
 	EXT,
 	GTG, GTM, # Gate 系
-	JMA, JMV, # ジャンプ系
+	JMA, JMS, JMV, # ジャンプ系
 	LFP, LFM, # Life 系
 	LOT,
 	MSB, MSM, MSW, # ミサイル系

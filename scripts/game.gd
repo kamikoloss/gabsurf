@@ -23,9 +23,9 @@ func _ready():
 
 	Global.state_changed.connect(_on_state_changed)
 	Global.stage_changed.connect(_on_stage_changed)
-	Global.ui_jumped.connect(_on_ui_jumped)
-	Global.ui_paused.connect(_on_ui_paused)
-	Global.ui_retried.connect(_on_ui_retried)
+	Global.center_button_down.connect(_on_center_button_down)
+	Global.left_button_down.connect(_on_left_button_down)
+	Global.right_button_down.connect(_on_right_button_down)
 	Global.hero_got_level.connect(_on_hero_got_level)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
@@ -64,23 +64,23 @@ func _on_stage_changed(_from):
 	Global.stage_number += 1
 
 
-func _on_ui_jumped():
+func _on_center_button_down():
 	# タイトル or ポーズ中 -> ゲーム中
-	var states = [Global.State.TITLE, Global.State.PAUSED]
-	if states.has(Global.state):
+	var _states = [Global.State.TITLE, Global.State.PAUSED]
+	if _states.has(Global.state):
 		Global.state = Global.State.ACTIVE
 
 
-func _on_ui_paused():
+func _on_left_button_down():
 	# ゲーム中 -> ポーズ中
 	if Global.state == Global.State.ACTIVE:
 		Global.state = Global.State.PAUSED
 
 
-func _on_ui_retried():
+func _on_right_button_down():
 	# ポーズ中 or ゲームオーバー: シーンを再読み込みする
-	var states = [Global.State.PAUSED, Global.State.GAMEOVER]
-	if states.has(Global.state):
+	var _states = [Global.State.PAUSED, Global.State.GAMEOVER]
+	if _states.has(Global.state):
 		get_tree().reload_current_scene()
 
 

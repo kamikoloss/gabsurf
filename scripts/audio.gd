@@ -26,7 +26,7 @@ var _bgm_position = null
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
 	Global.stage_changed.connect(_on_stage_changed)
-	Global.ui_jumped.connect(_on_ui_jumped)
+	Global.center_button_down.connect(_on_center_button_down)
 	Global.hero_got_money.connect(_on_hero_got_money)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_got_damage.connect(_on_hero_got_damage)
@@ -57,7 +57,7 @@ func _on_stage_changed(_from):
 	_play_se(_stage_sound)
 
 
-func _on_ui_jumped():
+func _on_center_button_down():
 	if Global.state != Global.State.GAMEOVER:
 		_play_se(_jump_sound)
 

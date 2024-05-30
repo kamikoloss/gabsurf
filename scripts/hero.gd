@@ -41,7 +41,7 @@ var _anti_damage_tween = null
 func _ready():
 	Global.state_changed.connect(_on_state_changed)
 	Global.life_changed.connect(_on_life_changed)
-	Global.ui_jumped.connect(_on_ui_jumped)
+	Global.center_button_down.connect(_on_center_button_down)
 	Global.hero_got_gear.connect(_on_hero_got_gear)
 	Global.hero_touched_damage.connect(_on_hero_touched_damage)
 	Global.hero_got_damage.connect(_on_hero_got_damage)
@@ -94,14 +94,14 @@ func _on_life_changed(_from):
 	_life_label.text = _life_text
 
 
-func _on_ui_jumped():
+func _on_center_button_down():
 	# ゲームオーバー: 何もしない
 	if Global.state == Global.State.GAMEOVER:
 		return
-	# ゲーム中 and ジャンプできない: 何もしない
-	if Global.state == Global.State.ACTIVE and !Global.can_hero_jump:
+	# ジャンプできない: 何もしない
+	if !Global.can_hero_jump:
 		return
-	# ゲーム中 or タイトル or ポーズ中: 再開と同時にジャンプする
+	# それ以外: ジャンプする
 
 	# ジャンプ (縦方向)
 	var _jump_velocity_y = JUMP_VELOCITY

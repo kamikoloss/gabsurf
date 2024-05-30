@@ -7,24 +7,30 @@ const LABEL_DURATION = 0.5 # 数値系が何秒かけて変わるか
 
 @export var _gear_shop: GearShop
 
+# Buttons
+@export var _center_button: Button
+@export var _left_button: Button
+@export var _right_button: Button
+
+# Score
 @export var _score_level_label: Label
 @export var _score_money_label: Label
 @export var _score_extra_label: Label
 @export var _score_score_label: Label
-
 @export var _rank_meter: Control
+@export var _stage_label: RichTextLabel
+@export var _next_label: RichTextLabel
 
+# Pause UI
 @export var _body_panel: Panel
 @export var _title_label: Label
 @export var _version_label: Label
 @export var _gears_label: RichTextLabel
-@export var _stage_label: RichTextLabel
-@export var _next_label: RichTextLabel
-
 @export var _help_pause_label: Label
 @export var _help_jump_label: Label
 @export var _help_retry_label: Label
 
+# BG
 @export var _bg_parallax: ParallaxBackground
 @export var _bg_color: TextureRect
 
@@ -46,86 +52,47 @@ func _ready():
 	Global.extra_changed.connect(_on_extra_changed)
 	Global.score_changed.connect(_on_score_changed)
 
-	_version_label.text = Global.VERSION
-	_refresh_stage_label()
+	_center_button.button_down.connect(_on_center_button_down)
+	_center_button.button_up.connect(_on_center_button_up)
+	_left_button.button_down.connect(_on_left_button_down)
+	_right_button.button_down.connect(_on_right_button_down)
 
-	# _on_state_changed() の TITLE と同じ処理
-	# _ready() 内で 初期 state が変わるので connect() が追い付かない
-	_body_panel.visible = true
-	_title_label.text = "GABSURF"
-	_help_pause_label.visible = true
-	_help_jump_label.visible = true
-	_help_retry_label.visible = false
-	_refresh_gear_label()
+	# UI 初期化
+	_show_pause_ui(Global.State.TITLE)
+	_refresh_stage_label()
+	_version_label.text = Global.VERSION
 
 
 # 入力制御
 func _input(event):
+	# キーボード
 	if event is InputEventKey:
-		# キーボードが押されたとき
+		# 押されたとき
 		if event.pressed:
 			match event.keycode:
 				KEY_SPACE:
-					_on_jump_button_down()
-					Global.can_hero_jump = false
+					_on_center_button_down()
 				KEY_ESCAPE:
-					_on_pause_button_down()
+					_on_left_button_down()
 				KEY_ENTER:
-					_on_retry_button_down()
-		# キーボードが離されたとき
+					_on_right_button_down()
+		# 離されたとき
 		else:
-			Global.can_hero_jump = true
-
-
-func _on_jump_button_down():
-	# タイトル or ポーズ中: Body を非表示にする
-	var states = [Global.State.TITLE, Global.State.PAUSED]
-	if states.has(Global.state):
-		_body_panel.visible = false
-		_help_pause_label.visible = false
-		_help_jump_label.visible = false
-		_help_retry_label.visible = false
-
-	Global.ui_jumped.emit()
-
-
-func _on_pause_button_down():
-	# ゲーム中: Body (画面中央 UI) を表示する
-	if Global.state == Global.State.ACTIVE:
-		_body_panel.visible = true
-		_title_label.text = "PAUSED"
-		_help_pause_label.visible = false
-		_help_jump_label.visible = true
-		_help_retry_label.visible = true
-
-	Global.ui_paused.emit()
-
-
-func _on_retry_button_down():
-	Global.ui_retried.emit()
+			match event.keycode:
+				KEY_SPACE:
+					_on_center_button_up()
 
 
 func _on_state_changed(_from):
-	match Global.state:
-		Global.State.TITLE:
-			_body_panel.visible = true
-			_title_label.text = "GABSURF"
-			_help_pause_label.visible = true
-			_help_jump_label.visible = true
-			_help_retry_label.visible = false
-		Global.State.GAMEOVER:
-			_body_panel.visible = true
-			_title_label.text = "GAME OVER"
-			_help_pause_label.visible = false
-			_help_jump_label.visible = false
-			_help_retry_label.visible = true
-
-	_refresh_gear_label()
+	if Global.state == Global.State.ACTIVE:
+		_hide_pause_ui()
+	else:
+		_show_pause_ui(Global.state)
 
 
 func _on_stage_changed(_from):
 	_refresh_stage_label()
-	
+
 	# BG の背景色を変更する
 	var _cartain_color = Color(0.2, 0.2, 0.2)
 	var _after_color: Color
@@ -204,6 +171,54 @@ func _on_score_changed(from):
 	_score_tween.set_parallel(true)
 	_score_tween.tween_method(func(v): _score_score_label.text = str(v), from, Global.score, LABEL_DURATION)
 	_score_tween.tween_property(_rank_meter, "position", _meter_position, LABEL_DURATION)
+
+
+func _on_center_button_down():
+	#print("[UI] center button is down.")
+	Global.center_button_down.emit()
+	Global.can_hero_jump = false # 離したときに true に戻る
+
+
+func _on_center_button_up():
+	#print("[UI] center button is up.")
+	Global.can_hero_jump = true
+
+
+func _on_left_button_down():
+	Global.left_button_down.emit()
+
+
+func _on_right_button_down():
+	Global.right_button_down.emit()
+
+
+func _show_pause_ui(state: Global.State):
+	_refresh_gear_label()
+	_body_panel.visible = true
+
+	match state:
+		Global.State.TITLE:
+			_title_label.text = "GABSURF"
+			_help_pause_label.visible = true
+			_help_jump_label.visible = true
+			_help_retry_label.visible = false
+		Global.State.PAUSED:
+			_title_label.text = "PAUSED"
+			_help_pause_label.visible = false
+			_help_jump_label.visible = true
+			_help_retry_label.visible = true
+		Global.State.GAMEOVER:
+			_title_label.text = "GAME OVER"
+			_help_pause_label.visible = false
+			_help_jump_label.visible = false
+			_help_retry_label.visible = true
+
+
+func _hide_pause_ui():
+	_body_panel.visible = false
+	_help_pause_label.visible = false
+	_help_jump_label.visible = false
+	_help_retry_label.visible = false
 
 
 func _refresh_stage_label():
