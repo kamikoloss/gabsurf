@@ -165,12 +165,11 @@ func _on_hero_touched_damage():
 	# ゲーム中でない: ダメージを受けても何も起きない
 	if Global.state != Global.State.ACTIVE:
 		return
-
 	# 無敵状態: ダメージを受けない
 	if _is_anti_damage:
 		return
-
 	# それ以外: ダメージを受ける
+
 	# Life を減らす
 	Global.life -= 1
 	print("[Hero] damged.")
@@ -235,7 +234,7 @@ func _on_body_area_exited(area):
 	if Global.state != Global.State.ACTIVE:
 		return
 
-	# ゲーム中に　Hero が画面外に出た場合: 強制ゲームーオーバー
+	# ゲーム中に Hero が画面外に出た場合: 強制ゲームーオーバー
 	if area.is_in_group("Screen"):
 		print("[Hero] exited screen.")
 		Global.state = Global.State.GAMEOVER
