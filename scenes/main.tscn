@@ -795,8 +795,8 @@ alignment = 2
 
 [node name="Stage" type="RichTextLabel" parent="UI/CanvasLayer/Layout/SubHeader/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/normal_font = ExtResource("1_vc8gg")
 theme_override_font_sizes/normal_font_size = 12
@@ -806,8 +806,8 @@ fit_content = true
 
 [node name="Next" type="RichTextLabel" parent="UI/CanvasLayer/Layout/SubHeader/VBoxContainer"]
 layout_mode = 2
-theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
+theme_override_colors/font_shadow_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 4
 theme_override_fonts/normal_font = ExtResource("1_vc8gg")
 theme_override_font_sizes/normal_font_size = 12
